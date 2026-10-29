@@ -123,10 +123,10 @@ function Author() {
                 languages. Read online or take the PDF with you.
               </p>
               <div className="mt-6 flex flex-wrap justify-center gap-3">
-                <Link to="/read/english" className="btn-gold px-5 py-2.5 text-sm">
+                <Link to="/read/$lang" params={{ lang: "english" }} className="btn-gold px-5 py-2.5 text-sm">
                   Read in English
                 </Link>
-                <Link to="/read/hindi" className="btn-outline px-5 py-2.5 text-sm">
+                <Link to="/read/$lang" params={{ lang: "hindi" }} className="btn-outline px-5 py-2.5 text-sm">
                   हिन्दी में पढ़ें
                 </Link>
                 <a

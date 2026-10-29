@@ -53,6 +53,7 @@ function Library() {
             blurb="The translated edition — same storms, new words."
             cover={covers.english.url}
             pdfUrl={pdfs.english.url}
+            lang="english"
           />
           <LibraryRow
             language="हिन्दी"
@@ -60,6 +61,7 @@ function Library() {
             blurb="The original edition, exactly as it was written."
             cover={covers.hindi.url}
             pdfUrl={pdfs.hindi.url}
+            lang="hindi"
           />
         </div>
 
@@ -80,12 +82,14 @@ function LibraryRow({
   blurb,
   cover,
   pdfUrl,
+  lang,
 }: {
   language: string;
   title: string;
   blurb: string;
   cover: string;
   pdfUrl: string;
+  lang: "english" | "hindi";
 }) {
   return (
     <div className="surface flex flex-col items-center gap-8 rounded-3xl p-8 sm:flex-row sm:p-10">
@@ -100,10 +104,7 @@ function LibraryRow({
         <h2 className="font-display mt-2 text-3xl font-medium text-tan">{title}</h2>
         <p className="mt-3 text-sm text-tan-muted">{blurb}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-3 sm:justify-start">
-          <Link
-            to={language === "English" ? "/read/english" : "/read/hindi"}
-            className="btn-gold px-5 py-2.5 text-sm"
-          >
+          <Link to="/read/$lang" params={{ lang }} className="btn-gold px-5 py-2.5 text-sm">
             Read Now
           </Link>
           {/* Opening / downloading the manuscript is allowed to open anywhere the reader chooses */}

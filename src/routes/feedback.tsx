@@ -20,7 +20,7 @@ export const Route = createFileRoute("/feedback")({
   component: Feedback,
 });
 
-const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as string | undefined;
+const WEB3FORMS_KEY = import.meta.env["VITE_WEB3FORMS_ACCESS_KEY"] as string | undefined;
 
 function Feedback() {
   const [name, setName] = useState("");

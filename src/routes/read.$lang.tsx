@@ -1,7 +1,7 @@
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { ArrowLeft, Download } from "lucide-react";
 
-import { pdfs } from "@/data/site";
+import { covers, pdfs } from "@/data/site";
 
 type Lang = "english" | "hindi";
 
@@ -15,17 +15,19 @@ export const Route = createFileRoute("/read/$lang")({
       throw redirect({ to: "/library" });
     }
   },
-  head: ({ loaderData }) => ({
+  head: () => ({
     meta: [
-      { title: `${loaderData?.title ?? "Reading"} · Read — Qambakht` },
-      { name: "description", content: `Read ${loaderData?.title ?? "Aam Zindagi!"} free in the browser.` },
+      { title: "Read Aam Zindagi! — Qambakht" },
+      { name: "description", content: "Read Aam Zindagi! free in the browser, in English or Hindi." },
+      { property: "og:title", content: "Read Aam Zindagi! — Qambakht" },
+      { property: "og:description", content: "Read Aam Zindagi! free in the browser, in English or Hindi." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  loader: ({ params }) => {
-    const lang = isLang(params.lang) ? (params.lang as Lang) : "english";
-    return { lang, ...pdfs[lang] };
+  loader: ({ params }): { lang: Lang; title: string; language: string; url: string } => {
+    const lang = isLang(params.lang) ? params.lang : "english";
+    return { lang, title: covers[lang].title, language: pdfs[lang].language, url: pdfs[lang].url };
   },
   component: Reader,
 });

@@ -13,7 +13,7 @@ export function Typewriter({ phrases, typingMs = 65, holdingMs = 1800 }: Props) 
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    const current = phrases[index % phrases.length];
+    const current = phrases[index % phrases.length] ?? "";
     let timer: number;
 
     if (!deleting && text === current) {
