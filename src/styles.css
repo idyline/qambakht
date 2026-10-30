@@ -7,8 +7,9 @@
 /*
  * Design system definition.
  *
- * Palette: Qambakht — dark roasted brown surfaces with text and accents drawn
- * from the book-cover background (warm tan #e4bc99) plus antique gold.
+ * Palette: Qambakht — deep velvet charcoal/espresso surfaces with text and
+ * accents drawn from the book-cover background: parchment beige #e4be9a,
+ * cream #f3e5d8, muted clay #d8baa0, plus antique gold.
  * All colors use oklch format.
  *
  * To add a new semantic color:
@@ -45,6 +46,7 @@
   --color-ring: var(--ring);
   --color-gold: var(--gold);
   --color-gold-bright: var(--gold-bright);
+  --color-cream: var(--cream);
   --color-tan: var(--tan);
   --color-tan-muted: var(--tan-muted);
   --font-display: "Fraunces", "Georgia", serif;
@@ -53,52 +55,53 @@
 
 :root {
   --radius: 0.625rem;
-  /* Qambakht dark roasted brown */
-  --background: oklch(0.21 0.014 60);
-  --foreground: oklch(0.822 0.062 68);           /* warm tan from the book covers */
-  --card: oklch(0.245 0.015 64);
-  --card-foreground: oklch(0.822 0.062 68);
-  --popover: oklch(0.235 0.015 64);
-  --popover-foreground: oklch(0.822 0.062 68);
-  --primary: oklch(0.745 0.115 75);              /* antique gold #d2a24c */
-  --primary-foreground: oklch(0.19 0.02 55);
-  --secondary: oklch(0.28 0.018 64);
-  --secondary-foreground: oklch(0.822 0.062 68);
-  --muted: oklch(0.27 0.016 64);
-  --muted-foreground: oklch(0.71 0.052 68);      /* softened cover tan, high contrast */
-  --accent: oklch(0.28 0.018 64);
-  --accent-foreground: oklch(0.822 0.062 68);
+  /* Deep velvet charcoal / espresso */
+  --background: oklch(0.185 0.006 56);            /* #151210 */
+  --foreground: oklch(0.826 0.065 65);            /* parchment #e4be9a from the covers */
+  --card: oklch(0.215 0.009 52);                  /* #1a1614, lifted for elevation */
+  --card-foreground: oklch(0.826 0.065 65);
+  --popover: oklch(0.205 0.009 52);
+  --popover-foreground: oklch(0.826 0.065 65);
+  --primary: oklch(0.740 0.118 80);               /* antique gold #d2a24c */
+  --primary-foreground: oklch(0.185 0.02 55);
+  --secondary: oklch(0.25 0.010 55);
+  --secondary-foreground: oklch(0.826 0.065 65);
+  --muted: oklch(0.245 0.009 55);
+  --muted-foreground: oklch(0.770 0.048 63);      /* muted clay #d8baa0 family */
+  --accent: oklch(0.25 0.010 55);
+  --accent-foreground: oklch(0.826 0.065 65);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.82 0.06 68 / 10%);
-  --input: oklch(0.82 0.06 68 / 12%);
-  --ring: oklch(0.745 0.115 75 / 55%);
-  --gold: oklch(0.745 0.115 75);
-  --gold-bright: oklch(0.832 0.105 80);          /* #e6bd6b */
-  --tan: oklch(0.822 0.062 68);                  /* cover background #e4bc99 */
-  --tan-muted: oklch(0.71 0.052 68);
+  --border: oklch(0.826 0.065 65 / 10%);
+  --input: oklch(0.826 0.065 65 / 13%);
+  --ring: oklch(0.740 0.118 80 / 50%);
+  --gold: oklch(0.740 0.118 80);
+  --gold-bright: oklch(0.818 0.111 83);           /* #e6bd6b */
+  --cream: oklch(0.930 0.023 65);                 /* #f3e5d8 */
+  --tan: oklch(0.826 0.065 65);                   /* parchment #e4be9a */
+  --tan-muted: oklch(0.770 0.048 63);
 }
 
 .dark {
-  --background: oklch(0.21 0.014 60);
-  --foreground: oklch(0.822 0.062 68);
-  --card: oklch(0.245 0.015 64);
-  --card-foreground: oklch(0.822 0.062 68);
-  --popover: oklch(0.235 0.015 64);
-  --popover-foreground: oklch(0.822 0.062 68);
-  --primary: oklch(0.745 0.115 75);
-  --primary-foreground: oklch(0.19 0.02 55);
-  --secondary: oklch(0.28 0.018 64);
-  --secondary-foreground: oklch(0.822 0.062 68);
-  --muted: oklch(0.27 0.016 64);
-  --muted-foreground: oklch(0.71 0.052 68);
-  --accent: oklch(0.28 0.018 64);
-  --accent-foreground: oklch(0.822 0.062 68);
+  --background: oklch(0.185 0.006 56);
+  --foreground: oklch(0.826 0.065 65);
+  --card: oklch(0.215 0.009 52);
+  --card-foreground: oklch(0.826 0.065 65);
+  --popover: oklch(0.205 0.009 52);
+  --popover-foreground: oklch(0.826 0.065 65);
+  --primary: oklch(0.740 0.118 80);
+  --primary-foreground: oklch(0.185 0.02 55);
+  --secondary: oklch(0.25 0.010 55);
+  --secondary-foreground: oklch(0.826 0.065 65);
+  --muted: oklch(0.245 0.009 55);
+  --muted-foreground: oklch(0.770 0.048 63);
+  --accent: oklch(0.25 0.010 55);
+  --accent-foreground: oklch(0.826 0.065 65);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.82 0.06 68 / 10%);
-  --input: oklch(0.82 0.06 68 / 12%);
-  --ring: oklch(0.745 0.115 75 / 55%);
+  --border: oklch(0.826 0.065 65 / 10%);
+  --input: oklch(0.826 0.065 65 / 13%);
+  --ring: oklch(0.740 0.118 80 / 50%);
 }
 
 @layer base {
@@ -143,7 +146,7 @@
   padding: 0.75rem 1.5rem;
   border-radius: 9999px;
   transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 6px 24px oklch(0.745 0.115 75 / 25%);
+  box-shadow: 0 6px 24px oklch(0.740 0.118 80 / 22%);
 }
 
 .btn-gold:hover {
@@ -165,8 +168,8 @@
 }
 
 .btn-outline:hover {
-  background-color: oklch(0.82 0.06 68 / 8%);
-  border-color: oklch(0.82 0.06 68 / 25%);
+  background-color: oklch(0.826 0.065 65 / 8%);
+  border-color: oklch(0.826 0.065 65 / 26%);
 }
 
 .eyebrow {
@@ -178,7 +181,7 @@
 
 .input-warm {
   width: 100%;
-  background-color: oklch(0.21 0.014 60 / 70%);
+  background-color: oklch(0.185 0.006 56 / 70%);
   border: 1px solid var(--color-input);
   border-radius: 0.75rem;
   padding: 0.75rem 1rem;
@@ -187,17 +190,84 @@
 }
 
 .input-warm::placeholder {
-  color: oklch(0.71 0.052 68 / 65%);
+  color: oklch(0.770 0.048 63 / 60%);
 }
 
 .input-warm:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px oklch(0.745 0.115 75 / 18%);
+  box-shadow: 0 0 0 3px oklch(0.740 0.118 80 / 16%);
 }
 
 .hero-covers {
   filter: drop-shadow(0 30px 60px oklch(0 0 0 / 55%));
+}
+
+/* ============ Classical-art atmosphere ============ */
+
+/* Repeating artwork frieze used as a decorative divider between sections. */
+.art-frieze {
+  height: 3.25rem;
+  background-repeat: repeat-x;
+  background-position: center;
+  background-size: auto 100%;
+  opacity: 0.16;
+  filter: brightness(0.7);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 14%, black 86%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 14%, black 86%, transparent);
+}
+
+/* Large, faint artwork watermark floating behind a section. */
+.art-watermark {
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.09;
+  filter: brightness(0.75);
+  -webkit-mask-image: radial-gradient(closest-side, black 22%, transparent 74%);
+  mask-image: radial-gradient(closest-side, black 22%, transparent 74%);
+}
+
+/* Subtle repeating texture inside a surface card. */
+.art-texture {
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.06;
+  filter: brightness(0.8);
+}
+
+/* Ornate artwork strip peeking along the top edge of a card. */
+.art-cornice {
+  height: 1.5rem;
+  background-repeat: repeat-x;
+  background-position: center;
+  background-size: auto 100%;
+  opacity: 0.12;
+  filter: brightness(0.7);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 18%, black 82%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 18%, black 82%, transparent);
+}
+
+/* ============ Book-card 3D hover ============ */
+
+.book-tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.55s ease;
+  box-shadow: 0 10px 34px oklch(0 0 0 / 35%);
+}
+
+.book-tilt:hover {
+  transform: perspective(900px) rotateX(3.5deg) rotateY(-5deg) translateY(-8px) scale(1.015);
+  box-shadow: 0 34px 70px oklch(0 0 0 / 55%), 0 0 44px oklch(0.740 0.118 80 / 16%);
+  border-color: oklch(0.826 0.065 65 / 22%);
+}
+
+.book-tilt .book-cover {
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.book-tilt:hover .book-cover {
+  transform: translateY(-6px) scale(1.055) rotate(1.2deg);
+  box-shadow: 0 26px 52px oklch(0 0 0 / 55%), 0 0 34px oklch(0.818 0.111 83 / 18%);
 }
 
 /* ============ Intro screen animations ============ */
@@ -209,16 +279,16 @@
 }
 
 @keyframes intro-rise {
-  0% { opacity: 0; transform: translateY(14px); }
-  30% { opacity: 0; transform: translateY(14px); }
+  0% { opacity: 0; transform: translateY(10px); }
+  30% { opacity: 0; transform: translateY(10px); }
   70% { opacity: 1; transform: translateY(0); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes intro-glow {
-  0% { opacity: 0.5; }
-  60% { opacity: 0.9; }
-  100% { opacity: 0.5; }
+  0% { opacity: 0.4; }
+  60% { opacity: 0.75; }
+  100% { opacity: 0.4; }
 }
 
 @keyframes intro-leave {
@@ -232,23 +302,23 @@
 }
 
 .intro-line {
-  animation: intro-line 2.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: intro-line 1.9s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .intro-rise {
-  animation: intro-rise 2.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: intro-rise 1.9s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .intro-rise-delayed {
-  animation: intro-rise 2.6s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+  animation: intro-rise 1.9s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
 }
 
 .intro-glow {
-  animation: intro-glow 3s ease-in-out infinite;
+  animation: intro-glow 2.4s ease-in-out infinite;
 }
 
 .intro-leave {
-  animation: intro-leave 0.7s ease both;
+  animation: intro-leave 0.55s ease both;
 }
 
 .caret-blink {

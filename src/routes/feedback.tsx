@@ -1,18 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { CheckCircle2, Send } from "lucide-react";
+import { CheckCircle2, Send, Star } from "lucide-react";
 
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { AUTHOR_EMAIL } from "@/data/site";
+import artButi from "@/assets/classical-art-6.jpg.asset.json";
 
 export const Route = createFileRoute("/feedback")({
   head: () => ({
     meta: [
       { title: "Feedback — Qambakht" },
-      { name: "description", content: "Tell the author what the stories made you feel — feedback goes straight to Adarsh Anand's inbox." },
+      { name: "description", content: "Rate Aam Zindagi! and share your reader thoughts — feedback goes straight to Adarsh Anand's inbox." },
       { property: "og:title", content: "Feedback — Qambakht" },
-      { property: "og:description", content: "Tell the author what the stories made you feel." },
+      { property: "og:description", content: "Rate the stories and share your reader thoughts with the author." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -25,7 +26,8 @@ const WEB3FORMS_KEY = import.meta.env["VITE_WEB3FORMS_ACCESS_KEY"] as string | u
 function Feedback() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [feeling, setFeeling] = useState("");
+  const [rating, setRating] = useState(0);
+  const [thoughts, setThoughts] = useState("");
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
 
@@ -35,9 +37,10 @@ function Feedback() {
     const body = [
       `Name: ${name || "(not given)"}`,
       email ? `Email: ${email}` : null,
+      `Rating: ${rating ? `${rating} / 5` : "(not given)"}`,
       "",
-      "What did the stories make you feel?",
-      feeling,
+      "Reader thoughts:",
+      thoughts,
     ]
       .filter((line) => line !== null)
       .join("\n");
@@ -74,33 +77,34 @@ function Feedback() {
   }
 
   return (
-    <div className="min-h-screen bg-background pt-16">
+    <div className="relative min-h-screen overflow-hidden bg-background pt-16">
       <Navbar />
+
+      {/* faint hand-block texture as an atmospheric backdrop */}
+      <img
+        src={artButi.url}
+        alt=""
+        aria-hidden="true"
+        className="art-watermark absolute -right-24 top-24 hidden h-[520px] w-[520px] rounded-full object-cover lg:block"
+      />
 
       <section className="relative overflow-hidden">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-0 h-[440px] w-[720px] -translate-x-1/2 rounded-full"
+          className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[680px] -translate-x-1/2 rounded-full"
           style={{
             background:
-              "radial-gradient(closest-side, oklch(0.745 0.115 75 / 9%), transparent 72%)",
+              "radial-gradient(closest-side, oklch(0.740 0.118 80 / 8%), transparent 72%)",
           }}
         />
-        <div className="mx-auto max-w-2xl px-4 pb-24 pt-20 sm:px-6">
+        <div className="relative mx-auto max-w-2xl px-4 pb-24 pt-20 sm:px-6">
           <div className="text-center">
-            <p className="eyebrow">Feedback · Sharing the page</p>
-            <h1 className="font-display mt-3 text-4xl font-medium text-tan sm:text-5xl">
-              Tell me what the stories left behind
+            <p className="eyebrow">Feedback</p>
+            <h1 className="font-display mt-3 text-4xl font-medium text-cream sm:text-5xl">
+              Reader Feedback
             </h1>
-            <p className="mt-5 leading-relaxed text-tan-muted">
-              Here's the question this little press keeps returning to:
-            </p>
-            <p className="font-hindi mt-3 text-xl text-gold-bright">
-              If <span className="text-tan">आम ज़िंदगी</span> were an evening, what would it taste like?
-            </p>
-            <p className="mt-2 text-sm text-tan-muted/80">
-              Sweet tea on a hot day? Rain on a tin roof? Write it down — every
-              answer lands directly in the author's inbox.
+            <p className="mx-auto mt-4 max-w-md text-tan-muted">
+              A minute of your time, straight to the author's inbox.
             </p>
           </div>
 
@@ -125,17 +129,17 @@ function Feedback() {
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid gap-5 sm:grid-cols-2">
                   <label className="block text-sm">
-                    <span className="mb-2 block text-tan">Your name</span>
+                    <span className="mb-2 block text-tan">Name</span>
                     <input
                       className="input-warm"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="How should the author greet you?"
+                      placeholder="Your name"
                     />
                   </label>
                   <label className="block text-sm">
                     <span className="mb-2 block text-tan">
-                      Your email <span className="text-tan-muted/70">(optional)</span>
+                      Email <span className="text-tan-muted/70">(optional)</span>
                     </span>
                     <input
                       className="input-warm"
@@ -146,24 +150,50 @@ function Feedback() {
                     />
                   </label>
                 </div>
+
+                <fieldset className="block text-sm">
+                  <legend className="mb-2 block text-tan">Your impression</legend>
+                  <div className="flex items-center gap-1.5">
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <button
+                        key={n}
+                        type="button"
+                        aria-label={`${n} star${n > 1 ? "s" : ""}`}
+                        onClick={() => setRating(n)}
+                        className="rounded-md p-1 transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      >
+                        <Star
+                          className={`h-6 w-6 transition-colors ${
+                            n <= rating
+                              ? "fill-gold text-gold"
+                              : "text-tan-muted/50 hover:text-gold/70"
+                          }`}
+                        />
+                      </button>
+                    ))}
+                    <span className="ml-2 text-xs text-tan-muted">
+                      {rating ? `${rating} / 5` : "Tap to rate"}
+                    </span>
+                  </div>
+                </fieldset>
+
                 <label className="block text-sm">
-                  <span className="mb-2 block text-tan">
-                    What did the stories make you feel?
-                  </span>
+                  <span className="mb-2 block text-tan">Reader thoughts</span>
                   <textarea
-                    className="input-warm min-h-36"
-                    value={feeling}
-                    onChange={(e) => setFeeling(e.target.value)}
-                    placeholder="An evening that tastes like…"
+                    className="input-warm min-h-32"
+                    value={thoughts}
+                    onChange={(e) => setThoughts(e.target.value)}
+                    placeholder="What did the stories leave you with?"
                     required
                   />
                 </label>
+
                 <button type="submit" disabled={sending} className="btn-gold w-full text-sm disabled:opacity-60">
                   <Send className="h-4 w-4" />
                   {sending ? "Sending…" : "Send Feedback"}
                 </button>
                 <p className="text-center text-xs text-tan-muted/70">
-                  Goes straight to {AUTHOR_EMAIL} — no newsletters, no spam, just a reader's note.
+                  Goes straight to {AUTHOR_EMAIL} — no newsletters, no spam.
                 </p>
               </form>
             )}
