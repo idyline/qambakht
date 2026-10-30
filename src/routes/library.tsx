@@ -1,9 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Download, BookOpenText } from "lucide-react";
+import { Download } from "lucide-react";
 
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { covers, pdfs } from "@/data/site";
+import artWarli from "@/assets/classical-art-5.jpg.asset.json";
+import artElephant from "@/assets/classical-art-1.jpg.asset.json";
+import artButi from "@/assets/classical-art-6.jpg.asset.json";
 
 export const Route = createFileRoute("/library")({
   head: () => ({
@@ -27,21 +30,24 @@ function Library() {
       <section className="relative overflow-hidden">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-0 h-[480px] w-[760px] -translate-x-1/2 rounded-full"
+          className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[680px] -translate-x-1/2 rounded-full"
           style={{
             background:
-              "radial-gradient(closest-side, oklch(0.745 0.115 75 / 9%), transparent 72%)",
+              "radial-gradient(closest-side, oklch(0.740 0.118 80 / 8%), transparent 72%)",
           }}
         />
-        <div className="mx-auto max-w-6xl px-4 pb-16 pt-20 text-center sm:px-6">
-          <p className="eyebrow">The Library</p>
-          <h1 className="font-display mt-3 text-4xl font-medium text-tan sm:text-5xl">
-            Every story, both languages
+        <div className="relative mx-auto max-w-6xl px-4 pb-14 pt-20 text-center sm:px-6">
+          <h1 className="font-display text-4xl font-medium text-cream sm:text-5xl">
+            The Library
           </h1>
-          <p className="mx-auto mt-5 max-w-xl text-tan-muted">
-            Read right here in the browser, or carry the manuscript with you as
-            a PDF. Either way — it's free, today and always.
+          <p className="mx-auto mt-4 max-w-xl text-tan-muted">
+            Two languages. One story that lingers.
           </p>
+          <div
+            aria-hidden="true"
+            className="art-frieze mx-auto mt-8 max-w-md"
+            style={{ backgroundImage: `url(${artWarli.url})` }}
+          />
         </div>
       </section>
 
@@ -64,11 +70,6 @@ function Library() {
             lang="hindi"
           />
         </div>
-
-        <p className="mt-12 text-center text-sm text-tan-muted/80">
-          <BookOpenText className="mr-2 inline h-4 w-4 align-[-3px] text-gold" />
-          Prefer paper? Screenshot a page, print the PDF — the story doesn't mind.
-        </p>
       </section>
 
       <Footer />
@@ -92,14 +93,27 @@ function LibraryRow({
   lang: "english" | "hindi";
 }) {
   return (
-    <div className="surface flex flex-col items-center gap-8 rounded-3xl p-8 sm:flex-row sm:p-10">
+    <div className="book-tilt surface relative flex flex-col items-center gap-8 overflow-hidden rounded-3xl p-8 sm:flex-row sm:p-10">
+      {/* ornate frieze along the top edge */}
+      <div
+        aria-hidden="true"
+        className="art-cornice absolute inset-x-10 top-4"
+        style={{ backgroundImage: `url(${artElephant.url})` }}
+      />
+      {/* faint hand-block texture across the card */}
+      <img
+        src={artButi.url}
+        alt=""
+        aria-hidden="true"
+        className="art-texture absolute inset-0 h-full w-full object-cover"
+      />
       <img
         src={cover}
         alt={`Cover of ${title} (${language})`}
         loading="lazy"
-        className="w-44 shrink-0 rounded-xl shadow-[0_18px_40px_rgba(0,0,0,0.45)]"
+        className="book-cover relative w-44 shrink-0 rounded-xl shadow-[0_18px_40px_rgba(0,0,0,0.45)]"
       />
-      <div className="text-center sm:text-left">
+      <div className="relative text-center sm:text-left">
         <p className="text-xs uppercase tracking-[0.3em] text-gold-bright/90">{language}</p>
         <h2 className="font-display mt-2 text-3xl font-medium text-tan">{title}</h2>
         <p className="mt-3 text-sm text-tan-muted">{blurb}</p>
@@ -123,4 +137,3 @@ function LibraryRow({
     </div>
   );
 }
-
