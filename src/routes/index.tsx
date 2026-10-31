@@ -3,11 +3,10 @@ import { Compass, UserRound } from "lucide-react";
 
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { covers } from "@/data/site";
-import artMandala from "@/assets/classical-art-2.jpg.asset.json";
-import artWarli from "@/assets/classical-art-5.jpg.asset.json";
-import artElephant from "@/assets/classical-art-1.jpg.asset.json";
-import artButi from "@/assets/classical-art-6.jpg.asset.json";
+import { HeroBooks } from "@/components/HeroBooks";
+import { ArtDivider } from "@/components/ArtDivider";
+import { Typewriter } from "@/components/Typewriter";
+import { covers, arts, HERO_LINES } from "@/data/site";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -25,18 +24,11 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="min-h-screen bg-background pt-16">
+    <div className="relative min-h-screen pt-16">
       <Navbar />
 
       {/* ===== Hero ===== */}
       <section className="relative overflow-hidden">
-        {/* faint mandala watermark from the classical arts */}
-        <img
-          src={artMandala.url}
-          alt=""
-          aria-hidden="true"
-          className="art-watermark absolute left-1/2 top-1/2 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full object-cover"
-        />
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-0 h-[680px] w-[860px] -translate-x-1/2 rounded-full"
@@ -51,8 +43,8 @@ function Index() {
             <h1 className="font-display mt-4 text-5xl font-medium leading-[1.05] text-cream sm:text-6xl">
               Stories that <em className="text-gold-bright">stay</em> with you
             </h1>
-            <p className="font-hindi mt-6 text-lg text-tan sm:text-xl">
-              शब्द वो हैं जो ठहर जाएँ — काग़ज़ पर नहीं, साँसों में।
+            <p className="font-hindi mt-6 min-h-[3.6rem] text-lg text-tan sm:min-h-[3.2rem] sm:text-xl">
+              <Typewriter phrases={HERO_LINES} typingMs={55} holdingMs={2200} />
             </p>
             <p className="mt-2 text-xs uppercase tracking-[0.3em] text-gold-bright/90">
               Qambakht
@@ -74,30 +66,31 @@ function Index() {
             </div>
           </div>
 
-          <div className="relative mx-auto flex w-full max-w-md items-center justify-center">
-            <img
-              src={covers.hindi.url}
-              alt={`Cover of the Hindi edition, ${covers.hindi.title}`}
-              className="hero-covers w-52 -rotate-6 rounded-xl sm:w-60"
-            />
-            <img
-              src={covers.english.url}
-              alt={`Cover of the English edition, ${covers.english.title}`}
-              className="hero-covers -ml-14 w-52 rotate-3 rounded-xl sm:w-60"
-            />
-          </div>
+          <HeroBooks
+            hindiUrl={covers.hindi.url}
+            englishUrl={covers.english.url}
+            hindiTitle={covers.hindi.title}
+            englishTitle={covers.english.title}
+            crestUrl={arts.warli}
+          />
         </div>
-
-        {/* warli frieze as a decorative divider */}
-        <div
-          aria-hidden="true"
-          className="art-frieze relative mx-auto max-w-6xl"
-          style={{ backgroundImage: `url(${artWarli.url})` }}
-        />
       </section>
 
+      {/* elephant-procession frieze dividing the hero from curated reading */}
+      <div className="px-4 sm:px-6">
+        <ArtDivider className="max-w-3xl" />
+      </div>
+
       {/* ===== Curated Reading ===== */}
-      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <section className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6">
+        {/* pichwai elephant & florals, a quiet accent in the open corner */}
+        <img
+          src={arts.pichwai}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          className="art-spread absolute -left-8 bottom-10 hidden h-[420px] w-[290px] lg:block"
+        />
         <div className="text-center">
           <h2 className="font-display text-3xl font-medium text-cream sm:text-4xl">
             Curated Reading
@@ -111,8 +104,7 @@ function Index() {
             readTo="/read/english"
             readLabel="Read Now"
             blurb="An evening in English — the same small storms and quieter braveries, in words that feel like they were always yours. Pull up a chair."
-            cornice={artElephant.url}
-            texture={artButi.url}
+            crest={arts.warli}
           />
           <BookCard
             language="हिन्दी"
@@ -121,8 +113,7 @@ function Index() {
             readTo="/read/hindi"
             readLabel="पढ़ें अभी"
             blurb="आम ज़िंदगी as it was first breathed — unhurried, in Hindi, where every line settles like steam off a cup of chai."
-            cornice={artElephant.url}
-            texture={artButi.url}
+            crest={arts.warli}
           />
         </div>
       </section>
@@ -139,8 +130,7 @@ function BookCard({
   readTo,
   readLabel,
   blurb,
-  cornice,
-  texture,
+  crest,
 }: {
   language: string;
   title: string;
@@ -148,23 +138,34 @@ function BookCard({
   readTo: string;
   readLabel: string;
   blurb: string;
-  cornice: string;
-  texture: string;
+  crest: string;
 }) {
   return (
     <div className="book-tilt surface relative flex flex-col items-center gap-6 overflow-hidden rounded-3xl p-8 pt-10 text-center sm:flex-row sm:text-left">
-      {/* ornate frieze along the top edge */}
+      {/* elephant frieze along the top edge */}
       <div
         aria-hidden="true"
         className="art-cornice absolute inset-x-8 top-4"
-        style={{ backgroundImage: `url(${cornice})` }}
+        style={{ backgroundImage: `url(${arts.frieze})` }}
       />
-      {/* faint hand-block texture across the card */}
+      {/* faint hand-block buti pattern behind the description */}
       <img
-        src={texture}
+        src={arts.buti}
         alt=""
         aria-hidden="true"
+        loading="lazy"
         className="art-texture absolute inset-0 h-full w-full object-cover"
+      />
+      {/* warli crest ribbons framing the card */}
+      <div
+        aria-hidden="true"
+        className="art-edge absolute bottom-5 left-2.5 top-6 hidden sm:block"
+        style={{ backgroundImage: `url(${crest})` }}
+      />
+      <div
+        aria-hidden="true"
+        className="art-edge absolute bottom-5 right-2.5 top-6 hidden sm:block"
+        style={{ backgroundImage: `url(${crest})` }}
       />
       <img
         src={cover}

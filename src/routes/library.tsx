@@ -3,10 +3,8 @@ import { Download } from "lucide-react";
 
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { covers, pdfs } from "@/data/site";
-import artWarli from "@/assets/classical-art-5.jpg.asset.json";
-import artElephant from "@/assets/classical-art-1.jpg.asset.json";
-import artButi from "@/assets/classical-art-6.jpg.asset.json";
+import { ArtDivider } from "@/components/ArtDivider";
+import { covers, pdfs, arts } from "@/data/site";
 
 export const Route = createFileRoute("/library")({
   head: () => ({
@@ -24,10 +22,18 @@ export const Route = createFileRoute("/library")({
 
 function Library() {
   return (
-    <div className="min-h-screen bg-background pt-16">
+    <div className="relative min-h-screen pt-16">
       <Navbar />
 
       <section className="relative overflow-hidden">
+        {/* pichwai accent in the open right-hand corner */}
+        <img
+          src={arts.pichwai}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          className="art-spread absolute -right-10 top-10 hidden h-[380px] w-[260px] lg:block"
+        />
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[680px] -translate-x-1/2 rounded-full"
@@ -36,22 +42,22 @@ function Library() {
               "radial-gradient(closest-side, oklch(0.740 0.118 80 / 8%), transparent 72%)",
           }}
         />
-        <div className="relative mx-auto max-w-6xl px-4 pb-14 pt-20 text-center sm:px-6">
+        <div className="relative mx-auto max-w-6xl px-4 pb-10 pt-20 text-center sm:px-6">
           <h1 className="font-display text-4xl font-medium text-cream sm:text-5xl">
             The Library
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-tan-muted">
             Two languages. One story that lingers.
           </p>
-          <div
-            aria-hidden="true"
-            className="art-frieze mx-auto mt-8 max-w-md"
-            style={{ backgroundImage: `url(${artWarli.url})` }}
-          />
         </div>
       </section>
 
-      <section className="mx-auto max-w-4xl px-4 pb-24 sm:px-6">
+      {/* elephant frieze page break */}
+      <div className="px-4 sm:px-6">
+        <ArtDivider className="max-w-xl" />
+      </div>
+
+      <section className="relative mx-auto max-w-4xl px-4 pb-20 pt-4 sm:px-6">
         <div className="space-y-8">
           <LibraryRow
             language="English"
@@ -94,18 +100,30 @@ function LibraryRow({
 }) {
   return (
     <div className="book-tilt surface relative flex flex-col items-center gap-8 overflow-hidden rounded-3xl p-8 sm:flex-row sm:p-10">
-      {/* ornate frieze along the top edge */}
+      {/* elephant frieze along the top edge */}
       <div
         aria-hidden="true"
         className="art-cornice absolute inset-x-10 top-4"
-        style={{ backgroundImage: `url(${artElephant.url})` }}
+        style={{ backgroundImage: `url(${arts.frieze})` }}
       />
-      {/* faint hand-block texture across the card */}
+      {/* faint hand-block buti pattern behind the words */}
       <img
-        src={artButi.url}
+        src={arts.buti}
         alt=""
         aria-hidden="true"
+        loading="lazy"
         className="art-texture absolute inset-0 h-full w-full object-cover"
+      />
+      {/* warli crest ribbons framing the row */}
+      <div
+        aria-hidden="true"
+        className="art-edge absolute bottom-5 left-2.5 top-6 hidden sm:block"
+        style={{ backgroundImage: `url(${arts.warli})` }}
+      />
+      <div
+        aria-hidden="true"
+        className="art-edge absolute bottom-5 right-2.5 top-6 hidden sm:block"
+        style={{ backgroundImage: `url(${arts.warli})` }}
       />
       <img
         src={cover}
