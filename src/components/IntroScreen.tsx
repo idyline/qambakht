@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 
+import { filigreeUrl } from "@/data/site";
+
 /**
  * Full-screen intro curtain. Plays on every full page load / refresh
  * (no session caching), then dissolves into the site.
- * Sleek and centred: small Devanagari line, large cream serif wordmark,
- * a short gold rule — a quick, smooth reveal.
+ * Sleek and centred: a small Devanagari line, a large cream serif wordmark,
+ * and an ornate Indian classical gold filigree flourish that expands
+ * gracefully beneath the name before the whole scene dissolves.
  */
 export function IntroScreen() {
   const [phase, setPhase] = useState<"playing" | "leaving" | "gone">("playing");
@@ -49,9 +52,10 @@ export function IntroScreen() {
         >
           Qambakht
         </h1>
-        <div
-          className="intro-line mt-6 h-px w-16 origin-center"
-          style={{ background: "linear-gradient(90deg, transparent, oklch(0.740 0.118 80), transparent)" }}
+        <img
+          src={filigreeUrl}
+          alt=""
+          className="intro-filigree mt-6 h-8 w-52 origin-center object-contain sm:h-10 sm:w-72 md:w-80"
         />
       </div>
     </div>
