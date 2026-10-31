@@ -3,9 +3,8 @@ import { Download, Mail, PenLine } from "lucide-react";
 
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { covers, pdfs, portraitUrl, CONTACT_EMAIL } from "@/data/site";
-import artMandala from "@/assets/classical-art-2.jpg.asset.json";
-import artButi from "@/assets/classical-art-6.jpg.asset.json";
+import { ArtDivider } from "@/components/ArtDivider";
+import { covers, pdfs, portraitUrl, arts, CONTACT_EMAIL } from "@/data/site";
 
 export const Route = createFileRoute("/author")({
   head: () => ({
@@ -23,16 +22,24 @@ export const Route = createFileRoute("/author")({
 
 function Author() {
   return (
-    <div className="min-h-screen bg-background pt-16">
+    <div className="relative min-h-screen pt-16">
       <Navbar />
 
       <section className="relative overflow-hidden">
         {/* faint mandala watermark behind the portrait */}
         <img
-          src={artMandala.url}
+          src={arts.mandala}
           alt=""
           aria-hidden="true"
           className="art-watermark absolute left-[12%] top-16 hidden h-[460px] w-[460px] rounded-full object-cover lg:block"
+        />
+        {/* hand-block buti filling the open space above the recommended card */}
+        <img
+          src={arts.buti}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          className="art-spread absolute right-0 top-0 hidden h-[340px] w-[240px] lg:block"
         />
         <div
           aria-hidden="true"
@@ -111,9 +118,9 @@ function Author() {
               Recommended
             </span>
             <div className="book-tilt surface relative overflow-hidden rounded-3xl p-8 pt-12 text-center">
-              {/* faint hand-block texture across the card */}
+              {/* faint hand-block buti texture across the card */}
               <img
-                src={artButi.url}
+                src={arts.buti}
                 alt=""
                 aria-hidden="true"
                 className="art-texture absolute inset-0 h-full w-full object-cover"
@@ -151,6 +158,11 @@ function Author() {
           </div>
         </div>
       </section>
+
+      {/* elephant frieze page break before the footer */}
+      <div className="px-4 sm:px-6">
+        <ArtDivider className="max-w-xl" />
+      </div>
 
       <Footer />
     </div>
