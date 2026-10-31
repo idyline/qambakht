@@ -1,8 +1,7 @@
-import { Feather } from "lucide-react";
-
 import { Link, useLocation } from "@tanstack/react-router";
 
 import { cn } from "@/lib/utils";
+import { logoUrl } from "@/data/site";
 
 const NAV_ITEMS = [
   { label: "Home", to: "/" },
@@ -22,9 +21,14 @@ export function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link to="/" className="flex items-center gap-3" aria-label="Qambakht home">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-gold/50 bg-primary/15 text-gold">
-            <Feather className="h-4 w-4" />
-          </span>
+          <img
+            src={logoUrl}
+            alt=""
+            aria-hidden="true"
+            width={36}
+            height={36}
+            className="h-9 w-9 object-contain drop-shadow-[0_0_10px_oklch(0.740_0.118_80/30%)]"
+          />
           <span className="font-display text-xl font-medium tracking-wide text-tan">
             Qambakht
           </span>

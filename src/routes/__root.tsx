@@ -13,6 +13,8 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { IntroScreen } from "@/components/IntroScreen";
+import { arts } from "@/data/site";
+import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
 
 function NotFoundComponent() {
   return (
@@ -75,6 +77,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Qambakht — Stories that stay with you" },
       { name: "description", content: "Qambakht — a warm little corner of the internet for Aam Zindagi! and stories by Adarsh Anand, free to read in English and Hindi." },
+      { name: "theme-color", content: "#151210" },
       { property: "og:title", content: "Qambakht — Stories that stay with you" },
       { property: "og:description", content: "Read Aam Zindagi! free in English and Hindi. Stories that hold the essence of Premchand and the wit of Parsai." },
       { property: "og:type", content: "website" },
@@ -89,7 +92,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Manrope:wght@300..800&family=Tiro+Devanagari+Hindi&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "manifest", href: "/manifest.webmanifest" },
     ],
   }),
   shellComponent: RootShell,
@@ -112,14 +117,44 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * The site-wide atmosphere: a faint damask wallpaper blended with a soft
+ * mandala bloom, plus the regal carpet tapestry running down the left edge.
+ * Sits behind every page; pages must be positioned (relative) to paint above.
+ */
+function SiteAtmosphere() {
+  return (
+    <div aria-hidden="true" className="site-atmosphere">
+      <div
+        className="site-atmosphere-damask"
+        style={{ backgroundImage: `url(${arts.damask})` }}
+      />
+      <div
+        className="site-atmosphere-mandala"
+        style={{ backgroundImage: `url(${arts.mandala})` }}
+      />
+      <div
+        className="site-carpet-border"
+        style={{ backgroundImage: `url(${arts.carpet})` }}
+      />
+    </div>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  useSwipeNavigation();
+
   return (
     <QueryClientProvider client={queryClient}>
-      <IntroScreen />
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <SiteAtmosphere />
+      {/* On wide screens the content steps aside for the carpet border. */}
+      <div className="relative md:pl-20 xl:pl-28">
+        <IntroScreen />
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+      </div>
     </QueryClientProvider>
   );
 }

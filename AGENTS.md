@@ -15,3 +15,7 @@
   the Lovable CDN via `.asset.json` pointers in `src/assets/` — code uses the
   pointer's `url` field. This keeps images and PDFs working identically on every
   host (Lovable preview, Vercel, anywhere); do not move binaries back into the repo.
+
+- The fixed `SiteAtmosphere` layer in `src/routes/__root.tsx` paints the site-wide
+  artwork background and left carpet border; page roots must stay `relative` and
+  must not set an opaque `bg-background` or the atmosphere disappears.

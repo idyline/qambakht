@@ -3,12 +3,15 @@ import coverHindi from "@/assets/cover-hindi.png.asset.json";
 import portrait from "@/assets/adarsh-portrait.png.asset.json";
 import pdfEnglish from "@/assets/aam-zindagi-english.pdf.asset.json";
 import pdfHindi from "@/assets/aam-zindagi-hindi.pdf.asset.json";
-import art1 from "@/assets/classical-art-1.jpg.asset.json";
-import art2 from "@/assets/classical-art-2.jpg.asset.json";
-import art3 from "@/assets/classical-art-3.jpg.asset.json";
-import art4 from "@/assets/classical-art-4.jpg.asset.json";
-import art5 from "@/assets/classical-art-5.jpg.asset.json";
-import art6 from "@/assets/classical-art-6.jpg.asset.json";
+import siteDamask from "@/assets/site-damask.jpg.asset.json";
+import siteMandala from "@/assets/site-mandala.jpg.asset.json";
+import siteCarpet from "@/assets/site-carpet-strip.jpg.asset.json";
+import siteFrieze from "@/assets/site-elephant-band.jpg.asset.json";
+import sitePichwai from "@/assets/site-pichwai.jpg.asset.json";
+import siteWarli from "@/assets/site-warli-band.png.asset.json";
+import siteButi from "@/assets/site-buti.jpg.asset.json";
+import logo from "@/assets/qambakht-logo.png.asset.json";
+import filigree from "@/assets/filigree-gold.png.asset.json";
 
 export const covers = {
   english: { url: coverEnglish.url, title: "Aam Zindagi!", language: "English" },
@@ -22,43 +25,35 @@ export const pdfs = {
 
 export const portraitUrl = portrait.url;
 
-export const classicalArts = [
-  {
-    url: art1.url,
-    alt: "Folk elephant frieze with temple borders and garland motifs",
-    caption: "Elephant frieze",
-    note: "temple borders & toran garlands",
-  },
-  {
-    url: art2.url,
-    alt: "Large mandala in warm peach tones",
-    caption: "Mandala",
-    note: "the geometry of stillness",
-  },
-  {
-    url: art3.url,
-    alt: "Sage-green print with elephants and botanicals",
-    caption: "Pichwai & botanicals",
-    note: "elephants in sage and vine",
-  },
-  {
-    url: art4.url,
-    alt: "Woven rug texture with cane placemats",
-    caption: "Woven craft",
-    note: "rugs, cane and everyday texture",
-  },
-  {
-    url: art5.url,
-    alt: "Warli art frieze of dancing figures and drummers",
-    caption: "Warli",
-    note: "the dance of the harvest",
-  },
-  {
-    url: art6.url,
-    alt: "Cream fabric with repeating hand-block buti print",
-    caption: "Hand-block buti",
-    note: "the quiet art of repetition",
-  },
+/**
+ * The Indian classical arts, each with a fixed role in the site's atmosphere:
+ *  - damask: faint full-page wallpaper texture (blended with the mandala)
+ *  - mandala: large soft mandala bloom in the site background
+ *  - carpet: regal tapestry border along the left edge of the site
+ *  - frieze: elephant procession band used as section dividers & card cornices
+ *  - pichwai: elephant/floral motif spread as quiet atmospheric accents
+ *  - warli: vertical warli ribbon framing the book covers
+ *  - buti: hand-block buti pattern behind descriptions & empty-space fillers
+ */
+export const arts = {
+  damask: siteDamask.url,
+  mandala: siteMandala.url,
+  carpet: siteCarpet.url,
+  frieze: siteFrieze.url,
+  pichwai: sitePichwai.url,
+  warli: siteWarli.url,
+  buti: siteButi.url,
+};
+
+export const logoUrl = logo.url;
+export const filigreeUrl = filigree.url;
+
+export const HERO_LINES = [
+  "शब्द वो हैं जो ठहर जाएँ — काग़ज़ पर नहीं, साँसों में।",
+  "हर आम शाम में एक अनकही किस्सा छिपा है।",
+  "चाय की भाप, गली की गूँज — और ज़िंदगी ख़ुद एक कहानी।",
+  "जो बात दिल में ठहर जाए, वही साहित्य है।",
+  "पन्ने ख़ामोश हैं, पर जो कहते हैं, वो साथ चलते हैं।",
 ];
 
 export const AUTHOR_EMAIL = "anandadarsh942@gmail.com";

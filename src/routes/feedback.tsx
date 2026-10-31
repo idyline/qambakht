@@ -4,8 +4,8 @@ import { CheckCircle2, Send, Star } from "lucide-react";
 
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { AUTHOR_EMAIL } from "@/data/site";
-import artButi from "@/assets/classical-art-6.jpg.asset.json";
+import { ArtDivider } from "@/components/ArtDivider";
+import { AUTHOR_EMAIL, arts } from "@/data/site";
 
 export const Route = createFileRoute("/feedback")({
   head: () => ({
@@ -77,12 +77,12 @@ function Feedback() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background pt-16">
+    <div className="relative min-h-screen overflow-hidden pt-16">
       <Navbar />
 
-      {/* faint hand-block texture as an atmospheric backdrop */}
+      {/* hand-block buti texture as an atmospheric backdrop */}
       <img
-        src={artButi.url}
+        src={arts.buti}
         alt=""
         aria-hidden="true"
         className="art-watermark absolute -right-24 top-24 hidden h-[520px] w-[520px] rounded-full object-cover lg:block"
@@ -200,6 +200,11 @@ function Feedback() {
           </div>
         </div>
       </section>
+
+      {/* elephant frieze page break before the footer */}
+      <div className="px-4 sm:px-6">
+        <ArtDivider className="max-w-xl" />
+      </div>
 
       <Footer />
     </div>
