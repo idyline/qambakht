@@ -494,7 +494,7 @@
   max-height: 84%;
   width: auto;
   transform: translateY(-50%);
-  opacity: 0.55;
+  opacity: 0.3;
   pointer-events: none;
   -webkit-mask-image: linear-gradient(180deg, transparent, black 12%, black 88%, transparent);
   mask-image: linear-gradient(180deg, transparent, black 12%, black 88%, transparent);
