@@ -272,10 +272,11 @@
 
 /* ============ Intro screen animations ============ */
 
-@keyframes intro-line {
-  0% { transform: scaleX(0); opacity: 0; }
-  45% { transform: scaleX(0); opacity: 0; }
-  100% { transform: scaleX(1); opacity: 1; }
+@keyframes intro-filigree {
+  0% { opacity: 0; transform: scaleX(0.18); }
+  40% { opacity: 0; transform: scaleX(0.18); }
+  80% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 1; transform: scaleX(1); }
 }
 
 @keyframes intro-rise {
@@ -301,8 +302,9 @@
   50%, 95% { opacity: 0; }
 }
 
-.intro-line {
-  animation: intro-line 1.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+.intro-filigree {
+  animation: intro-filigree 1.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  filter: drop-shadow(0 0 14px oklch(0.740 0.118 80 / 35%));
 }
 
 .intro-rise {
@@ -327,9 +329,11 @@
 
 .type-caret {
   display: inline-block;
-  width: 3px;
-  height: 1em;
-  margin-left: 0.15em;
-  vertical-align: -0.12em;
-  background-color: var(--color-gold-bright);
+  width: 2.5px;
+  height: 1.08em;
+  margin-left: 0.18em;
+  border-radius: 9999px;
+  vertical-align: -0.15em;
+  background: linear-gradient(180deg, var(--color-gold-bright), var(--color-primary));
+  box-shadow: 0 0 9px oklch(0.740 0.118 80 / 55%);
 }
