@@ -1,32 +1,22 @@
-import { Link } from "@tanstack/react-router";
+import { Art } from "@/components/Art";
+import { Lockup } from "@/components/Wordmark";
 
-import { logoUrl } from "@/data/site";
-
-/**
- * Site footer. Deliberately carries no navigation tabs — those live only in
- * the top navbar. Just the wordmark on the left, the copyright on the right.
- */
+/** Footer: no nav tabs (by request) — lockup left, sun-moon + peacock centre, credit right. */
 export function Footer() {
   return (
-    <footer className="relative border-t border-border/60">
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-8 text-center sm:flex-row sm:justify-between sm:px-6 sm:text-left">
-        <Link to="/" className="flex items-center gap-3" aria-label="Qambakht home">
-          <img
-            src={logoUrl}
-            alt=""
-            aria-hidden="true"
-            width={32}
-            height={32}
-            loading="lazy"
-            className="h-8 w-8 object-contain"
-          />
-          <span className="font-display text-lg font-medium tracking-wide text-tan">
-            Qambakht
-          </span>
-        </Link>
-        <p className="text-xs text-tan-muted/80">
-          © {new Date().getFullYear()} Qambakht · Adarsh Anand
-        </p>
+    <footer className="relative mt-24">
+      <div className="border-strip" style={{ backgroundImage: "url(/assets/art/33-border-geometric-tan.jpg)" }} aria-hidden />
+      <div className="night-panel">
+        <div className="mx-auto grid max-w-6xl items-center gap-8 px-6 py-10 md:grid-cols-3">
+          <Lockup className="justify-self-center md:justify-self-start" />
+          <div className="flex items-center justify-center gap-4">
+            <Art n={13} look="print" className="w-24 rotate-[-3deg]" />
+            <Art n={38} look="plain" className="w-16 rotate-[2deg] rounded-[50%]" />
+          </div>
+          <p className="foil text-center font-bodoni text-sm tracking-[0.12em] md:text-right">
+            © 2026 Qambakht. · Adarsh Anand
+          </p>
+        </div>
       </div>
     </footer>
   );
