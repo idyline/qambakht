@@ -45,7 +45,7 @@ export function SiteChrome({ onExit }: { onExit: () => void }) {
       }
       setInter({ idx, phase: "in" });
       const img = new Image();
-      img.src = ART[NAV[idx].interstitial].src;
+      img.src = ART[NAV[idx]!.interstitial].src;
       window.setTimeout(() => {
         navigate({ to });
         window.scrollTo(0, 0);
@@ -86,7 +86,7 @@ export function SiteChrome({ onExit }: { onExit: () => void }) {
   }, [menu, closeMenu]);
 
   const open = menu === "open";
-  const current = NAV[hover];
+  const current = NAV[hover] ?? NAV[0];
 
   return (
     <>
@@ -177,7 +177,7 @@ export function SiteChrome({ onExit }: { onExit: () => void }) {
         <div className={`interstitial ${inter.phase === "out" ? "curtain-up" : ""}`} aria-hidden>
           <div className="flex flex-col items-center gap-6">
             <div className="relative">
-              <Art n={NAV[inter.idx].interstitial} className="inter-art w-44 md:w-56" />
+              <Art n={NAV[inter.idx]!.interstitial} className="inter-art w-44 md:w-56" />
               {inter.idx === 0 && (
                 <span className="absolute bottom-[22%] left-1/2 -translate-x-1/2">
                   <Steam className="absolute -top-10 left-1/2 w-10 -translate-x-1/2" />
@@ -186,7 +186,7 @@ export function SiteChrome({ onExit }: { onExit: () => void }) {
               )}
             </div>
             <p lang="hi" className="h1-hindi text-5xl md:text-6xl">
-              {NAV[inter.idx].label}
+              {NAV[inter.idx]!.label}
             </p>
             <span className="progress-dash" />
           </div>

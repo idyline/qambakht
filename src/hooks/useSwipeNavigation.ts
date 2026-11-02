@@ -25,7 +25,7 @@ export function swipeTarget(
   const idx = PAGE_ORDER.indexOf(base);
   const next = dx < 0 ? idx + 1 : idx - 1;
   if (next < 0 || next >= PAGE_ORDER.length) return null;
-  return PAGE_ORDER[next];
+  return PAGE_ORDER[next] ?? null;
 }
 
 /**

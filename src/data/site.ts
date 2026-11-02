@@ -34,7 +34,7 @@ export const BLURBS = {
 
 /** Crop as fractions of the source image: top, right, bottom, left. Used to hide artist marks. */
 export type Crop = [number, number, number, number];
-export type ArtPiece = { src: string; w: number; h: number; crop?: Crop; patch?: { x: number; y: number; w: number; h: number; color: string } };
+export type ArtPiece = { src: string; w: number; h: number; crop?: Crop | undefined; patch?: undefined | { x: number; y: number; w: number; h: number; color: string } };
 
 const a = (file: string, w: number, h: number, crop?: Crop, patch?: ArtPiece["patch"]): ArtPiece => ({
   src: `/assets/art/${file}`,
