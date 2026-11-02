@@ -1,27 +1,16 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { CheckCircle2, Send, Star } from "lucide-react";
 
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-import { ArtDivider } from "@/components/ArtDivider";
-import { AUTHOR_EMAIL, arts } from "@/data/site";
+import { Art } from "@/components/Art";
+import { AUTHOR_EMAIL, LOGO, pageHead } from "@/data/site";
 
 export const Route = createFileRoute("/feedback")({
-  head: () => ({
-    meta: [
-      { title: "Feedback — Qambakht" },
-      { name: "description", content: "Rate Aam Zindagi! and share your reader thoughts — feedback goes straight to Adarsh Anand's inbox." },
-      { property: "og:title", content: "Feedback — Qambakht" },
-      { property: "og:description", content: "Rate the stories and share your reader thoughts with the author." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => pageHead("और सुनाओ? — rate Aam Zindagi! and send your reader thoughts straight to Adarsh Anand."),
   component: Feedback,
 });
 
 const WEB3FORMS_KEY = import.meta.env["VITE_WEB3FORMS_ACCESS_KEY"] as string | undefined;
+const LABELS = ["", "थोड़ी फीकी", "ठीक-ठाक", "अच्छी लगी", "बहुत बढ़िया", "दिल छू गई!"];
 
 function Feedback() {
   const [name, setName] = useState("");
@@ -30,10 +19,16 @@ function Feedback() {
   const [thoughts, setThoughts] = useState("");
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
+  const [problem, setProblem] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const subject = `Qambakht feedback from ${name || "a reader"}`;
+    if (!thoughts.trim()) {
+      setProblem("दो शब्द तो लिखिए — just a line or two of thoughts, please.");
+      return;
+    }
+    setProblem("");
+    const subject = `Qambakht. feedback from ${name || "a reader"}`;
     const body = [
       `Name: ${name || "(not given)"}`,
       email ? `Email: ${email}` : null,
@@ -54,7 +49,7 @@ function Feedback() {
           body: JSON.stringify({
             access_key: WEB3FORMS_KEY,
             subject,
-            from_name: name || "A Qambakht reader",
+            from_name: name || "A Qambakht. reader",
             replyto: email || undefined,
             message: body,
           }),
@@ -63,150 +58,84 @@ function Feedback() {
         setSent(true);
       } catch (err) {
         console.error(err);
-        // Fall back to the reader's own mail client, addressed to the author.
         window.location.href = `mailto:${AUTHOR_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         setSent(true);
       } finally {
         setSending(false);
       }
     } else {
-      // Mailto fallback — opens the reader's mail app pre-filled for the author.
       window.location.href = `mailto:${AUTHOR_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       setSent(true);
     }
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden pt-16">
-      <Navbar />
+    <div className="relative overflow-hidden pt-28">
+      <section className="night-panel relative mx-auto max-w-4xl rounded-sm px-6 py-14 md:px-12">
+        <Art n={43} className="sticker absolute -left-6 -top-10 hidden w-28 rotate-[-8deg] md:block" />
+        <header className="text-center">
+          <h1 lang="hi" className="konkani text-6xl md:text-7xl">और सुनाओ?</h1>
+          <p className="extrude-night mt-2 text-2xl" lang="hi">अनुभव लिख भेजिए</p>
+          <p className="mt-2 font-body italic text-cream/85">The Post Office — a postcard to the author.</p>
+        </header>
 
-      {/* hand-block buti texture as an atmospheric backdrop */}
-      <img
-        src={arts.buti}
-        alt=""
-        aria-hidden="true"
-        className="art-watermark absolute -right-24 top-24 hidden h-[520px] w-[520px] rounded-full object-cover lg:block"
-      />
-
-      <section className="relative overflow-hidden">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[680px] -translate-x-1/2 rounded-full"
-          style={{
-            background:
-              "radial-gradient(closest-side, oklch(0.740 0.118 80 / 8%), transparent 72%)",
-          }}
-        />
-        <div className="relative mx-auto max-w-2xl px-4 pb-24 pt-20 sm:px-6">
-          <div className="text-center">
-            <p className="eyebrow">Feedback</p>
-            <h1 className="font-display mt-3 text-4xl font-medium text-cream sm:text-5xl">
-              Reader Feedback
-            </h1>
-            <p className="mx-auto mt-4 max-w-md text-tan-muted">
-              A minute of your time, straight to the author's inbox.
-            </p>
+        <form onSubmit={handleSubmit} className="postcard relative mx-auto mt-10 max-w-2xl p-6 md:p-10">
+          <Art n={16} className="postage absolute right-4 top-4 w-20 rotate-[4deg]" />
+          {sent && (
+            <div className="postmark" aria-hidden>
+              <span lang="hi">शुक्रिया!</span>
+            </div>
+          )}
+          <div className="grid gap-6 md:grid-cols-2 md:pr-24">
+            <label className="field">
+              <span className="hand">Name · नाम</span>
+              <input value={name} onChange={(e) => setName(e.target.value)} maxLength={100} />
+            </label>
+            <label className="field">
+              <span className="hand">Email (optional)</span>
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} />
+            </label>
           </div>
 
-          <div className="surface mt-10 rounded-3xl p-7 sm:p-10">
-            {sent ? (
-              <div className="py-8 text-center">
-                <CheckCircle2 className="mx-auto h-12 w-12 text-gold" />
-                <h2 className="font-display mt-4 text-2xl text-tan">Thank you!</h2>
-                <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-tan-muted">
-                  Your note is on its way to the author. If your mail app didn't
-                  open automatically, write to{" "}
-                  <a className="text-gold-bright underline" href={`mailto:${AUTHOR_EMAIL}`}>
-                    {AUTHOR_EMAIL}
-                  </a>
-                  .
-                </p>
-                <Link to="/" className="btn-outline mt-6 text-sm">
-                  Back to Home
-                </Link>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <label className="block text-sm">
-                    <span className="mb-2 block text-tan">Name</span>
-                    <input
-                      className="input-warm"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="Your name"
-                    />
-                  </label>
-                  <label className="block text-sm">
-                    <span className="mb-2 block text-tan">
-                      Email <span className="text-tan-muted/70">(optional)</span>
-                    </span>
-                    <input
-                      className="input-warm"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Only if you'd like a reply"
-                    />
-                  </label>
-                </div>
-
-                <fieldset className="block text-sm">
-                  <legend className="mb-2 block text-tan">Your impression</legend>
-                  <div className="flex items-center gap-1.5">
-                    {[1, 2, 3, 4, 5].map((n) => (
-                      <button
-                        key={n}
-                        type="button"
-                        aria-label={`${n} star${n > 1 ? "s" : ""}`}
-                        onClick={() => setRating(n)}
-                        className="rounded-md p-1 transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                      >
-                        <Star
-                          className={`h-6 w-6 transition-colors ${
-                            n <= rating
-                              ? "fill-gold text-gold"
-                              : "text-tan-muted/50 hover:text-gold/70"
-                          }`}
-                        />
-                      </button>
-                    ))}
-                    <span className="ml-2 text-xs text-tan-muted">
-                      {rating ? `${rating} / 5` : "Tap to rate"}
-                    </span>
-                  </div>
-                </fieldset>
-
-                <label className="block text-sm">
-                  <span className="mb-2 block text-tan">Reader thoughts</span>
-                  <textarea
-                    className="input-warm min-h-32"
-                    value={thoughts}
-                    onChange={(e) => setThoughts(e.target.value)}
-                    placeholder="What did the stories leave you with?"
-                    required
-                  />
-                </label>
-
-                <button type="submit" disabled={sending} className="btn-gold w-full text-sm disabled:opacity-60">
-                  <Send className="h-4 w-4" />
-                  {sending ? "Sending…" : "Send Feedback"}
+          <fieldset className="mt-8">
+            <legend className="hand text-lg">How was the chai? · कैसी लगी?</legend>
+            <div className="mt-2 flex items-center gap-2">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  aria-label={`${n} of 5`}
+                  aria-pressed={rating === n}
+                  onClick={() => setRating(n)}
+                  className={`cup-rate ${n <= rating ? "on" : ""}`}
+                >
+                  <img src={LOGO} alt="" width={44} height={44} />
                 </button>
-                <p className="text-center text-xs text-tan-muted/70">
-                  Goes straight to {AUTHOR_EMAIL} — no newsletters, no spam.
-                </p>
-              </form>
-            )}
+              ))}
+              <span lang="hi" className="hand ml-3 text-xl">{LABELS[rating]}</span>
+            </div>
+          </fieldset>
+
+          <label className="field mt-8 block">
+            <span className="hand">Thoughts · मन की बात</span>
+            <textarea rows={6} className="lined" value={thoughts} onChange={(e) => setThoughts(e.target.value)} maxLength={4000} />
+          </label>
+
+          {problem && <p className="hand mt-3 text-lg" lang="hi">{problem}</p>}
+
+          <div className="mt-8 flex flex-wrap items-center gap-4">
+            <button type="submit" disabled={sending} className="cut-btn">
+              {sending ? "भेज रहे हैं…" : <span lang="hi">चिट्ठी भेजो</span>}
+            </button>
+            {sent && <p className="tiro-thanks" lang="hi">शुक्रिया! आपकी चिट्ठी पहुँच गई।</p>}
           </div>
-        </div>
+        </form>
+        <Art n={44} look="plain" className={`absolute bottom-24 right-6 w-20 ${sent ? "dove-out" : "drift-x"}`} />
       </section>
-
-      {/* elephant frieze page break before the footer */}
-      <div className="px-4 sm:px-6">
-        <ArtDivider className="max-w-xl" />
+      <div className="relative mx-auto -mt-6 flex max-w-5xl justify-between px-6">
+        <Art n={29} className="w-full max-w-3xl" />
+        <Art n={37} className="hidden w-32 md:block" look="multiply" />
       </div>
-
-      <Footer />
     </div>
   );
 }

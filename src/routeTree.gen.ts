@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthorRouteImport } from './routes/author'
+import { Route as BuyRouteImport } from './routes/buy'
 import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as ReadLangRouteImport } from './routes/read.$lang'
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
 const AuthorRoute = AuthorRouteImport.update({
   id: '/author',
   path: '/author',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BuyRoute = BuyRouteImport.update({
+  id: '/buy',
+  path: '/buy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FeedbackRoute = FeedbackRouteImport.update({
@@ -44,6 +50,7 @@ const ReadLangRoute = ReadLangRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/author': typeof AuthorRoute
+  '/buy': typeof BuyRoute
   '/feedback': typeof FeedbackRoute
   '/library': typeof LibraryRoute
   '/read/$lang': typeof ReadLangRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/author': typeof AuthorRoute
+  '/buy': typeof BuyRoute
   '/feedback': typeof FeedbackRoute
   '/library': typeof LibraryRoute
   '/read/$lang': typeof ReadLangRoute
@@ -59,21 +67,30 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/author': typeof AuthorRoute
+  '/buy': typeof BuyRoute
   '/feedback': typeof FeedbackRoute
   '/library': typeof LibraryRoute
   '/read/$lang': typeof ReadLangRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/author' | '/feedback' | '/library' | '/read/$lang'
+  fullPaths: '/' | '/author' | '/buy' | '/feedback' | '/library' | '/read/$lang'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/author' | '/feedback' | '/library' | '/read/$lang'
-  id: '__root__' | '/' | '/author' | '/feedback' | '/library' | '/read/$lang'
+  to: '/' | '/author' | '/buy' | '/feedback' | '/library' | '/read/$lang'
+  id:
+    | '__root__'
+    | '/'
+    | '/author'
+    | '/buy'
+    | '/feedback'
+    | '/library'
+    | '/read/$lang'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthorRoute: typeof AuthorRoute
+  BuyRoute: typeof BuyRoute
   FeedbackRoute: typeof FeedbackRoute
   LibraryRoute: typeof LibraryRoute
   ReadLangRoute: typeof ReadLangRoute
@@ -93,6 +110,13 @@ declare module '@tanstack/react-router' {
       path: '/author'
       fullPath: '/author'
       preLoaderRoute: typeof AuthorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/buy': {
+      id: '/buy'
+      path: '/buy'
+      fullPath: '/buy'
+      preLoaderRoute: typeof BuyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/feedback': {
@@ -122,6 +146,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthorRoute: AuthorRoute,
+  BuyRoute: BuyRoute,
   FeedbackRoute: FeedbackRoute,
   LibraryRoute: LibraryRoute,
   ReadLangRoute: ReadLangRoute,

@@ -1,9 +1,10 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -12,24 +13,19 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { IntroScreen } from "@/components/IntroScreen";
-import { arts } from "@/data/site";
+import { SiteChrome, Intro, ExitScreen, useExitScreen } from "@/components/SiteChrome";
+import { Footer } from "@/components/Footer";
+import { Art } from "@/components/Art";
+import { MANDALA, SITE_NAME } from "@/data/site";
 import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="font-display text-7xl font-bold text-tan">404</h1>
-        <h2 className="mt-4 font-display text-xl font-semibold text-tan">Page not found</h2>
-        <p className="mt-2 text-sm text-tan-muted">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <div className="mt-6">
-          <Link to="/" className="btn-gold text-sm">
-            Go home
-          </Link>
-        </div>
+    <div className="flex min-h-[70vh] items-center justify-center px-4 pt-24">
+      <div className="paper-card max-w-md rotate-[-1deg] p-10 text-center">
+        <h1 className="h1-hindi text-6xl" lang="hi">खो गए?</h1>
+        <p className="mt-4">This page doesn't exist — the lane ends here.</p>
+        <Link to="/" className="cut-btn mt-6" lang="hi">घर चलें</Link>
       </div>
     </div>
   );
@@ -41,59 +37,41 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="font-display text-xl font-semibold tracking-tight text-tan">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-tan-muted">
-          Something went wrong on our end. You can try refreshing or head back home.
-        </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
-            className="btn-gold text-sm"
-          >
-            Try again
-          </button>
-          <a href="/" className="btn-outline text-sm">
-            Go home
-          </a>
+    <div className="flex min-h-screen items-center justify-center px-4">
+      <div className="paper-card max-w-md p-10 text-center">
+        <h1 className="h1-hindi text-4xl" lang="hi">अरे!</h1>
+        <p className="mt-3">This page didn't load. Try again, or head back home.</p>
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <button onClick={() => { router.invalidate(); reset(); }} className="cut-btn">Try again</button>
+          <a href="/" className="cut-btn cut-btn-alt">Home</a>
         </div>
       </div>
     </div>
   );
 }
 
+const FONTS =
+  "https://fonts.googleapis.com/css2?family=Amita:wght@400;700&family=Bagel+Fat+One&family=Bodoni+Moda:ital,wght@0,400..700;1,400..700&family=Bowlby+One&family=Caveat+Brush&family=Chonburi&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,700&family=Eczar:wght@500;800&family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Gloock&family=Kalam:wght@400;700&family=Modak&family=Rozha+One&family=Sarpanch:wght@600&family=Teko:wght@500&family=Tiro+Devanagari+Hindi:ital@0;1&family=Yatra+One&display=swap";
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Qambakht — Stories that stay with you" },
-      { name: "description", content: "Qambakht — a warm little corner of the internet for Aam Zindagi! and stories by Adarsh Anand, free to read in English and Hindi." },
-      { name: "theme-color", content: "#151210" },
-      { property: "og:title", content: "Qambakht — Stories that stay with you" },
-      { property: "og:description", content: "Read Aam Zindagi! free in English and Hindi. Stories that hold the essence of Premchand and the wit of Parsai." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { title: SITE_NAME },
+      { name: "application-name", content: SITE_NAME },
+      { name: "apple-mobile-web-app-title", content: SITE_NAME },
+      { name: "theme-color", content: "#FCD2A2" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Manrope:wght@300..800&family=Tiro+Devanagari+Hindi&display=swap",
-      },
-      { rel: "icon", type: "image/png", href: "/favicon.png" },
-      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: FONTS },
+      { rel: "preload", as: "image", href: MANDALA },
+      { rel: "icon", type: "image/png", href: "/assets/logo/qambakht-cup-192.png" },
+      { rel: "apple-touch-icon", href: "/assets/logo/qambakht-cup-192.png" },
       { rel: "manifest", href: "/manifest.webmanifest" },
     ],
   }),
@@ -117,44 +95,41 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
-/**
- * The site-wide atmosphere: a faint damask wallpaper blended with a soft
- * mandala bloom, plus the regal carpet tapestry running down the left edge.
- * Sits behind every page; pages must be positioned (relative) to paint above.
- */
+/** Site-wide mandala background (fixed layer), mirrored on wide screens, plus paper grain. */
 function SiteAtmosphere() {
   return (
-    <div aria-hidden="true" className="site-atmosphere">
-      <div
-        className="site-atmosphere-damask"
-        style={{ backgroundImage: `url(${arts.damask})` }}
-      />
-      <div
-        className="site-atmosphere-mandala"
-        style={{ backgroundImage: `url(${arts.mandala})` }}
-      />
-      <div
-        className="site-carpet-border"
-        style={{ backgroundImage: `url(${arts.carpet})` }}
-      />
+    <div className="atmosphere" aria-hidden>
+      <div className="mandala-l" style={{ backgroundImage: `url(${MANDALA})` }} />
+      <div className="mandala-r" style={{ backgroundImage: `url(${MANDALA})` }} />
+      <div className="grain" />
     </div>
   );
 }
 
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
-
   useSwipeNavigation();
-
+  const { exit, openFromMenu, arm, tap, dismiss } = useExitScreen();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isReader = pathname.startsWith("/read");
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
       <SiteAtmosphere />
-      {/* On wide screens the content steps aside for the carpet border. */}
-      <div className="relative md:pl-20 xl:pl-28">
-        <IntroScreen />
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
+      <Intro />
+      {!isReader && <SiteChrome onExit={openFromMenu} />}
+      <div id="site-main" className="relative">
+        {/* global floating pieces: cloud + doves drift across */}
+        {!isReader && (
+          <>
+            <Art n={6} look="multiply" className="cloud-drift pointer-events-none fixed right-[6%] top-24 z-[1] hidden w-28 opacity-80 md:block" />
+            <Art n={44} look="multiply" className="doves-cross pointer-events-none fixed left-0 top-[38%] z-[1] w-16 md:w-20" />
+          </>
+        )}
+        <main className="relative z-[2]">
+          <Outlet />
+        </main>
+        {!isReader && <Footer />}
       </div>
-    </QueryClientProvider>
+      {exit && <ExitScreen armed={exit.armed} onTap={tap} onArm={arm} onStay={dismiss} />}
+    </>
   );
 }

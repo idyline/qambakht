@@ -4,7 +4,7 @@ import { PAGE_ORDER, swipeTarget } from "@/hooks/useSwipeNavigation";
 
 describe("swipe navigation", () => {
   it("keeps the navbar page order", () => {
-    expect(PAGE_ORDER).toEqual(["/", "/library", "/author", "/feedback"]);
+    expect(PAGE_ORDER).toEqual(["/", "/library", "/author", "/feedback", "/buy"]);
   });
 
   it("swiping left on Home goes to Library", () => {
@@ -23,8 +23,8 @@ describe("swipe navigation", () => {
     expect(swipeTarget("/", 120, 0)).toBeNull();
   });
 
-  it("swiping left on Feedback has nowhere to go", () => {
-    expect(swipeTarget("/feedback", -150, 0)).toBeNull();
+  it("swiping left on Buy has nowhere to go", () => {
+    expect(swipeTarget("/buy", -150, 0)).toBeNull();
   });
 
   it("ignores vertical swipes", () => {

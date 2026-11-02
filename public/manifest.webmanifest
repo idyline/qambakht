@@ -1,1 +1,13 @@
-{"name": "Qambakht — Stories that stay with you", "short_name": "Qambakht", "description": "Read Aam Zindagi! free in English and Hindi — stories that stay with you.", "start_url": "/", "display": "standalone", "background_color": "#151210", "theme_color": "#151210", "icons": [{"src": "/favicon.png", "sizes": "64x64", "type": "image/png"}, {"src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"}, {"src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"}, {"src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}]}
+{
+  "name": "Qambakht.",
+  "short_name": "Qambakht.",
+  "description": "Qambakht. — Aam Zindagi! by Adarsh Anand, in English and Hindi.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FCD2A2",
+  "theme_color": "#FCD2A2",
+  "icons": [
+    { "src": "/assets/logo/qambakht-cup-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
+  ]
+}

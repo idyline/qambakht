@@ -17,9 +17,9 @@ export const Route = createFileRoute("/read/$lang")({
   },
   head: () => ({
     meta: [
-      { title: "Read Aam Zindagi! — Qambakht" },
+      { title: "Qambakht." },
       { name: "description", content: "Read Aam Zindagi! free in the browser, in English or Hindi." },
-      { property: "og:title", content: "Read Aam Zindagi! — Qambakht" },
+      { property: "og:title", content: "Qambakht." },
       { property: "og:description", content: "Read Aam Zindagi! free in the browser, in English or Hindi." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -36,7 +36,7 @@ function Reader() {
   const { title, language, url } = Route.useLoaderData();
 
   return (
-    <div className="flex h-screen flex-col bg-background">
+    <div className="relative z-[2] flex h-screen flex-col">
       <header className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border/60 px-4 sm:px-6">
         <div className="flex items-center gap-3">
           <Link to="/library" className="btn-outline px-3 py-1.5 text-xs sm:text-sm">
@@ -52,8 +52,6 @@ function Reader() {
         </div>
         <a
           href={url}
-          target="_blank"
-          rel="noopener noreferrer"
           download
           className="btn-gold px-4 py-2 text-xs sm:text-sm"
         >
