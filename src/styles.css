@@ -5,16 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Design system definition.
- *
- * Palette: Qambakht — deep velvet charcoal/espresso surfaces with text and
- * accents drawn from the book-cover background: parchment beige #e4be9a,
- * cream #f3e5d8, muted clay #d8baa0, plus antique gold.
- * All colors use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ * Qambakht. — indie vintage desi gallery.
+ * Peach mandala paper, maroon ink, vermilion stamps, mustard fills.
  */
 
 @theme inline {
@@ -22,9 +14,6 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -44,466 +33,358 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-gold: var(--gold);
-  --color-gold-bright: var(--gold-bright);
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
   --color-cream: var(--cream);
-  --color-tan: var(--tan);
-  --color-tan-muted: var(--tan-muted);
-  --font-display: "Fraunces", "Georgia", serif;
-  --font-body: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --color-kraft: var(--kraft);
+  --color-ink: var(--ink);
+  --color-maroon: var(--maroon);
+  --color-vermilion: var(--vermilion);
+  --color-mustard: var(--mustard);
+  --color-ochre: var(--ochre);
+  --color-olive: var(--olive);
+  --color-peacock: var(--peacock);
+  /* legacy names used by the reader page */
+  --color-tan: var(--ink);
+  --color-tan-muted: var(--ink);
+  --color-gold-bright: var(--maroon);
+  --font-body: "Fraunces", "Tiro Devanagari Hindi", Georgia, serif;
+  --font-display: "Chonburi", "Rozha One", serif;
 }
 
 :root {
-  --radius: 0.625rem;
-  /* Deep velvet charcoal / espresso */
-  --background: oklch(0.185 0.006 56);            /* #151210 */
-  --foreground: oklch(0.826 0.065 65);            /* parchment #e4be9a from the covers */
-  --card: oklch(0.215 0.009 52);                  /* #1a1614, lifted for elevation */
-  --card-foreground: oklch(0.826 0.065 65);
-  --popover: oklch(0.205 0.009 52);
-  --popover-foreground: oklch(0.826 0.065 65);
-  --primary: oklch(0.740 0.118 80);               /* antique gold #d2a24c */
-  --primary-foreground: oklch(0.185 0.02 55);
-  --secondary: oklch(0.25 0.010 55);
-  --secondary-foreground: oklch(0.826 0.065 65);
-  --muted: oklch(0.245 0.009 55);
-  --muted-foreground: oklch(0.770 0.048 63);      /* muted clay #d8baa0 family */
-  --accent: oklch(0.25 0.010 55);
-  --accent-foreground: oklch(0.826 0.065 65);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.826 0.065 65 / 10%);
-  --input: oklch(0.826 0.065 65 / 13%);
-  --ring: oklch(0.740 0.118 80 / 50%);
-  --gold: oklch(0.740 0.118 80);
-  --gold-bright: oklch(0.818 0.111 83);           /* #e6bd6b */
-  --cream: oklch(0.930 0.023 65);                 /* #f3e5d8 */
-  --tan: oklch(0.826 0.065 65);                   /* parchment #e4be9a */
-  --tan-muted: oklch(0.770 0.048 63);
-}
+  --radius: 0.25rem;
+  --paper: #fcd2a2;
+  --paper-deep: #e3b989;
+  --cream: #fff1dc;
+  --kraft: #d6bc93;
+  --ink: #2b120e;
+  --maroon: #6e1f1b;
+  --night: #4a1512;
+  --vermilion: #d7493f;
+  --mustard: #f0bf1a;
+  --ochre: #b07a28;
+  --olive: #6c7a2e;
+  --peacock: #2f5e7e;
+  --shadow-paper: 0 2px 0 rgba(110, 31, 27, 0.08), 0 14px 28px -10px rgba(110, 54, 20, 0.45);
 
-.dark {
-  --background: oklch(0.185 0.006 56);
-  --foreground: oklch(0.826 0.065 65);
-  --card: oklch(0.215 0.009 52);
-  --card-foreground: oklch(0.826 0.065 65);
-  --popover: oklch(0.205 0.009 52);
-  --popover-foreground: oklch(0.826 0.065 65);
-  --primary: oklch(0.740 0.118 80);
-  --primary-foreground: oklch(0.185 0.02 55);
-  --secondary: oklch(0.25 0.010 55);
-  --secondary-foreground: oklch(0.826 0.065 65);
-  --muted: oklch(0.245 0.009 55);
-  --muted-foreground: oklch(0.770 0.048 63);
-  --accent: oklch(0.25 0.010 55);
-  --accent-foreground: oklch(0.826 0.065 65);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.826 0.065 65 / 10%);
-  --input: oklch(0.826 0.065 65 / 13%);
-  --ring: oklch(0.740 0.118 80 / 50%);
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--cream);
+  --card-foreground: var(--ink);
+  --popover: var(--cream);
+  --popover-foreground: var(--ink);
+  --primary: var(--maroon);
+  --primary-foreground: var(--cream);
+  --secondary: var(--kraft);
+  --secondary-foreground: var(--ink);
+  --muted: var(--paper-deep);
+  --muted-foreground: var(--ink);
+  --accent: var(--mustard);
+  --accent-foreground: var(--ink);
+  --destructive: var(--vermilion);
+  --destructive-foreground: var(--cream);
+  --border: rgba(110, 31, 27, 0.25);
+  --input: rgba(110, 31, 27, 0.35);
+  --ring: var(--maroon);
 }
 
 @layer base {
-  * {
-    border-color: var(--color-border);
-  }
-
+  * { border-color: var(--color-border); }
+  html { scroll-behavior: smooth; }
   body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+    background-color: var(--paper);
+    color: var(--ink);
     font-family: var(--font-body);
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
   }
-
-  html {
-    scroll-behavior: smooth;
-  }
+  [lang="hi"] { line-height: 1.75; }
+  :focus-visible { outline: 3px solid var(--maroon); outline-offset: 3px; }
+  img { user-select: none; }
 }
 
-/* ============ Qambakht bespoke pieces ============ */
-
-.font-display {
-  font-family: var(--font-display);
+/* ---------------- atmosphere ---------------- */
+.atmosphere { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: var(--paper); pointer-events: none; }
+.mandala-l, .mandala-r {
+  position: absolute; top: -2%; bottom: -2%; width: 120%; left: -6%;
+  background-size: cover; background-position: left center; background-repeat: no-repeat;
+}
+@media (min-width: 1100px) {
+  .mandala-l { width: 62%; left: -4%; mask-image: linear-gradient(90deg, #000 70%, transparent); }
+  .mandala-r { width: 62%; left: auto; right: -4%; transform: scaleX(-1); mask-image: linear-gradient(90deg, #000 70%, transparent); }
+}
+@media (max-width: 1099px) { .mandala-r { display: none; } }
+.grain {
+  position: absolute; inset: 0; opacity: 0.07; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
-.font-hindi {
-  font-family: "Tiro Devanagari Hindi", "Fraunces", serif;
+/* ---------------- art ---------------- */
+.art { position: relative; display: block; overflow: hidden; }
+.art-multiply { mix-blend-mode: multiply; }
+.art-print { background: var(--cream); padding: 10px; box-shadow: var(--shadow-paper); }
+.art-print > img { position: relative !important; width: 100% !important; height: auto !important; left: 0 !important; top: 0 !important; }
+.art-print { overflow: hidden; }
+.sticker { filter: drop-shadow(3px 5px 0 rgba(110, 31, 27, 0.18)); }
+.shadow-paper { box-shadow: var(--shadow-paper); }
+
+/* ---------------- typography ---------------- */
+.font-tiro { font-family: "Tiro Devanagari Hindi", serif; }
+.font-cormorant { font-family: "Cormorant Garamond", "Amita", serif; }
+.font-bodoni { font-family: "Bodoni Moda", "Tiro Devanagari Hindi", serif; }
+.font-body { font-family: var(--font-body); }
+.hand { font-family: "Caveat Brush", "Kalam", cursive; }
+.stencil, .stamp { font-family: "Teko", "Sarpanch", sans-serif; letter-spacing: 0.14em; text-transform: uppercase; }
+.stamp {
+  display: inline-block; color: var(--vermilion); border: 2px solid var(--vermilion);
+  padding: 0 0.6em; transform: rotate(-2deg); font-size: 1.05rem; opacity: 0.9;
+}
+.h1-hindi {
+  font-family: "Eczar", serif; font-weight: 800; color: var(--maroon); line-height: 1.2;
+  text-shadow: 3px 3px 0 var(--paper-deep), 6px 6px 0 rgba(110, 31, 27, 0.18);
+}
+.sub { font-family: "Fraunces", serif; font-style: italic; font-size: 1.15rem; margin-top: 0.25rem; }
+.khoob { font-family: "Bagel Fat One", "Modak", sans-serif; color: var(--vermilion); text-shadow: 3px 3px 0 var(--maroon); }
+.margin-note { font-family: "Kalam", cursive; font-weight: 700; color: rgba(215, 73, 63, 0.8); font-size: 1.4rem; filter: url(#rough); }
+.signature { font-family: "Kalam", cursive; font-weight: 700; font-size: 2rem; color: var(--maroon); }
+.extrude {
+  font-family: "Amita", serif; font-weight: 700; color: var(--cream);
+  text-shadow: 1px 1px 0 var(--maroon), 2px 2px 0 var(--maroon), 3px 3px 0 var(--maroon), 4px 4px 0 var(--maroon);
+}
+.extrude-night { font-family: "Amita", serif; font-weight: 700; color: var(--cream); text-shadow: 2px 2px 0 #2a0b09, 4px 4px 0 #2a0b09; }
+.konkani { font-family: "Rozha One", serif; color: var(--cream); }
+.swirl { font-family: "Modak", sans-serif; color: var(--vermilion); font-size: clamp(3.5rem, 11vw, 9rem); line-height: 1.1; text-shadow: 4px 4px 0 var(--cream); }
+.tukda { font-family: "Yatra One", serif; color: var(--cream); }
+.foil {
+  background: linear-gradient(100deg, #b07a28, #f6dd8a 35%, #b07a28 55%, #f0bf1a 80%, #b07a28);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.tiro-thanks { font-family: "Rozha One", serif; font-size: 1.4rem; color: var(--mustard); }
+.f-brush { font-family: "Caveat Brush", cursive; color: var(--maroon); }
+.f-blob { font-family: "Modak", sans-serif; color: var(--vermilion); }
+.f-heer { font-family: "Gloock", "Eczar", serif; color: var(--ochre); }
+.f-salt { font-family: "Chonburi", "Rozha One", serif; color: var(--peacock); }
+.f-tukda { font-family: "Yatra One", serif; color: var(--olive); }
+.f-konkani { font-family: "Rozha One", serif; color: var(--maroon); }
+.f-swirl { font-family: "Modak", sans-serif; color: var(--ochre); }
+.f-tiro { font-family: "Tiro Devanagari Hindi", serif; color: var(--ink); }
+
+/* overprinted bilingual lockup */
+.overprint { position: relative; display: inline-grid; }
+.overprint > * { grid-area: 1 / 1; }
+.op-hi { font-family: "Yatra One", serif; color: var(--vermilion); font-size: 2.6rem; mix-blend-mode: multiply; opacity: 0.85; transform: translate(6px, -6px); }
+.op-en { font-family: "Chonburi", serif; color: var(--maroon); font-size: 2rem; mix-blend-mode: multiply; }
+
+/* the wordmark */
+.wordmark {
+  display: inline-flex; align-items: flex-end; font-family: "Bowlby One", "Rubik Mono One", sans-serif;
+  line-height: 1; letter-spacing: -0.01em; font-size: inherit;
+}
+.wm-l {
+  display: inline-block; color: var(--mustard);
+  background: radial-gradient(circle, rgba(176, 122, 40, 0.55) 1.1px, transparent 1.4px) 0 0 / 6px 6px, var(--mustard);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0.06em 0.06em 0 var(--vermilion)) drop-shadow(0.03em 0.03em 0 var(--maroon));
+  clip-path: polygon(0 6%, 22% 0, 48% 5%, 70% 0, 100% 4%, 100% 100%, 0 100%);
+}
+.wm-l:nth-child(odd) { transform: rotate(-2deg) translateY(-0.02em); }
+.wm-l:nth-child(even) { transform: rotate(1.5deg); }
+.wm-dot {
+  display: inline-block; width: 0.22em; height: 0.22em; margin-left: 0.04em; margin-bottom: 0.08em;
+  background: var(--mustard); box-shadow: 0.06em 0.06em 0 var(--vermilion); transform: rotate(8deg);
+}
+.wm-sm { font-size: 1.6rem; }
+.wordmark-drop .wm-l, .wordmark-drop .wm-dot { animation: drop-in 0.45s cubic-bezier(.3,1.6,.5,1) both; }
+@keyframes drop-in { from { opacity: 0; transform: translateY(-40px) rotate(-12deg); } }
+.iconic-badge {
+  display: inline-block; font-family: "Bowlby One", sans-serif; color: var(--mustard);
+  text-shadow: 3px 3px 0 var(--vermilion), 4px 4px 0 var(--maroon); font-size: 1.3rem; transform: rotate(-3deg);
 }
 
-.surface {
-  background-color: var(--color-card);
-  border: 1px solid var(--color-border);
+/* ---------------- caret ---------------- */
+.type-caret { display: inline-block; width: 3px; height: 1.1em; margin-left: 4px; vertical-align: -0.15em; border-radius: 3px; background: linear-gradient(var(--vermilion), var(--maroon)); }
+.caret-blink { animation: blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ---------------- surfaces ---------------- */
+.paper-card { background: var(--cream); box-shadow: var(--shadow-paper); position: relative; }
+.night-panel { background: var(--night); color: var(--cream); position: relative; }
+.night-panel::before {
+  content: ""; position: absolute; inset: 0; opacity: 0.08; pointer-events: none;
+  background: url(/assets/art/34-warli-sheet.jpg) center / 420px;
 }
+.tape { position: absolute; width: 90px; height: 26px; background: rgba(240, 191, 26, 0.45); box-shadow: 0 1px 2px rgba(110,31,27,.2); z-index: 4; }
+.tape-tl { top: -10px; left: -18px; transform: rotate(-30deg); }
+.tape-br { bottom: -10px; right: -18px; transform: rotate(-30deg); }
+span.tape.art { position: relative; width: auto; height: auto; transform: rotate(-3deg); }
+.letter { background-image: repeating-linear-gradient(transparent 0 31px, rgba(110,31,27,.08) 31px 32px); }
+.border-strip { height: 34px; background-size: auto 300%; background-position: center; background-repeat: repeat-x; }
+.frieze { height: 150px; background-size: auto 100%; background-repeat: repeat-x; mix-blend-mode: multiply; animation: frieze 60s linear infinite; }
+.frieze-thin { height: 40px; background-size: auto 400%; background-position: center; background-repeat: repeat-x; }
+@keyframes frieze { to { background-position: -736px 0; } }
 
-.btn-gold {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  background-color: var(--color-primary);
-  color: var(--color-primary-foreground);
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: 9999px;
-  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 6px 24px oklch(0.740 0.118 80 / 22%);
+/* cut-paper buttons */
+.cut-btn, .btn-gold, .btn-outline {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 46px;
+  padding: 0.55rem 1.4rem; font-family: "Yatra One", "Chonburi", serif; font-size: 1.1rem;
+  background: var(--vermilion); color: var(--cream);
+  clip-path: polygon(2% 8%, 30% 0, 62% 6%, 98% 0, 100% 52%, 97% 100%, 60% 94%, 28% 100%, 0 95%, 3% 50%);
+  transition: transform 0.2s;
 }
+.cut-btn:hover, .btn-gold:hover { transform: rotate(-2deg) scale(1.04); }
+.cut-btn-alt, .btn-outline { background: var(--maroon); }
+.cut-btn:disabled { opacity: 0.6; }
 
-.btn-gold:hover {
-  background-color: var(--color-gold-bright);
-  transform: translateY(-1px);
+/* gallery wall */
+.print-hang { position: relative; transform-origin: 50% -30px; transition: transform 0.4s; }
+.print-hang:hover { transform: translateY(-6px) rotate(0deg) !important; animation: sway 1.4s ease-in-out; }
+.nail { position: absolute; top: -26px; left: 50%; width: 8px; height: 8px; border-radius: 50%; background: var(--maroon); transform: translateX(-50%); }
+.nail::before, .nail::after { content: ""; position: absolute; top: 4px; width: 60px; height: 1px; background: var(--maroon); }
+.nail::before { right: 4px; transform-origin: right; transform: rotate(-25deg); }
+.nail::after { left: 4px; transform-origin: left; transform: rotate(25deg); }
+@keyframes sway { 25% { rotate: 1.5deg; } 75% { rotate: -1.5deg; } }
+.museum-label { margin-top: 0.6rem; background: var(--cream); padding: 0.3rem 0.6rem; display: inline-block; box-shadow: 0 2px 6px rgba(110,54,20,.25); }
+
+/* ribbon marquee */
+.ribbon { overflow: hidden; background: var(--cream); border-block: 3px double var(--maroon); padding: 0.8rem 0; }
+.ribbon-track { display: inline-flex; white-space: nowrap; animation: marquee 40s linear infinite; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* hero */
+.cover-in-arch { position: absolute; left: 27%; top: 30%; width: 46%; box-shadow: var(--shadow-paper); transform: rotate(-1deg); }
+.book-card { transition: transform 0.4s; }
+.book-card:hover, .book-lift:hover { transform: translateY(-8px) rotate(0); }
+.book-lift { transition: transform 0.4s; }
+
+/* library */
+.stall { padding: 3rem 2rem; }
+.stall-en { min-height: 520px; }
+.stall-frame { position: absolute !important; inset: 0; width: 100%; height: 100%; opacity: 0.9; mix-blend-mode: multiply; }
+.stall-en .stall-inner { background: url(/assets/art/17-damask-cream.jpg) center / 300px; padding: 2.5rem; margin: 3rem 8%; box-shadow: var(--shadow-paper); }
+.stall-hi { background: linear-gradient(var(--ochre), #c58f3b); padding: 3rem 4rem; border-radius: 50% 50% 0 0 / 120px 120px 0 0; box-shadow: var(--shadow-paper); }
+.stall-hi .stall-inner { background: var(--cream); padding: 2.5rem; border-radius: 40% 40% 0 0 / 80px 80px 0 0; }
+.warli-strip { position: absolute; top: 0; bottom: 0; width: 34px; background-size: 260px; opacity: 0.9; }
+.lending-card {
+  background: var(--cream); border: 1px solid var(--kraft); padding: 1rem 1.2rem; max-width: 320px; transform: rotate(-1.5deg);
+  font-family: "Courier New", monospace; font-size: 0.9rem; box-shadow: var(--shadow-paper);
+  background-image: repeating-linear-gradient(transparent 0 23px, rgba(215,73,63,.25) 23px 24px);
 }
+.medallion { border-radius: 50%; box-shadow: var(--shadow-paper); }
+.shelf { border-bottom: 10px solid var(--maroon); padding: 0 1rem; }
 
-.btn-outline {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border: 1px solid var(--color-input);
-  color: var(--color-foreground);
-  font-weight: 500;
-  padding: 0.75rem 1.5rem;
-  border-radius: 9999px;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+/* author */
+.scallop {
+  -webkit-mask: radial-gradient(circle at 50% 50%, #000 62%, transparent 62.5%), conic-gradient(#000 0 0);
+  mask: radial-gradient(14px at 50% 14px, #0000 98%, #000) 50% 0 / 28px 51% repeat-x, radial-gradient(14px at 50% calc(100% - 14px), #0000 98%, #000) 50% 100% / 28px 51% repeat-x;
+  border-radius: 50%; aspect-ratio: 1; object-fit: cover; box-shadow: var(--shadow-paper);
 }
+.peek { animation: peek 6s ease-in-out infinite; }
+@keyframes peek { 0%, 100% { transform: translateX(70%); } 40%, 60% { transform: translateX(0); } }
 
-.btn-outline:hover {
-  background-color: oklch(0.826 0.065 65 / 8%);
-  border-color: oklch(0.826 0.065 65 / 26%);
+/* feedback */
+.postcard { background: var(--cream); color: var(--ink); box-shadow: 0 20px 40px -12px rgba(0,0,0,.5); transform: rotate(-0.6deg); }
+.field span { display: block; font-size: 1.15rem; }
+.field input, .field textarea { width: 100%; background: transparent; border: 0; border-bottom: 2px dashed var(--maroon); padding: 0.4rem 0; font-family: var(--font-body); color: var(--ink); }
+.field input:focus, .field textarea:focus { outline: none; border-bottom-style: solid; }
+.lined { background-image: repeating-linear-gradient(transparent 0 31px, rgba(110,31,27,.2) 31px 32px) !important; line-height: 32px; border: 0 !important; }
+.cup-rate { width: 48px; height: 48px; display: grid; place-items: center; filter: grayscale(1) opacity(0.35); transition: transform .2s, filter .2s; }
+.cup-rate.on { filter: none; transform: translateY(-3px) rotate(-4deg); }
+.postmark {
+  position: absolute; right: 18%; top: 36%; z-index: 5; width: 150px; height: 150px; border: 5px double var(--vermilion); border-radius: 50%;
+  display: grid; place-items: center; font-family: "Rozha One", serif; font-size: 2rem; color: var(--vermilion); opacity: .85;
+  animation: thud .5s cubic-bezier(.3,1.8,.5,1) both; pointer-events: none;
 }
+@keyframes thud { from { transform: scale(2.4) rotate(-20deg); opacity: 0; } to { transform: scale(1) rotate(-12deg); } }
 
-.eyebrow {
-  font-size: 0.75rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--color-gold-bright);
+/* buy */
+.awning { height: 70px; background: repeating-linear-gradient(90deg, var(--maroon) 0 50px, var(--mustard) 50px 100px); -webkit-mask: radial-gradient(26px at 25px 100%, #0000 98%, #000) 0 0 / 50px 100%; mask: radial-gradient(26px at 25px 100%, #0000 98%, #000) 0 0 / 50px 100%; }
+.signboard { background: var(--maroon); color: var(--cream); border: 6px solid var(--ochre); box-shadow: var(--shadow-paper); transform: rotate(-1deg); }
+.price-tag {
+  position: relative; background: var(--cream); padding: 3rem 1.6rem 1.6rem; width: 240px; text-align: center; box-shadow: var(--shadow-paper);
+  clip-path: polygon(50% 0, 100% 14%, 100% 100%, 0 100%, 0 14%);
 }
-
-.input-warm {
-  width: 100%;
-  background-color: oklch(0.185 0.006 56 / 70%);
-  border: 1px solid var(--color-input);
-  border-radius: 0.75rem;
-  padding: 0.75rem 1rem;
-  color: var(--color-foreground);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+.tag-hole { position: absolute; top: 18px; left: 50%; width: 14px; height: 14px; border-radius: 50%; background: var(--paper); transform: translateX(-50%); box-shadow: inset 0 1px 2px rgba(0,0,0,.3); }
+.swing { transform-origin: 50% 0; animation: swing 5s ease-in-out infinite; }
+.swing:nth-child(2) { animation-delay: -2.5s; }
+@keyframes swing { 50% { transform: rotate(2deg); } 0%, 100% { transform: rotate(-2deg); } }
+.counter { border-bottom: 12px solid var(--maroon); padding: 0 2rem; }
+.dialog-backdrop { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; background: rgba(43, 18, 14, 0.55); }
+.shop-pop { animation: pop .5s cubic-bezier(.3,1.6,.5,1) both; }
+@keyframes pop { from { transform: scale(.6) rotate(-8deg); opacity: 0; } to { transform: scale(1) rotate(-1deg); } }
+.ticket {
+  display: block; padding: 1rem; background: var(--mustard); color: var(--ink); font-family: "Chonburi", serif; font-size: 1.4rem;
+  -webkit-mask: radial-gradient(10px at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat, radial-gradient(10px at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+  mask: radial-gradient(10px at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat, radial-gradient(10px at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+  transition: transform .2s;
 }
+.ticket:hover { transform: rotate(-2deg) scale(1.05); }
 
-.input-warm::placeholder {
-  color: oklch(0.770 0.048 63 / 60%);
+/* ---------------- header & menu ---------------- */
+.site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 60; display: flex; align-items: center; justify-content: space-between; padding: 0.8rem clamp(1rem, 3vw, 2.5rem); }
+.cup-logo { object-fit: contain; }
+.menu-btn { position: relative; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; width: 52px; height: 52px; justify-content: center; padding: 0 10px; border-radius: 50%; background: rgba(255,241,220,.7); z-index: 71; }
+.menu-btn .bar { height: 6px; border-radius: 6px; background: linear-gradient(#5a2a24, var(--ink) 45%, #120604); box-shadow: inset 0 1px 0 rgba(255,255,255,.35); transition: transform .3s; }
+.menu-btn:hover .bar:nth-child(1) { transform: translateX(-3px); }
+.menu-btn:hover .bar:nth-child(3) { transform: translateX(3px); }
+.menu-dot { position: absolute; top: 9px; left: 10px; width: 6px; height: 6px; border-radius: 50%; background: var(--vermilion); }
+
+.angan { position: fixed; inset: 0; z-index: 70; background: var(--maroon); color: var(--cream); overflow-y: auto; }
+.angan-in { animation: circle-open .7s cubic-bezier(.7,0,.2,1) both; }
+.angan-out { animation: circle-close .5s cubic-bezier(.7,0,.2,1) both; }
+@keyframes circle-open { from { clip-path: circle(0 at var(--ox) var(--oy)); } to { clip-path: circle(150vmax at var(--ox) var(--oy)); } }
+@keyframes circle-close { from { clip-path: circle(150vmax at var(--ox) var(--oy)); } to { clip-path: circle(0 at var(--ox) var(--oy)); } }
+.angan-pattern { position: absolute; inset: 0; opacity: .12; background: url(/assets/art/34-warli-sheet.jpg) 0 0 / 380px, url(/assets/art/17-damask-cream.jpg) 0 0 / 260px; background-blend-mode: multiply; }
+.angan-corner { position: absolute !important; opacity: .85; }
+.angan-close { position: absolute; top: 1.4rem; right: 5.5rem; font-size: 1.6rem; z-index: 3; }
+.angan-item { opacity: 0; animation: stagger .5s cubic-bezier(.3,1.4,.5,1) both; }
+@keyframes stagger { from { opacity: 0; transform: translateY(30px) rotate(var(--rot)); } to { opacity: 1; transform: rotate(var(--rot)); } }
+.angan-word { font-family: "Modak", sans-serif; font-size: clamp(2.6rem, 8vw, 5.2rem); color: var(--cream); line-height: 1.15; position: relative; transition: color .2s, transform .2s; }
+.angan a:hover .angan-word, .angan a:focus .angan-word { color: var(--mustard); transform: translateX(8px); }
+.angan-word.is-current::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0.1em; height: 8px; background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 8' preserveAspectRatio='none'><path d='M1 5 Q 25 1 50 4 T 99 3' stroke='%23f0bf1a' stroke-width='2.5' fill='none' stroke-linecap='round'/></svg>") 0 0 / 100% 100%; }
+.angan-preview { animation: pop .45s cubic-bezier(.3,1.4,.5,1) both; position: absolute; inset: 0; display: grid; place-items: center; }
+
+.interstitial { position: fixed; inset: 0; z-index: 75; display: grid; place-items: center; background: var(--cream); animation: fade-in .3s both; }
+.curtain-up { animation: curtain .6s cubic-bezier(.7,0,.2,1) both; }
+@keyframes curtain { to { transform: translateY(-100%); } }
+@keyframes fade-in { from { opacity: 0; } }
+.inter-art { animation: rise .6s cubic-bezier(.3,1.4,.5,1) both; mix-blend-mode: multiply; }
+@keyframes rise { from { opacity: 0; transform: translateY(30px) scale(.9); } }
+.progress-dash { width: 120px; height: 4px; border-radius: 4px; background: var(--maroon); transform-origin: left; animation: dash .9s ease-out both; }
+@keyframes dash { from { transform: scaleX(0); } }
+
+/* ---------------- intro & exit ---------------- */
+.intro { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; overflow: hidden; }
+.intro-door { position: absolute; top: 0; bottom: 0; width: 50.5%; background: var(--paper); transition: transform .7s cubic-bezier(.7,0,.2,1); }
+.intro-door.left { left: 0; border-right: 2px solid var(--paper-deep); }
+.intro-door.right { right: 0; }
+.intro-open .intro-door.left { transform: translateX(-100%); }
+.intro-open .intro-door.right { transform: translateX(100%); }
+.intro-open .intro-stage { opacity: 0; transition: opacity .3s; }
+.intro-stage { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 1rem; animation: fade-in .6s both; }
+.intro-cup { animation: rise .8s both; }
+.steam path { fill: none; stroke: var(--maroon); stroke-width: 2.5; stroke-linecap: round; opacity: .7; stroke-dasharray: 80; stroke-dashoffset: 80; animation: steam 2.4s ease-out infinite; }
+@keyframes steam { 40% { stroke-dashoffset: 0; opacity: .7; } 100% { stroke-dashoffset: -80; opacity: 0; } }
+.exit-screen { position: fixed; inset: 0; z-index: 110; display: grid; place-items: center; overflow: hidden; background: radial-gradient(circle at 50% 40%, var(--maroon), var(--night)); color: var(--cream); animation: fade-in .4s both; cursor: pointer; }
+.exit-screen .steam path { stroke: var(--cream); }
+.pulse-soft { animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .55; } }
+.dove-out { animation: dove-out 3.5s ease-in both; }
+@keyframes dove-out { to { transform: translate(40vw, -60vh) rotate(10deg); opacity: 0; } }
+.swan-glide { animation: swan 14s ease-in-out infinite alternate; }
+@keyframes swan { to { transform: translateX(60px); } }
+.cloud-drift { animation: cloud 30s ease-in-out infinite alternate; }
+@keyframes cloud { to { transform: translateX(-120px); } }
+.doves-cross { animation: doves 38s linear infinite; }
+@keyframes doves { from { transform: translateX(-20vw); } to { transform: translateX(120vw) translateY(-10vh); } }
+.drift-x { animation: cloud 12s ease-in-out infinite alternate; }
+.dove-flutter { animation: swing 1.2s ease-in-out infinite; }
+.reveal { animation: rise .8s both; }
+
+@media (max-width: 767px) {
+  .doves-cross { display: none; }
 }
-
-.input-warm:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px oklch(0.740 0.118 80 / 16%);
-}
-
-.hero-covers {
-  filter: drop-shadow(0 30px 60px oklch(0 0 0 / 55%));
-}
-
-/* ============ Classical-art atmosphere ============ */
-
-/* Repeating artwork frieze used as a decorative divider between sections. */
-.art-frieze {
-  height: 3.25rem;
-  background-repeat: repeat-x;
-  background-position: center;
-  background-size: auto 100%;
-  opacity: 0.16;
-  filter: brightness(0.7);
-  -webkit-mask-image: linear-gradient(90deg, transparent, black 14%, black 86%, transparent);
-  mask-image: linear-gradient(90deg, transparent, black 14%, black 86%, transparent);
-}
-
-/* Large, faint artwork watermark floating behind a section. */
-.art-watermark {
-  pointer-events: none;
-  user-select: none;
-  opacity: 0.09;
-  filter: brightness(0.75);
-  -webkit-mask-image: radial-gradient(closest-side, black 22%, transparent 74%);
-  mask-image: radial-gradient(closest-side, black 22%, transparent 74%);
-}
-
-/* Subtle repeating texture inside a surface card. */
-.art-texture {
-  pointer-events: none;
-  user-select: none;
-  opacity: 0.06;
-  filter: brightness(0.8);
-}
-
-/* Ornate artwork strip peeking along the top edge of a card. */
-.art-cornice {
-  height: 1.5rem;
-  background-repeat: repeat-x;
-  background-position: center;
-  background-size: auto 100%;
-  opacity: 0.12;
-  filter: brightness(0.7);
-  -webkit-mask-image: linear-gradient(90deg, transparent, black 18%, black 82%, transparent);
-  mask-image: linear-gradient(90deg, transparent, black 18%, black 82%, transparent);
-}
-
-/* ============ Book-card 3D hover ============ */
-
-.book-tilt {
-  transform-style: preserve-3d;
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.55s ease;
-  box-shadow: 0 10px 34px oklch(0 0 0 / 35%);
-}
-
-.book-tilt:hover {
-  transform: perspective(900px) rotateX(3.5deg) rotateY(-5deg) translateY(-8px) scale(1.015);
-  box-shadow: 0 34px 70px oklch(0 0 0 / 55%), 0 0 44px oklch(0.740 0.118 80 / 16%);
-  border-color: oklch(0.826 0.065 65 / 22%);
-}
-
-.book-tilt .book-cover {
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.book-tilt:hover .book-cover {
-  transform: translateY(-6px) scale(1.055) rotate(1.2deg);
-  box-shadow: 0 26px 52px oklch(0 0 0 / 55%), 0 0 34px oklch(0.818 0.111 83 / 18%);
-}
-
-/* ============ Intro screen animations ============ */
-
-@keyframes intro-filigree {
-  0% { opacity: 0; transform: scaleX(0.18); }
-  40% { opacity: 0; transform: scaleX(0.18); }
-  80% { opacity: 1; transform: scaleX(1); }
-  100% { opacity: 1; transform: scaleX(1); }
-}
-
-@keyframes intro-rise {
-  0% { opacity: 0; transform: translateY(10px); }
-  30% { opacity: 0; transform: translateY(10px); }
-  70% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes intro-glow {
-  0% { opacity: 0.4; }
-  60% { opacity: 0.75; }
-  100% { opacity: 0.4; }
-}
-
-@keyframes intro-leave {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-@keyframes caret-blink {
-  0%, 45% { opacity: 1; }
-  50%, 95% { opacity: 0; }
-}
-
-.intro-filigree {
-  animation: intro-filigree 1.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-  filter: drop-shadow(0 0 14px oklch(0.740 0.118 80 / 35%));
-}
-
-.intro-rise {
-  animation: intro-rise 1.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.intro-rise-delayed {
-  animation: intro-rise 1.9s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
-}
-
-.intro-glow {
-  animation: intro-glow 2.4s ease-in-out infinite;
-}
-
-.intro-leave {
-  animation: intro-leave 0.55s ease both;
-}
-
-.caret-blink {
-  animation: caret-blink 1s step-end infinite;
-}
-
-.type-caret {
-  display: inline-block;
-  width: 2.5px;
-  height: 1.08em;
-  margin-left: 0.18em;
-  border-radius: 9999px;
-  vertical-align: -0.15em;
-  background: linear-gradient(180deg, var(--color-gold-bright), var(--color-primary));
-  box-shadow: 0 0 9px oklch(0.740 0.118 80 / 55%);
-}
-
-/* ============ Site-wide atmosphere ============ */
-
-/* Fixed layer behind every page: damask wallpaper + mandala bloom + the
-   regal carpet tapestry border running down the left edge. */
-.site-atmosphere {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.site-atmosphere-damask {
-  position: absolute;
-  inset: 0;
-  background-repeat: repeat;
-  background-size: 320px auto;
-  opacity: 0.05;
-  filter: brightness(0.6) saturate(0.7);
-}
-
-.site-atmosphere-mandala {
-  position: absolute;
-  right: -14%;
-  top: -16%;
-  width: 62vw;
-  height: 62vw;
-  background-repeat: no-repeat;
-  background-size: cover;
-  opacity: 0.06;
-  filter: brightness(0.65) saturate(0.75);
-  -webkit-mask-image: radial-gradient(closest-side, black 26%, transparent 74%);
-  mask-image: radial-gradient(closest-side, black 26%, transparent 74%);
-}
-
-.site-carpet-border {
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  z-index: 30;
-  width: clamp(56px, 6vw, 96px);
-  background-repeat: repeat-y;
-  background-size: 100% auto;
-  background-position: top left;
-  opacity: 0.42;
-  filter: brightness(0.82) saturate(0.85);
-  -webkit-mask-image: linear-gradient(90deg, black 52%, transparent 94%);
-  mask-image: linear-gradient(90deg, black 52%, transparent 94%);
-}
-
-/* Rectangular artwork spread used as a quiet decorative accent. */
-.art-spread {
-  pointer-events: none;
-  user-select: none;
-  opacity: 0.09;
-  filter: brightness(0.75) saturate(0.9);
-  -webkit-mask-image: radial-gradient(closest-side, black 40%, transparent 92%);
-  mask-image: radial-gradient(closest-side, black 40%, transparent 92%);
-}
-
-/* Vertical warli ribbon strip framing a card or book stack. */
-.art-edge {
-  pointer-events: none;
-  user-select: none;
-  width: 1.75rem;
-  background-repeat: repeat-y;
-  background-position: center top;
-  background-size: 100% auto;
-  opacity: 0.34;
-  -webkit-mask-image: linear-gradient(180deg, transparent, black 16%, black 84%, transparent);
-  mask-image: linear-gradient(180deg, transparent, black 16%, black 84%, transparent);
-}
-
-/* ============ Hero books — 3D interactive stack ============ */
-
-.hero-books-stage {
-  perspective: 1100px;
-  touch-action: pan-y;
-}
-
-.hero-books-tilt {
-  transform-style: preserve-3d;
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
-}
-
-.hero-books-glow {
-  position: absolute;
-  z-index: 0;
-  height: 340px;
-  width: 340px;
-  border-radius: 9999px;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(closest-side, oklch(0.740 0.118 80 / 14%), transparent 72%);
-  transition: left 0.25s ease-out, top 0.25s ease-out;
-  pointer-events: none;
-}
-
-.hero-float {
-  will-change: transform;
-}
-
-@keyframes hero-float {
-  0%, 100% { transform: translateY(0) rotateZ(0deg); }
-  50% { transform: translateY(-11px) rotateZ(0.6deg); }
-}
-
-.hero-float-a {
-  animation: hero-float 5.4s ease-in-out infinite;
-  transform: translateZ(-34px);
-}
-
-.hero-float-b {
-  animation: hero-float 6.2s ease-in-out infinite 0.85s;
-  transform: translateZ(38px);
-}
-
-.hero-book {
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s ease;
-  will-change: transform;
-  cursor: pointer;
-}
-
-.hero-book-back {
-  transform: rotate(-6deg);
-  box-shadow: 0 26px 54px oklch(0 0 0 / 52%);
-  filter: brightness(0.9);
-}
-
-.hero-book-front {
-  transform: rotate(3deg);
-  box-shadow: 0 30px 60px oklch(0 0 0 / 55%);
-}
-
-.hero-book-back:hover,
-.hero-book-back:focus-visible {
-  transform: rotate(-6deg) translateY(-12px) scale(1.045);
-  filter: brightness(1);
-  box-shadow: 0 40px 76px oklch(0 0 0 / 58%), 0 0 36px oklch(0.740 0.118 80 / 18%);
-}
-
-.hero-book-front:hover,
-.hero-book-front:focus-visible {
-  transform: rotate(3deg) translateY(-16px) scale(1.06);
-  box-shadow: 0 46px 84px oklch(0 0 0 / 58%), 0 0 40px oklch(0.818 0.111 83 / 20%);
-}
-
-/* Warli crest ribbons flanking the hero stack. */
-.hero-crest {
-  position: absolute;
-  top: 50%;
-  height: 310px;
-  max-height: 84%;
-  width: auto;
-  transform: translateY(-50%);
-  opacity: 0.3;
-  pointer-events: none;
-  -webkit-mask-image: linear-gradient(180deg, transparent, black 12%, black 88%, transparent);
-  mask-image: linear-gradient(180deg, transparent, black 12%, black 88%, transparent);
-}
-
-.hero-crest-left {
-  left: -0.9rem;
-}
-
-.hero-crest-right {
-  right: -0.9rem;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .ribbon-track, .frieze, .doves-cross, .cloud-drift, .peek { animation: none !important; }
+  .peek { transform: none; }
 }
