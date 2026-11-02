@@ -294,13 +294,13 @@ export function useExitScreen() {
     if (exit?.armed) leave();
   };
 
-  return { exit, show: () => setExitFromMenu(), tap, dismiss };
-
-  function setExitFromMenu() {
+  const openFromMenu = () => {
     setExit({ armed: false });
     window.clearTimeout(timer.current);
     timer.current = window.setTimeout(dismiss, 6000);
-  }
+  };
+
+  return { exit, openFromMenu, arm: show, tap, dismiss };
 }
 
 export function ExitScreen({

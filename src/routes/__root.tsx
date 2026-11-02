@@ -108,14 +108,14 @@ function SiteAtmosphere() {
 
 function RootComponent() {
   useSwipeNavigation();
-  const { exit, show, tap, dismiss } = useExitScreen();
+  const { exit, openFromMenu, arm, tap, dismiss } = useExitScreen();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isReader = pathname.startsWith("/read");
   return (
     <>
       <SiteAtmosphere />
       <Intro />
-      {!isReader && <SiteChrome onExit={show} />}
+      {!isReader && <SiteChrome onExit={openFromMenu} />}
       <div id="site-main" className="relative">
         {/* global floating pieces: cloud + doves drift across */}
         {!isReader && (
@@ -129,7 +129,7 @@ function RootComponent() {
         </main>
         {!isReader && <Footer />}
       </div>
-      {exit && <ExitScreen armed={exit.armed} onTap={tap} onArm={() => show()} onStay={dismiss} />}
+      {exit && <ExitScreen armed={exit.armed} onTap={tap} onArm={arm} onStay={dismiss} />}
     </>
   );
 }

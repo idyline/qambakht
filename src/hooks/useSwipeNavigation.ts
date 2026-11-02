@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRouter, useRouterState } from "@tanstack/react-router";
 
 /** The navbar page order used by swipe navigation. */
-export const PAGE_ORDER = ["/", "/library", "/author", "/feedback"] as const;
+export const PAGE_ORDER = ["/", "/library", "/author", "/feedback", "/buy"] as const;
 
 /**
  * Pure swipe decision: given the current pathname and the touch delta,
