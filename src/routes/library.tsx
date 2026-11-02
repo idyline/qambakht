@@ -1,157 +1,81 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Download } from "lucide-react";
 
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-import { ArtDivider } from "@/components/ArtDivider";
-import { covers, pdfs, arts } from "@/data/site";
+import { Art } from "@/components/Art";
+import { BLURBS, covers, pdfs, pageHead } from "@/data/site";
 
 export const Route = createFileRoute("/library")({
-  head: () => ({
-    meta: [
-      { title: "Library — Qambakht" },
-      { name: "description", content: "The Qambakht library: Aam Zindagi! in English and Hindi, free to read online or download as PDF." },
-      { property: "og:title", content: "Library — Qambakht" },
-      { property: "og:description", content: "Aam Zindagi! in English and Hindi, free to read online or download." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => pageHead("The reading room of Qambakht. — Aam Zindagi! in English and Hindi, read online or download the PDF."),
   component: Library,
 });
 
 function Library() {
   return (
-    <div className="relative min-h-screen pt-16">
-      <Navbar />
+    <div className="relative overflow-hidden pt-28">
+      <header className="mx-auto max-w-5xl px-6 text-center">
+        <h1 lang="hi" className="h1-hindi text-6xl md:text-7xl">पुस्तकालय</h1>
+        <p className="sub">The Reading Room — pull a chair, the lamp is on.</p>
+      </header>
 
-      <section className="relative overflow-hidden">
-        {/* pichwai accent in the open right-hand corner */}
-        <img
-          src={arts.pichwai}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          className="art-spread absolute -right-10 top-10 hidden h-[380px] w-[260px] lg:block"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[680px] -translate-x-1/2 rounded-full"
-          style={{
-            background:
-              "radial-gradient(closest-side, oklch(0.740 0.118 80 / 8%), transparent 72%)",
-          }}
-        />
-        <div className="relative mx-auto max-w-6xl px-4 pb-10 pt-20 text-center sm:px-6">
-          <h1 className="font-display text-4xl font-medium text-cream sm:text-5xl">
-            The Library
-          </h1>
-          <p className="mx-auto mt-4 max-w-xl text-tan-muted">
-            Two languages. One story that lingers.
-          </p>
+      <div className="relative mx-auto mt-16 grid max-w-6xl gap-20 px-6 lg:grid-cols-[120px_1fr_120px]">
+        <Art n={35} look="multiply" className="hidden w-full self-start lg:block" />
+        <div className="space-y-28">
+          <Stall lang="english" />
+          <div className="flex flex-wrap items-center justify-center gap-10">
+            <Art n={47} className="medallion w-56" alt="" />
+            <figure className="print-hang rotate-[1.5deg]">
+              <span className="nail" aria-hidden />
+              <Art n={46} look="print" className="w-64" />
+            </figure>
+            <div className="shelf">
+              <Art n={45} look="multiply" className="w-28" />
+            </div>
+          </div>
+          <Stall lang="hindi" />
         </div>
-      </section>
-
-      {/* elephant frieze page break */}
-      <div className="px-4 sm:px-6">
-        <ArtDivider className="max-w-xl" />
+        <Art n={39} look="multiply" className="hidden w-full self-end lg:block" />
       </div>
-
-      <section className="relative mx-auto max-w-4xl px-4 pb-20 pt-4 sm:px-6">
-        <div className="space-y-8">
-          <LibraryRow
-            language="English"
-            title={covers.english.title}
-            blurb="The translated edition — same storms, new words."
-            cover={covers.english.url}
-            pdfUrl={pdfs.english.url}
-            lang="english"
-          />
-          <LibraryRow
-            language="हिन्दी"
-            title={covers.hindi.title}
-            blurb="The original edition, exactly as it was written."
-            cover={covers.hindi.url}
-            pdfUrl={pdfs.hindi.url}
-            lang="hindi"
-          />
-        </div>
-      </section>
-
-      <Footer />
     </div>
   );
 }
 
-function LibraryRow({
-  language,
-  title,
-  blurb,
-  cover,
-  pdfUrl,
-  lang,
-}: {
-  language: string;
-  title: string;
-  blurb: string;
-  cover: string;
-  pdfUrl: string;
-  lang: "english" | "hindi";
-}) {
+function Stall({ lang }: { lang: "english" | "hindi" }) {
+  const en = lang === "english";
+  const c = covers[lang];
   return (
-    <div className="book-tilt surface relative flex flex-col items-center gap-8 overflow-hidden rounded-3xl p-8 sm:flex-row sm:p-10">
-      {/* elephant frieze along the top edge */}
-      <div
-        aria-hidden="true"
-        className="art-cornice absolute inset-x-10 top-4"
-        style={{ backgroundImage: `url(${arts.frieze})` }}
-      />
-      {/* faint hand-block buti pattern behind the words */}
-      <img
-        src={arts.buti}
-        alt=""
-        aria-hidden="true"
-        loading="lazy"
-        className="art-texture absolute inset-0 h-full w-full object-cover"
-      />
-      {/* warli crest ribbons framing the row */}
-      <div
-        aria-hidden="true"
-        className="art-edge absolute bottom-5 left-2.5 top-6 hidden sm:block"
-        style={{ backgroundImage: `url(${arts.warli})` }}
-      />
-      <div
-        aria-hidden="true"
-        className="art-edge absolute bottom-5 right-2.5 top-6 hidden sm:block"
-        style={{ backgroundImage: `url(${arts.warli})` }}
-      />
-      <img
-        src={cover}
-        alt={`Cover of ${title} (${language})`}
-        loading="lazy"
-        className="book-cover relative w-44 shrink-0 rounded-xl shadow-[0_18px_40px_rgba(0,0,0,0.45)]"
-      />
-      <div className="relative text-center sm:text-left">
-        <p className="text-xs uppercase tracking-[0.3em] text-gold-bright/90">{language}</p>
-        <h2 className="font-display mt-2 text-3xl font-medium text-tan">{title}</h2>
-        <p className="mt-3 text-sm text-tan-muted">{blurb}</p>
-        <div className="mt-6 flex flex-wrap justify-center gap-3 sm:justify-start">
-          <Link to="/read/$lang" params={{ lang }} className="btn-gold px-5 py-2.5 text-sm">
-            Read Now
-          </Link>
-          {/* Opening / downloading the manuscript is allowed to open anywhere the reader chooses */}
-          <a
-            href={pdfUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            download
-            className="btn-outline px-5 py-2.5 text-sm"
-          >
-            <Download className="h-4 w-4" />
-            Download PDF
-          </a>
+    <section className={`stall relative ${en ? "stall-en" : "stall-hi"}`}>
+      {en ? (
+        <>
+          <Art n={28} className="stall-frame" cover />
+          <Art n={26} look="multiply" className="absolute -right-6 -top-8 z-[3] w-24 rotate-[8deg]" />
+        </>
+      ) : (
+        <>
+          <div className="warli-strip left-0" style={{ backgroundImage: "url(/assets/art/34-warli-sheet.jpg)" }} aria-hidden />
+          <div className="warli-strip right-0" style={{ backgroundImage: "url(/assets/art/34-warli-sheet.jpg)" }} aria-hidden />
+          <Art n={42} className="absolute -bottom-6 -right-8 z-[3] hidden w-36 md:block" look="multiply" />
+        </>
+      )}
+      <div className="stall-inner relative z-[2] grid items-center gap-8 md:grid-cols-[220px_1fr]">
+        <img src={c.url} alt={`Cover of ${c.title}`} width={600} height={900} loading="lazy" decoding="async" className="book-lift mx-auto w-52 shadow-paper" />
+        <div>
+          <p className="stamp">{en ? "LANGUAGE: ENGLISH" : "भाषा: हिन्दी"}</p>
+          <div className="overprint mt-3">
+            <span className="op-hi" lang="hi">आम ज़िंदगी!</span>
+            <span className="op-en">Aam Zindagi!</span>
+          </div>
+          <p className="mt-4 max-w-md leading-relaxed" lang={en ? "en" : "hi"}>{BLURBS[lang]}</p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link to="/read/$lang" params={{ lang }} className="cut-btn">Read Now</Link>
+            <a href={pdfs[lang].url} download={`aam-zindagi-${lang}.pdf`} className="cut-btn cut-btn-alt">Download PDF</a>
+          </div>
+          <div className="lending-card mt-8">
+            <p className="stencil">QAMBAKHT. LENDING CARD</p>
+            <p><span lang="hi">भाषा</span> ........ {en ? "English" : "हिन्दी"}</p>
+            <p>Format ...... Online + PDF</p>
+            <p>Title ....... {c.title}</p>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
