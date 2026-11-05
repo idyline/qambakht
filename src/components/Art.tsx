@@ -53,6 +53,7 @@ const PUNCH: Partial<Record<ArtNo, true>> = {
   7: true,
   8: true,
   10: true,
+  11: true,
   14: true,
   15: true,
   20: true,

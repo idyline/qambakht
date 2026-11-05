@@ -5,7 +5,7 @@ import { BookTile } from "@/components/BookTile";
 import { Tilt } from "@/components/Tilt";
 import { Typewriter } from "@/components/Typewriter";
 import { Wordmark } from "@/components/Wordmark";
-import { HERO_LINE, pageHead } from "@/data/site";
+import { HERO_LINE, covers, pageHead } from "@/data/site";
 
 export const Route = createFileRoute("/")({
   head: () =>
@@ -45,7 +45,7 @@ function Home() {
         <div className="relative mx-auto w-full max-w-sm">
           <Art n={24} className="w-full" priority />
           <img
-            src="/assets/books/cover-hindi.png"
+            src={covers.hindi.url}
             alt="Cover of आम ज़िंदगी! by Adarsh Anand"
             width={600}
             height={900}

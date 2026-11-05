@@ -275,7 +275,8 @@ function cutout(
     const i = p * 4;
     const withinBg = pixelDist(d, i, bg) <= TOL;
     const checker = isCheckerBg(d[i]!, d[i + 1]!, d[i + 2]!);
-    if (!withinBg && !checker) return;
+    const transparent = d[i + 3]! === 0;
+    if (!withinBg && !checker && !transparent) return;
     state[p] = 1;
     queue[tail++] = p;
   };
