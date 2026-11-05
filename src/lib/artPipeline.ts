@@ -23,6 +23,8 @@ export interface ArtSpec {
   crop?: Crop | undefined;
   patch?: Patch | undefined;
   treatment: Treatment;
+  /** Also lift enclosed near-white regions (sticker interiors), not just edge-connected background. */
+  punch?: boolean | undefined;
 }
 
 export interface Processed {
@@ -32,7 +34,7 @@ export interface Processed {
 }
 
 const MAX_DIM = 1100;
-const VERSION = "v5";
+const VERSION = "v6";
 
 const mem = new Map<string, Processed>();
 const pending = new Map<string, Promise<Processed | null>>();
@@ -110,6 +112,7 @@ async function computeBlob(spec: ArtSpec, ink?: string): Promise<Blob | null> {
   if (spec.treatment === "cutout") {
     const ok = cutout(ctx, cw, ch);
     if (!ok) return null; // corners disagreed — treat as failure, render nothing
+    if (spec.punch) punchWhite(ctx, cw, ch);
   } else if (spec.treatment === "ink") {
     if (!ink) return null;
     inkify(ctx, cw, ch, ink);
@@ -312,6 +315,68 @@ function cutout(
   return true;
 }
 
+/* ---------------- punch: enclosed near-white regions ---------------- */
+
+/**
+ * Stickers and figures whose whites live INSIDE the silhouette (flower gaps, sculpture
+ * highlights) still show white patches after the edge cutout. Multi-source flood-fill
+ * every remaining near-white region and erase it, then feather — the cutout floats clean.
+ */
+function punchWhite(
+  ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
+  w: number,
+  h: number,
+) {
+  const img = ctx.getImageData(0, 0, w, h);
+  const d = img.data;
+  const n = w * h;
+  const state = new Uint8Array(n); // 0 unseen, 1 queued/erase, 2 done
+  const queue = new Int32Array(n);
+  let head = 0;
+  let tail = 0;
+  const isWhite = (p: number) => {
+    const i = p * 4;
+    if (d[i + 3] === 0) return false;
+    const r = d[i]!;
+    const g = d[i + 1]!;
+    const b = d[i + 2]!;
+    const sat = Math.max(r, g, b) - Math.min(r, g, b);
+    const bright = (r + g + b) / 3;
+    return sat < 30 && bright > 200;
+  };
+  const push = (p: number) => {
+    if (state[p]) return;
+    if (!isWhite(p)) return;
+    state[p] = 1;
+    queue[tail++] = p;
+  };
+  for (let p = 0; p < n; p++) push(p);
+  while (head < tail) {
+    const p = queue[head++]!;
+    state[p] = 2;
+    d[p * 4 + 3] = 0;
+    const x = p % w;
+    const y = (p - x) / w;
+    if (x > 0) push(p - 1);
+    if (x < w - 1) push(p + 1);
+    if (y > 0) push(p - w);
+    if (y < h - 1) push(p + w);
+  }
+  // same 1px feather the edge cutout uses
+  for (let p = 0; p < n; p++) {
+    if (d[p * 4 + 3] === 0) continue;
+    const x = p % w;
+    const y = (p - x) / w;
+    const touch =
+      (x > 0 && d[(p - 1) * 4 + 3] === 0) ||
+      (x < w - 1 && d[(p + 1) * 4 + 3] === 0) ||
+      (y > 0 && d[(p - w) * 4 + 3] === 0) ||
+      (y < h - 1 && d[(p + w) * 4 + 3] === 0);
+    if (touch) d[p * 4 + 3] = 150;
+  }
+  ctx.putImageData(img, 0, 0);
+}
+
 /* ---------------- ink ---------------- */
 
 const smooth = (x: number) => x * x * (3 - 2 * x);
@@ -393,7 +458,9 @@ function toBlob(canvas: HTMLCanvasElement | OffscreenCanvas): Promise<Blob | nul
   if (typeof OffscreenCanvas === "function" && canvas instanceof OffscreenCanvas) {
     return canvas.convertToBlob({ type: "image/png" });
   }
-  return (canvas as HTMLCanvasElement).toBlob("image/png") as Promise<Blob | null>;
+  return new Promise((resolve) => {
+    (canvas as HTMLCanvasElement).toBlob((blob) => resolve(blob), "image/png");
+  });
 }
 
 /* ---------------- IndexedDB cache ---------------- */
@@ -453,6 +520,6 @@ export function warmArt(jobs: { id: string; spec: ArtSpec; ink?: string }[]) {
   if ("requestIdleCallback" in window) {
     window.requestIdleCallback(go, { timeout: 2500 });
   } else {
-    window.setTimeout(go, 800);
+    setTimeout(go, 800);
   }
 }

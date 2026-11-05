@@ -44,6 +44,7 @@ export function useSwipeNavigation() {
 
     const onStart = (e: TouchEvent) => {
       const t = e.touches[0];
+      if (!t) return;
       sx = t.clientX;
       sy = t.clientY;
       t0 = Date.now();
