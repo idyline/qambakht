@@ -15,7 +15,6 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteChrome, Intro, ExitScreen, useExitScreen } from "@/components/SiteChrome";
 import { Footer } from "@/components/Footer";
-import { Art } from "@/components/Art";
 import { MANDALA, SITE_NAME } from "@/data/site";
 import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
 
@@ -117,13 +116,6 @@ function RootComponent() {
       <Intro />
       {!isReader && <SiteChrome onExit={openFromMenu} />}
       <div id="site-main" className="relative">
-        {/* global floating pieces: cloud + doves drift across */}
-        {!isReader && (
-          <>
-            <Art n={6} look="multiply" className="cloud-drift pointer-events-none fixed right-[6%] top-24 z-[1] hidden w-28 opacity-80 md:block" />
-            <Art n={44} look="multiply" className="doves-cross pointer-events-none fixed left-0 top-[38%] z-[1] w-16 md:w-20" />
-          </>
-        )}
         <main className="relative z-[2]">
           <Outlet />
         </main>

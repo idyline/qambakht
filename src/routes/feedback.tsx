@@ -5,7 +5,8 @@ import { Art } from "@/components/Art";
 import { AUTHOR_EMAIL, LOGO, pageHead } from "@/data/site";
 
 export const Route = createFileRoute("/feedback")({
-  head: () => pageHead("और सुनाओ? — rate Aam Zindagi! and send your reader thoughts straight to Adarsh Anand."),
+  head: () =>
+    pageHead("और सुनाओ? — rate Aam Zindagi! and send your reader thoughts straight to Adarsh Anand."),
   component: Feedback,
 });
 
@@ -70,23 +71,26 @@ function Feedback() {
   }
 
   return (
-    <div className="relative overflow-hidden pt-28">
-      <section className="night-panel relative mx-auto max-w-4xl rounded-sm px-6 py-14 md:px-12">
-        <Art n={43} className="sticker absolute -left-6 -top-10 hidden w-28 rotate-[-8deg] md:block" />
-        <header className="text-center">
-          <h1 lang="hi" className="konkani text-6xl md:text-7xl">और सुनाओ?</h1>
-          <p className="extrude-night mt-2 text-2xl" lang="hi">अनुभव लिख भेजिए</p>
+    <div className="relative pt-32 md:pt-36">
+      <section className="night-panel relative mx-auto max-w-4xl rounded-3xl px-6 py-12 md:px-12">
+        <header className="relative text-center sm:pr-28">
+          <h1 lang="hi" className="konkani text-5xl md:text-6xl">
+            और सुनाओ?
+          </h1>
+          <p className="extrude-night mt-2 text-xl" lang="hi">
+            अनुभव लिख भेजिए
+          </p>
           <p className="mt-2 font-body italic text-cream/85">The Post Office — a postcard to the author.</p>
+          <Art n={16} className="absolute -top-2 right-0 hidden w-20 rotate-[4deg] sm:block" />
         </header>
 
         <form onSubmit={handleSubmit} className="postcard relative mx-auto mt-10 max-w-2xl p-6 md:p-10">
-          <Art n={16} className="postage absolute right-4 top-4 w-20 rotate-[4deg]" />
           {sent && (
             <div className="postmark" aria-hidden>
               <span lang="hi">शुक्रिया!</span>
             </div>
           )}
-          <div className="grid gap-6 md:grid-cols-2 md:pr-24">
+          <div className="grid gap-6 md:grid-cols-2">
             <label className="field">
               <span className="hand">Name · नाम</span>
               <input value={name} onChange={(e) => setName(e.target.value)} maxLength={100} />
@@ -112,7 +116,9 @@ function Feedback() {
                   <img src={LOGO} alt="" width={44} height={44} />
                 </button>
               ))}
-              <span lang="hi" className="hand ml-3 text-xl">{LABELS[rating]}</span>
+              <span lang="hi" className="hand ml-3 text-xl">
+                {LABELS[rating]}
+              </span>
             </div>
           </fieldset>
 
@@ -130,11 +136,12 @@ function Feedback() {
             {sent && <p className="tiro-thanks" lang="hi">शुक्रिया! आपकी चिट्ठी पहुँच गई।</p>}
           </div>
         </form>
-        <Art n={44} look="plain" className={`absolute bottom-24 right-6 w-20 ${sent ? "dove-out" : "drift-x"}`} />
+
+        {sent && <Art n={44} className="dove-out absolute -bottom-2 right-10 w-16" />}
       </section>
-      <div className="relative mx-auto -mt-6 flex max-w-5xl justify-between px-6">
-        <Art n={29} className="w-full max-w-3xl" />
-        <Art n={37} className="hidden w-32 md:block" look="multiply" />
+
+      <div className="relative mx-auto -mt-2 max-w-5xl px-6">
+        <Art n={29} className="mx-auto w-full max-w-3xl" />
       </div>
     </div>
   );
