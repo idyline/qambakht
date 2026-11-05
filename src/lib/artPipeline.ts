@@ -244,7 +244,7 @@ function cornerColor(d: Uint8ClampedArray, w: number, h: number): [number, numbe
     }
   }
   if (maxDiff > 48) return null;
-  const avg = (k: number) => samples.reduce((sum, s) => sum + s[k], 0) / samples.length;
+  const avg = (k: number) => samples.reduce((sum, s) => sum + (s[k] ?? 0), 0) / samples.length;
   return [avg(0), avg(1), avg(2)];
 }
 
