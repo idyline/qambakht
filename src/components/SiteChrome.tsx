@@ -124,7 +124,6 @@ export function SiteChrome({ onExit }: { onExit: () => void }) {
           <Art n={25} className="angan-corner left-0 top-0 w-28 md:w-44" />
           <Art n={26} className="angan-corner bottom-0 right-0 w-28 rotate-180 md:w-44" />
           <Art n={27} className="angan-corner bottom-0 left-0 hidden w-32 md:block" />
-          <Art n={44} className="drift-x pointer-events-none absolute left-[40%] top-[8%] w-20 opacity-90" />
 
           <button type="button" className="angan-close" aria-label="बंद करें" onClick={() => closeMenu()}>
             ✕
@@ -159,14 +158,14 @@ export function SiteChrome({ onExit }: { onExit: () => void }) {
               </ul>
               <div className="mt-10 flex flex-wrap items-center gap-6">
                 <button type="button" className="hand text-xl text-cream underline decoration-wavy" lang="hi" onClick={() => closeMenu(onExit)}>
-                  चलता हूँ
+                  फिर मिलते हैं!
                 </button>
                 <Lockup size={32} />
               </div>
             </nav>
             <div className="relative hidden h-[60vh] md:block">
               <div key={hover} className="angan-preview">
-                <Art n={current.art} look="print" className="h-auto w-full max-w-sm rotate-[2deg]" />
+                <Art n={current.art} className="h-auto w-full max-w-sm rotate-[2deg]" />
               </div>
             </div>
           </div>
@@ -206,8 +205,8 @@ export function Intro() {
     if (sessionStorage.getItem("q-intro") || reduced()) return;
     sessionStorage.setItem("q-intro", "1");
     setState("show");
-    const t1 = window.setTimeout(() => setState("doors"), 2200);
-    const t2 = window.setTimeout(() => setState("hidden"), 2900);
+    const t1 = window.setTimeout(() => setState("doors"), 2600);
+    const t2 = window.setTimeout(() => setState("hidden"), 3300);
     return () => {
       window.clearTimeout(t1);
       window.clearTimeout(t2);
@@ -220,22 +219,21 @@ export function Intro() {
       role="presentation"
       onClick={() => setState("hidden")}
     >
-      <div className="intro-door left" />
-      <div className="intro-door right" />
+      <div className="intro-bg" />
       <div className="intro-stage">
-        <div className="relative">
-          <Art n={24} className="w-40 opacity-90 md:w-52" priority />
-          <span className="absolute bottom-[24%] left-1/2 flex -translate-x-1/2 flex-col items-center">
-            <Steam className="w-12" />
-            <CupLogo size={64} className="intro-cup" />
-          </span>
-        </div>
-        <p lang="hi" className="extrude mt-4 text-3xl md:text-5xl">
-          शब्द वो हैं जो ठहर जाएँ
+        <span className="relative flex flex-col items-center">
+          <Steam className="w-16" />
+          <CupLogo size={140} className="intro-cup" />
+        </span>
+        <Wordmark animate className="mt-6 text-[clamp(4rem,13vw,9rem)]" />
+        <svg viewBox="0 0 400 30" className="intro-flourish mt-2 w-[min(70vw,420px)]" aria-hidden>
+          <path d="M10 15 C 80 2, 130 28, 200 15 S 320 2, 390 15" />
+          <circle cx="200" cy="15" r="4" />
+        </svg>
+        <p lang="hi" className="intro-line mt-4 text-2xl md:text-3xl">
+          {INTRO_LINE}
         </p>
-        <Wordmark animate className="mt-4 text-5xl md:text-7xl" />
-        <p className="sr-only">{INTRO_LINE}</p>
-        <button type="button" className="hand mt-6 text-base text-ink/70 underline" onClick={() => setState("hidden")}>
+        <button type="button" className="skip-btn mt-8" onClick={() => setState("hidden")}>
           skip
         </button>
       </div>
@@ -324,7 +322,6 @@ export function ExitScreen({
     >
       <Art n={44} className="dove-out absolute left-[10%] top-[12%] w-28" />
       <Art n={44} className="dove-out absolute right-[12%] top-[20%] w-20" style={{ animationDelay: "0.4s" }} />
-      <Art n={20} className="swan-glide absolute bottom-[8%] left-[6%] w-28 md:w-40" />
       <div className="relative flex flex-col items-center text-center">
         <span className="relative">
           <Steam className="steam-fade absolute -top-12 left-1/2 w-12 -translate-x-1/2" />
