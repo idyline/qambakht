@@ -7,19 +7,25 @@ export const LOGO = "/assets/logo/qambakht-cup-192.png";
 export const MANDALA = "/assets/mandala-peach.jpg";
 
 export const covers = {
-  english: { url: "/assets/books/cover-english.png", title: "Aam Zindagi!", language: "English" },
-  hindi: { url: "/assets/books/cover-hindi.png", title: "आम ज़िंदगी!", language: "हिन्दी" },
+  english: { url: "/assets/books/cover-english.webp", title: "Aam Zindagi!", language: "English" },
+  hindi: { url: "/assets/books/cover-hindi.webp", title: "आम ज़िंदगी!", language: "हिन्दी" },
 };
 
 export const pdfs = {
-  english: { url: "/assets/books/aam-zindagi-english.pdf", title: "Aam Zindagi!", language: "English" },
+  english: {
+    url: "/assets/books/aam-zindagi-english.pdf",
+    title: "Aam Zindagi!",
+    language: "English",
+  },
   // The Hindi PDF is larger than the repo's 10 MB file limit, so it lives on the asset CDN.
   hindi: { url: pdfHindi.url, title: "आम ज़िंदगी!", language: "हिन्दी" },
 };
 
-export const portraitUrl = "/assets/books/adarsh-portrait.png";
+export const portraitUrl = "/assets/books/adarsh-portrait.webp";
 
 export const HERO_LINE = "चाय की भाप, गली की गूँज — और ज़िंदगी ख़ुद एक कहानी।";
+export const HERO_HEAD = "चाय की भाप, गली की गूँज —";
+export const HERO_TAIL = "और ज़िंदगी ख़ुद एक कहानी।";
 export const INTRO_LINE = "कहानियाँ, जो ठहर जाएँ";
 
 export const AUTHOR_EMAIL = "anandadarsh942@gmail.com";
@@ -34,9 +40,21 @@ export const BLURBS = {
 
 /** Crop as fractions of the source image: top, right, bottom, left. Used to hide artist marks. */
 export type Crop = [number, number, number, number];
-export type ArtPiece = { src: string; w: number; h: number; crop?: Crop | undefined; patch?: undefined | { x: number; y: number; w: number; h: number; color: string } };
+export type ArtPiece = {
+  src: string;
+  w: number;
+  h: number;
+  crop?: Crop | undefined;
+  patch?: undefined | { x: number; y: number; w: number; h: number; color: string };
+};
 
-const a = (file: string, w: number, h: number, crop?: Crop, patch?: ArtPiece["patch"]): ArtPiece => ({
+const a = (
+  file: string,
+  w: number,
+  h: number,
+  crop?: Crop,
+  patch?: ArtPiece["patch"],
+): ArtPiece => ({
   src: `/assets/art/${file}`,
   w,
   h,
@@ -57,7 +75,13 @@ export const ART = {
   9: a("09-elephant-doodle.jpg", 736, 736),
   10: a("10-singer-sewing.jpg", 736, 1308),
   11: a("11-log-kya-kahenge-eyes.png", 473, 277, [0.03, 0.13, 0, 0.03]),
-  12: a("12-nazar-mask.png", 454, 557, [0.04, 0.11, 0.03, 0.03], { x: 0.7, y: 0.52, w: 0.14, h: 0.08, color: "#e2d8c9" }),
+  12: a("12-nazar-mask.png", 454, 557, [0.04, 0.11, 0.03, 0.03], {
+    x: 0.7,
+    y: 0.52,
+    w: 0.14,
+    h: 0.08,
+    color: "#e2d8c9",
+  }),
   13: a("13-sun-moon-kraft.jpg", 736, 736, [0, 0, 0.14, 0]),
   14: a("14-woman-lotus-frame.jpg", 524, 662),
   15: a("15-maple-corner.jpg", 380, 585),
@@ -99,11 +123,11 @@ export const ART = {
 export type ArtNo = keyof typeof ART;
 
 export const NAV = [
-  { label: "घर", to: "/", art: 24 as ArtNo, interstitial: 24 as ArtNo, en: "Home" },
-  { label: "पुस्तकालय", to: "/library", art: 47 as ArtNo, interstitial: 47 as ArtNo, en: "Library" },
-  { label: "कम्बख़्त", to: "/author", art: 12 as ArtNo, interstitial: 22 as ArtNo, en: "Author" },
-  { label: "और सुनाओ?", to: "/feedback", art: 16 as ArtNo, interstitial: 37 as ArtNo, en: "Feedback" },
-  { label: "किताब ले लो!", to: "/buy", art: 48 as ArtNo, interstitial: 48 as ArtNo, en: "Buy" },
+  { label: "घर", to: "/", en: "Home" },
+  { label: "पुस्तकालय", to: "/library", en: "Library" },
+  { label: "कम्बख़्त", to: "/author", en: "Author" },
+  { label: "और सुनाओ?", to: "/feedback", en: "Feedback" },
+  { label: "किताब ले लो!", to: "/buy", en: "Buy" },
 ] as const;
 
 export type NavTo = (typeof NAV)[number]["to"];
@@ -118,7 +142,13 @@ export const pageHead = (description: string) => ({
     { property: "og:description", content: description },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
-    { property: "og:image", content: "https://qambakht.lovable.app/assets/logo/qambakht-cup-192.png" },
-    { name: "twitter:image", content: "https://qambakht.lovable.app/assets/logo/qambakht-cup-192.png" },
+    {
+      property: "og:image",
+      content: "https://qambakht.vercel.app/assets/logo/qambakht-cup-192.png",
+    },
+    {
+      name: "twitter:image",
+      content: "https://qambakht.vercel.app/assets/logo/qambakht-cup-192.png",
+    },
   ],
 });

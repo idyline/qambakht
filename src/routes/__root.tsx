@@ -1,7 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import {
   Outlet,
-  Link,
   createRootRouteWithContext,
   useRouter,
   useRouterState,
@@ -13,7 +12,9 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { SiteChrome, Intro, ExitScreen, useExitScreen } from "@/components/SiteChrome";
+import { SiteChrome, ExitScreen, useExitScreen } from "@/components/SiteChrome";
+import { BackToTop, ScrollThumb } from "@/components/ScrollAids";
+import { NavLink, Preloader, TransitionProvider, usePageTransition } from "@/components/Transition";
 import { Footer } from "@/components/Footer";
 import { MANDALA, SITE_NAME } from "@/data/site";
 import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
@@ -22,9 +23,13 @@ function NotFoundComponent() {
   return (
     <div className="flex min-h-[70vh] items-center justify-center px-4 pt-24">
       <div className="paper-card max-w-md rotate-[-1deg] p-10 text-center">
-        <h1 className="h1-hindi text-6xl" lang="hi">खो गए?</h1>
+        <h1 className="h1-hindi text-6xl" lang="hi">
+          खो गए?
+        </h1>
         <p className="mt-4">This page doesn't exist — the lane ends here.</p>
-        <Link to="/" className="cut-btn mt-6" lang="hi">घर चलें</Link>
+        <NavLink to="/" className="cut-btn mt-6" lang="hi">
+          घर चलें
+        </NavLink>
       </div>
     </div>
   );
@@ -39,11 +44,23 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <div className="paper-card max-w-md p-10 text-center">
-        <h1 className="h1-hindi text-4xl" lang="hi">अरे!</h1>
+        <h1 className="h1-hindi text-4xl" lang="hi">
+          अरे!
+        </h1>
         <p className="mt-3">This page didn't load. Try again, or head back home.</p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
-          <button onClick={() => { router.invalidate(); reset(); }} className="cut-btn">Try again</button>
-          <a href="/" className="cut-btn cut-btn-alt">Home</a>
+          <button
+            onClick={() => {
+              router.invalidate();
+              reset();
+            }}
+            className="cut-btn"
+          >
+            Try again
+          </button>
+          <a href="/" className="cut-btn cut-btn-alt">
+            Home
+          </a>
         </div>
       </div>
     </div>
@@ -106,21 +123,32 @@ function SiteAtmosphere() {
 }
 
 function RootComponent() {
-  useSwipeNavigation();
+  return (
+    <TransitionProvider>
+      <AppFrame />
+    </TransitionProvider>
+  );
+}
+
+function AppFrame() {
+  const go = usePageTransition();
+  useSwipeNavigation(go);
   const { exit, openFromMenu, arm, tap, dismiss } = useExitScreen();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isReader = pathname.startsWith("/read");
   return (
     <>
       <SiteAtmosphere />
-      <Intro />
+      <Preloader />
       {!isReader && <SiteChrome onExit={openFromMenu} />}
       <div id="site-main" className="relative">
-        <main className="relative z-[2]">
+        <main key={pathname} className="page-enter relative z-[2]">
           <Outlet />
         </main>
         {!isReader && <Footer />}
       </div>
+      {!isReader && <BackToTop />}
+      <ScrollThumb />
       {exit && <ExitScreen armed={exit.armed} onTap={tap} onArm={arm} onStay={dismiss} />}
     </>
   );
