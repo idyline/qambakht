@@ -21,7 +21,10 @@ export const pdfs = {
   hindi: { url: pdfHindi.url, title: "आम ज़िंदगी!", language: "हिन्दी" },
 };
 
-export const portraitUrl = "/assets/books/adarsh-portrait.png";
+export const HERO_BOOK_ARTWORK =
+  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-LsODxSlMMrwEN5HDkXw3Gza4y2UM0L.png";
+export const portraitUrl =
+  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202026-10-31%20114313-V6K7VZR4oYQP5dQ2U6RyNZD6xjPgwI.png";
 
 export const HERO_LINE = "चाय की भाप, गली की गूँज — और ज़िंदगी ख़ुद एक कहानी।";
 export const INTRO_LINE = "कहानियाँ, जो ठहर जाएँ";
@@ -121,14 +124,12 @@ export const ART = {
 export type ArtNo = keyof typeof ART;
 
 export const NAV = [
-  { label: "घर", to: "/", art: 24 as ArtNo, interstitial: 24 as ArtNo },
-  { label: "पुस्तकालय", to: "/library", art: 47 as ArtNo, interstitial: 47 as ArtNo },
-  { label: "कम्बख़्त", to: "/author", art: 12 as ArtNo, interstitial: 22 as ArtNo },
-  { label: "और सुनाओ?", to: "/feedback", art: 16 as ArtNo, interstitial: 37 as ArtNo },
-  { label: "किताब ले लो!", to: "/buy", art: 48 as ArtNo, interstitial: 48 as ArtNo },
+  { label: "घर", to: "/" },
+  { label: "पुस्तकालय", to: "/library" },
+  { label: "कम्बख़्त", to: "/author" },
+  { label: "और सुनाओ?", to: "/feedback" },
+  { label: "किताब ले लो!", to: "/buy" },
 ] as const;
-
-export type NavTo = (typeof NAV)[number]["to"];
 
 /** Same title on every route, by request. */
 export const pageHead = (description: string) => ({

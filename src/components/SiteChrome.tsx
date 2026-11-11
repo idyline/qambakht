@@ -1,9 +1,9 @@
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Art } from "@/components/Art";
 import { CupLogo, Steam, Wordmark } from "@/components/Wordmark";
-import { ART, INTRO_LINE, NAV, type NavTo } from "@/data/site";
+import { INTRO_LINE } from "@/data/site";
 
 const reduced = () =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -13,197 +13,19 @@ const reduced = () =>
 /* ------------------------------------------------------------------ */
 
 export function SiteChrome() {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const navigate = useNavigate();
-  const btnRef = useRef<HTMLButtonElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const [menu, setMenu] = useState<"closed" | "open" | "closing">("closed");
-  const [origin, setOrigin] = useState({ x: 0, y: 0 });
-  const [hover, setHover] = useState(0);
-  const [inter, setInter] = useState<null | { idx: number; phase: "in" | "out" }>(null);
-
-  const openMenu = () => {
-    const r = btnRef.current?.getBoundingClientRect();
-    if (r) setOrigin({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
-    setHover(
-      Math.max(
-        0,
-        NAV.findIndex((n) => n.to === pathname),
-      ),
-    );
-    setMenu("open");
-  };
-  const closeMenu = useCallback((after?: () => void) => {
-    setMenu("closing");
-    window.setTimeout(
-      () => {
-        setMenu("closed");
-        btnRef.current?.focus();
-        after?.();
-      },
-      reduced() ? 0 : 500,
-    );
-  }, []);
-
-  const go = (idx: number, to: NavTo) => {
-    closeMenu(() => {
-      if (reduced()) {
-        navigate({ to });
-        return;
-      }
-      setInter({ idx, phase: "in" });
-      const img = new Image();
-      img.src = ART[NAV[idx]!.interstitial].src;
-      window.setTimeout(() => {
-        navigate({ to });
-        window.scrollTo(0, 0);
-      }, 450);
-      window.setTimeout(() => setInter({ idx, phase: "out" }), 1000);
-      window.setTimeout(() => setInter(null), 1600);
-    });
-  };
-
-  // lock scroll, inert background, Esc, focus trap
-  useEffect(() => {
-    if (menu === "closed") return;
-    const main = document.getElementById("site-main");
-    document.body.style.overflow = "hidden";
-    main?.setAttribute("inert", "");
-    overlayRef.current?.querySelector<HTMLElement>("a,button")?.focus();
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeMenu();
-      if (e.key === "Tab" && overlayRef.current) {
-        const f = overlayRef.current.querySelectorAll<HTMLElement>("a,button");
-        const first = f[0];
-        const last = f[f.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last?.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first?.focus();
-        }
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = "";
-      main?.removeAttribute("inert");
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [menu, closeMenu]);
-
-  const open = menu === "open";
-  const current = NAV[hover] ?? NAV[0];
-
   return (
-    <>
-      <header className="site-header">
-        <Link to="/" className="flex items-center gap-2" aria-label="Qambakht. — घर">
-          <CupLogo size={40} />
-          <Wordmark className="wm-sm" />
-        </Link>
-        <button
-          ref={btnRef}
-          type="button"
-          className="menu-btn"
-          aria-label="मेन्यू"
-          aria-expanded={open}
-          onClick={() => (menu === "closed" ? openMenu() : closeMenu())}
-        >
-          <span className="bar" style={{ width: 28 }} />
-          <span className="bar" style={{ width: 20 }} />
-          <span className="bar" style={{ width: 24 }} />
-          <span className="menu-dot" />
-        </button>
-      </header>
-
-      {menu !== "closed" && (
-        <div
-          ref={overlayRef}
-          role="dialog"
-          aria-modal="true"
-          aria-label="मेन्यू"
-          className={`angan ${menu === "closing" ? "angan-out" : "angan-in"}`}
-          style={{ ["--ox" as string]: `${origin.x}px`, ["--oy" as string]: `${origin.y}px` }}
-          onClick={(e) => e.target === e.currentTarget && closeMenu()}
-        >
-          <div className="angan-pattern" aria-hidden />
-          <Art n={25} className="angan-corner left-0 top-0 w-28 md:w-44" />
-          <Art n={26} className="angan-corner bottom-0 right-0 w-28 rotate-180 md:w-44" />
-          <Art n={27} className="angan-corner bottom-0 left-0 hidden w-32 md:block" />
-
-          <button
-            type="button"
-            className="angan-close"
-            aria-label="बंद करें"
-            onClick={() => closeMenu()}
-          >
-            ✕
-          </button>
-
-          <div className="relative mx-auto grid h-full max-w-6xl items-center gap-8 px-6 py-20 md:grid-cols-[1.2fr_1fr]">
-            <nav aria-label="मुख्य">
-              <ul className="space-y-2 md:space-y-3">
-                {NAV.map((n, i) => (
-                  <li
-                    key={n.to}
-                    className="angan-item"
-                    style={{
-                      animationDelay: `${180 + i * 80}ms`,
-                      ["--rot" as string]: `${i % 2 ? 1.5 : -1.5}deg`,
-                    }}
-                  >
-                    <a
-                      href={n.to}
-                      lang="hi"
-                      onMouseEnter={() => setHover(i)}
-                      onFocus={() => setHover(i)}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        go(i, n.to);
-                      }}
-                      className="group flex items-center gap-4"
-                      aria-current={pathname === n.to ? "page" : undefined}
-                    >
-                      <Art n={n.art} className="tape w-12 shrink-0 md:hidden" />
-                      <span className={`angan-word ${pathname === n.to ? "is-current" : ""}`}>
-                        {n.label}
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-            <div className="relative hidden h-[60vh] md:block">
-              <div key={hover} className="angan-preview">
-                <Art n={current.art} className="h-auto w-full max-w-sm rotate-[2deg]" />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {inter && (
-        <div className={`interstitial ${inter.phase === "out" ? "curtain-up" : ""}`} aria-hidden>
-          <div className="flex flex-col items-center gap-6">
-            <div className="relative">
-              <Art n={NAV[inter.idx]!.interstitial} className="inter-art w-44 md:w-56" />
-              {inter.idx === 0 && (
-                <span className="absolute bottom-[22%] left-1/2 -translate-x-1/2">
-                  <Steam className="absolute -top-10 left-1/2 w-10 -translate-x-1/2" />
-                  <CupLogo size={56} />
-                </span>
-              )}
-            </div>
-            <p lang="hi" className="h1-hindi text-5xl md:text-6xl">
-              {NAV[inter.idx]!.label}
-            </p>
-            <span className="progress-dash" />
-          </div>
-        </div>
-      )}
-    </>
+    <header className="site-header">
+      <Link to="/" className="flex items-center gap-2" aria-label="Qambakht. — घर">
+        <CupLogo size={40} />
+        <Wordmark className="wm-sm" />
+      </Link>
+      <Link to="/menu" className="menu-btn" aria-label="मेन्यू">
+        <span className="bar" style={{ width: 28 }} />
+        <span className="bar" style={{ width: 20 }} />
+        <span className="bar" style={{ width: 24 }} />
+        <span className="menu-dot" />
+      </Link>
+    </header>
   );
 }
 
