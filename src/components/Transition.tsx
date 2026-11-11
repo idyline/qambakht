@@ -81,6 +81,9 @@ export function Preloader() {
       role="presentation"
       onClick={() => setState("leaving")}
     >
+      <noscript>
+        <style>{".preloader{display:none}"}</style>
+      </noscript>
       <SignatureStage label={INTRO_LINE} />
       <button type="button" className="skip-btn" onClick={() => setState("leaving")}>
         skip
