@@ -1,59 +1,50 @@
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useRouterState } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Art } from "@/components/Art";
-import { CupLogo, Lockup, Steam, Wordmark } from "@/components/Wordmark";
-import { ART, INTRO_LINE, NAV, type NavTo } from "@/data/site";
+import { NavLink, usePageTransition } from "@/components/Transition";
+import { CupLogo, LogoBadge, Lockup, Steam, Wordmark } from "@/components/Wordmark";
+import { NAV } from "@/data/site";
 
 const reduced = () =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ------------------------------------------------------------------ */
-/* Header + आँगन menu overlay + page interstitial                      */
+/* Header + आँगन menu overlay                                          */
 /* ------------------------------------------------------------------ */
 
 export function SiteChrome({ onExit }: { onExit: () => void }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const navigate = useNavigate();
+  const go = usePageTransition();
   const btnRef = useRef<HTMLButtonElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const [menu, setMenu] = useState<"closed" | "open" | "closing">("closed");
   const [origin, setOrigin] = useState({ x: 0, y: 0 });
-  const [hover, setHover] = useState(0);
-  const [inter, setInter] = useState<null | { idx: number; phase: "in" | "out" }>(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const openMenu = () => {
     const r = btnRef.current?.getBoundingClientRect();
     if (r) setOrigin({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
-    setHover(Math.max(0, NAV.findIndex((n) => n.to === pathname)));
     setMenu("open");
   };
   const closeMenu = useCallback((after?: () => void) => {
     setMenu("closing");
-    window.setTimeout(() => {
-      setMenu("closed");
-      btnRef.current?.focus();
-      after?.();
-    }, reduced() ? 0 : 500);
+    window.setTimeout(
+      () => {
+        setMenu("closed");
+        btnRef.current?.focus();
+        after?.();
+      },
+      reduced() ? 0 : 500,
+    );
   }, []);
-
-  const go = (idx: number, to: NavTo) => {
-    closeMenu(() => {
-      if (reduced()) {
-        navigate({ to });
-        return;
-      }
-      setInter({ idx, phase: "in" });
-      const img = new Image();
-      img.src = ART[NAV[idx]!.interstitial].src;
-      window.setTimeout(() => {
-        navigate({ to });
-        window.scrollTo(0, 0);
-      }, 450);
-      window.setTimeout(() => setInter({ idx, phase: "out" }), 1000);
-      window.setTimeout(() => setInter(null), 1600);
-    });
-  };
 
   // lock scroll, inert background, Esc, focus trap
   useEffect(() => {
@@ -86,15 +77,14 @@ export function SiteChrome({ onExit }: { onExit: () => void }) {
   }, [menu, closeMenu]);
 
   const open = menu === "open";
-  const current = NAV[hover] ?? NAV[0];
 
   return (
     <>
-      <header className="site-header">
-        <Link to="/" className="flex items-center gap-2" aria-label="Qambakht. — घर">
-          <CupLogo size={40} />
+      <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
+        <NavLink to="/" className="flex items-center gap-2.5" aria-label="Qambakht. — घर">
+          <LogoBadge size={32} />
           <Wordmark className="wm-sm" />
-        </Link>
+        </NavLink>
         <button
           ref={btnRef}
           type="button"
@@ -103,10 +93,9 @@ export function SiteChrome({ onExit }: { onExit: () => void }) {
           aria-expanded={open}
           onClick={() => (menu === "closed" ? openMenu() : closeMenu())}
         >
-          <span className="bar" style={{ width: 28 }} />
           <span className="bar" style={{ width: 20 }} />
-          <span className="bar" style={{ width: 24 }} />
-          <span className="menu-dot" />
+          <span className="bar" style={{ width: 14 }} />
+          <span className="bar" style={{ width: 17 }} />
         </button>
       </header>
 
@@ -121,123 +110,66 @@ export function SiteChrome({ onExit }: { onExit: () => void }) {
           onClick={(e) => e.target === e.currentTarget && closeMenu()}
         >
           <div className="angan-pattern" aria-hidden />
-          <Art n={25} className="angan-corner left-0 top-0 w-28 md:w-44" />
-          <Art n={26} className="angan-corner bottom-0 right-0 w-28 rotate-180 md:w-44" />
-          <Art n={27} className="angan-corner bottom-0 left-0 hidden w-32 md:block" />
 
-          <button type="button" className="angan-close" aria-label="बंद करें" onClick={() => closeMenu()}>
-            ✕
+          <button
+            type="button"
+            className="angan-close"
+            aria-label="बंद करें"
+            onClick={() => closeMenu()}
+          >
+            <span aria-hidden>✕</span>
           </button>
 
-          <div className="relative mx-auto grid h-full max-w-6xl items-center gap-8 px-6 py-20 md:grid-cols-[1.2fr_1fr]">
+          <div className="angan-inner">
             <nav aria-label="मुख्य">
-              <ul className="space-y-2 md:space-y-3">
+              <ul className="angan-list">
                 {NAV.map((n, i) => (
                   <li
                     key={n.to}
                     className="angan-item"
-                    style={{ animationDelay: `${180 + i * 80}ms`, ["--rot" as string]: `${i % 2 ? 1.5 : -1.5}deg` }}
+                    style={{ animationDelay: `${140 + i * 70}ms` }}
                   >
                     <a
                       href={n.to}
-                      lang="hi"
-                      onMouseEnter={() => setHover(i)}
-                      onFocus={() => setHover(i)}
                       onClick={(e) => {
+                        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)
+                          return;
                         e.preventDefault();
-                        go(i, n.to);
+                        go(n.to, { onCovered: () => setMenu("closed") });
                       }}
-                      className="group flex items-center gap-4"
+                      className="angan-link"
                       aria-current={pathname === n.to ? "page" : undefined}
                     >
-                      <Art n={n.art} className="tape w-12 shrink-0 md:hidden" />
-                      <span className={`angan-word ${pathname === n.to ? "is-current" : ""}`}>{n.label}</span>
+                      <span className="angan-num" aria-hidden>
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span
+                        lang="hi"
+                        className={`angan-word ${pathname === n.to ? "is-current" : ""}`}
+                      >
+                        {n.label}
+                      </span>
+                      <span className="angan-en">{n.en}</span>
                     </a>
                   </li>
                 ))}
               </ul>
-              <div className="mt-10 flex flex-wrap items-center gap-6">
-                <button type="button" className="hand text-xl text-cream underline decoration-wavy" lang="hi" onClick={() => closeMenu(onExit)}>
-                  फिर मिलते हैं!
-                </button>
-                <Lockup size={32} />
-              </div>
             </nav>
-            <div className="relative hidden h-[60vh] md:block">
-              <div key={hover} className="angan-preview">
-                <Art n={current.art} className="h-auto w-full max-w-sm rotate-[2deg]" />
-              </div>
+            <div className="angan-foot">
+              <Lockup size={32} className="angan-lockup" />
+              <button
+                type="button"
+                className="angan-bye"
+                lang="hi"
+                onClick={() => closeMenu(onExit)}
+              >
+                फिर मिलते हैं!
+              </button>
             </div>
-          </div>
-        </div>
-      )}
-
-      {inter && (
-        <div className={`interstitial ${inter.phase === "out" ? "curtain-up" : ""}`} aria-hidden>
-          <div className="flex flex-col items-center gap-6">
-            <div className="relative">
-              <Art n={NAV[inter.idx]!.interstitial} className="inter-art w-44 md:w-56" />
-              {inter.idx === 0 && (
-                <span className="absolute bottom-[22%] left-1/2 -translate-x-1/2">
-                  <Steam className="absolute -top-10 left-1/2 w-10 -translate-x-1/2" />
-                  <CupLogo size={56} />
-                </span>
-              )}
-            </div>
-            <p lang="hi" className="h1-hindi text-5xl md:text-6xl">
-              {NAV[inter.idx]!.label}
-            </p>
-            <span className="progress-dash" />
           </div>
         </div>
       )}
     </>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* First-visit intro (once per session)                               */
-/* ------------------------------------------------------------------ */
-
-export function Intro() {
-  const [state, setState] = useState<"hidden" | "show" | "doors">("hidden");
-  useEffect(() => {
-    if (sessionStorage.getItem("q-intro") || reduced()) return;
-    sessionStorage.setItem("q-intro", "1");
-    setState("show");
-    const t1 = window.setTimeout(() => setState("doors"), 2600);
-    const t2 = window.setTimeout(() => setState("hidden"), 3300);
-    return () => {
-      window.clearTimeout(t1);
-      window.clearTimeout(t2);
-    };
-  }, []);
-  if (state === "hidden") return null;
-  return (
-    <div
-      className={`intro ${state === "doors" ? "intro-open" : ""}`}
-      role="presentation"
-      onClick={() => setState("hidden")}
-    >
-      <div className="intro-bg" />
-      <div className="intro-stage">
-        <span className="relative flex flex-col items-center">
-          <Steam className="w-16" />
-          <CupLogo size={140} className="intro-cup" />
-        </span>
-        <Wordmark animate className="mt-6 text-[clamp(4rem,13vw,9rem)]" />
-        <svg viewBox="0 0 400 30" className="intro-flourish mt-2 w-[min(70vw,420px)]" aria-hidden>
-          <path d="M10 15 C 80 2, 130 28, 200 15 S 320 2, 390 15" />
-          <circle cx="200" cy="15" r="4" />
-        </svg>
-        <p lang="hi" className="intro-line mt-4 text-2xl md:text-3xl">
-          {INTRO_LINE}
-        </p>
-        <button type="button" className="skip-btn mt-8" onClick={() => setState("hidden")}>
-          skip
-        </button>
-      </div>
-    </div>
   );
 }
 
@@ -263,14 +195,19 @@ export function useExitScreen() {
 
   const pushSentinel = useCallback(() => {
     const st = window.history.state ?? {};
-    window.history.pushState({ ...st, __TSR_index: (st.__TSR_index ?? 0) + 1, qSentinel: true }, "", window.location.href);
+    window.history.pushState(
+      { ...st, __TSR_index: (st.__TSR_index ?? 0) + 1, qSentinel: true },
+      "",
+      window.location.href,
+    );
     pushed.current = true;
   }, []);
 
   const dismiss = useCallback(() => {
     window.clearTimeout(timer.current);
     setExit(null);
-    if (!window.history.state?.qSentinel && (window.history.state?.__TSR_index ?? 0) === 0) pushSentinel();
+    if (!window.history.state?.qSentinel && (window.history.state?.__TSR_index ?? 0) === 0)
+      pushSentinel();
   }, [pushSentinel]);
 
   const show = useCallback(() => {
@@ -282,7 +219,8 @@ export function useExitScreen() {
   useEffect(() => {
     if (!pushed.current && (window.history.state?.__TSR_index ?? 0) === 0) pushSentinel();
     const onPop = () => {
-      if ((window.history.state?.__TSR_index ?? 0) === 0 && !window.history.state?.qSentinel) show();
+      if ((window.history.state?.__TSR_index ?? 0) === 0 && !window.history.state?.qSentinel)
+        show();
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
@@ -321,7 +259,11 @@ export function ExitScreen({
       onClick={() => (armed ? onTap() : onArm())}
     >
       <Art n={44} className="dove-out absolute left-[10%] top-[12%] w-28" />
-      <Art n={44} className="dove-out absolute right-[12%] top-[20%] w-20" style={{ animationDelay: "0.4s" }} />
+      <Art
+        n={44}
+        className="dove-out absolute right-[12%] top-[20%] w-20"
+        style={{ animationDelay: "0.4s" }}
+      />
       <div className="relative flex flex-col items-center text-center">
         <span className="relative">
           <Steam className="steam-fade absolute -top-12 left-1/2 w-12 -translate-x-1/2" />

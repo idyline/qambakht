@@ -1,13 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 
-import { Art } from "@/components/Art";
 import { Tilt } from "@/components/Tilt";
 import { covers, pageHead } from "@/data/site";
 import { PURCHASE_LINKS } from "@/data/purchaseLinks";
 
 export const Route = createFileRoute("/buy")({
-  head: () => pageHead("Buy Aam Zindagi! by Adarsh Anand — English on Amazon or Pothi, Hindi on Pothi."),
+  head: () =>
+    pageHead("Buy Aam Zindagi! by Adarsh Anand — English on Amazon or Pothi, Hindi on Pothi."),
   component: Buy,
 });
 
@@ -22,8 +22,7 @@ function Buy() {
         style={{ backgroundImage: "url(/assets/art/33-border-geometric-tan.jpg)" }}
       />
       <header className="relative mx-auto mt-10 max-w-3xl px-6 text-center">
-        <div className="signboard inline-flex items-center gap-4 px-8 py-5">
-          <Art n={38} className="w-16 rounded-[50%]" />
+        <div className="signboard inline-flex items-center px-8 py-5">
           <h1 lang="hi" className="tukda text-4xl md:text-6xl">
             किताब ले लो!
           </h1>
@@ -31,10 +30,14 @@ function Buy() {
         <p className="sub mt-4">The Bazaar Stall</p>
       </header>
 
-      <section className="relative mx-auto mt-16 grid max-w-5xl items-start gap-10 px-6 md:grid-cols-[140px_1fr_140px]">
-        <Art n={48} look="multiply" className="mx-auto hidden w-full md:block" />
-        <div className="flex flex-wrap justify-center gap-14">
-          <PriceTag title="Aam Zindagi!" sub="English" cover={covers.english.url} onClick={() => setOpen(true)} />
+      <section className="relative mx-auto mt-16 max-w-5xl px-6">
+        <div className="flex flex-wrap justify-center gap-10 md:gap-14">
+          <PriceTag
+            title="Aam Zindagi!"
+            sub="English"
+            cover={covers.english.url}
+            onClick={() => setOpen(true)}
+          />
           <PriceTag
             title="आम ज़िंदगी!"
             sub="हिन्दी"
@@ -43,7 +46,6 @@ function Buy() {
             hindi
           />
         </div>
-        <Art n={15} look="multiply" className="mx-auto hidden w-28 md:block" />
       </section>
 
       {open && <ShopDialog onClose={() => setOpen(false)} />}
@@ -64,24 +66,33 @@ function PriceTag(props: {
     <Tilt className="price-tag">
       <span className="tag-string" aria-hidden />
       <span className="tag-hole" aria-hidden />
-      <img
-        src={props.cover}
-        alt={`Cover of ${props.title}`}
-        width={600}
-        height={900}
-        loading="lazy"
-        className="mx-auto w-36"
-      />
-      <p className={`title-${props.hindi ? "hi" : "en"} mt-4 text-3xl`} lang={props.hindi ? "hi" : "en"}>
+      <span className="book3d book3d-tile mx-auto w-36">
+        <img
+          src={props.cover}
+          alt={`Cover of ${props.title}`}
+          width={640}
+          height={989}
+          loading="lazy"
+        />
+      </span>
+      <p
+        className={`title-${props.hindi ? "hi" : "en"} mt-4 text-3xl`}
+        lang={props.hindi ? "hi" : "en"}
+      >
         {props.title}
       </p>
       <p className="stamp mt-1">{props.sub}</p>
       {props.href ? (
-        <a href={props.href} target="_blank" rel="noopener noreferrer" className="cut-btn mt-4">
+        <a
+          href={props.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="cut-btn glow-btn mt-4"
+        >
           {inner}
         </a>
       ) : (
-        <button type="button" onClick={props.onClick} className="cut-btn mt-4">
+        <button type="button" onClick={props.onClick} className="cut-btn glow-btn mt-4">
           {inner}
         </button>
       )}
@@ -126,7 +137,12 @@ function ShopDialog({ onClose }: { onClose: () => void }) {
         aria-labelledby="shop-title"
         className="signboard shop-pop relative w-[min(92vw,460px)] p-8 text-center"
       >
-        <button type="button" onClick={onClose} aria-label="Close" className="absolute right-3 top-2 text-2xl">
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute right-3 top-2 text-2xl"
+        >
           ✕
         </button>
         <h2 id="shop-title" className="title-en text-3xl">
@@ -134,10 +150,20 @@ function ShopDialog({ onClose }: { onClose: () => void }) {
         </h2>
         <p className="hand text-xl">where shall we wrap it from?</p>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          <a href={PURCHASE_LINKS.englishAmazon} target="_blank" rel="noopener noreferrer" className="ticket">
+          <a
+            href={PURCHASE_LINKS.englishAmazon}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ticket"
+          >
             Amazon
           </a>
-          <a href={PURCHASE_LINKS.englishPothi} target="_blank" rel="noopener noreferrer" className="ticket">
+          <a
+            href={PURCHASE_LINKS.englishPothi}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ticket"
+          >
             Pothi
           </a>
         </div>

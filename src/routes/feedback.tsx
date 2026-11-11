@@ -6,7 +6,9 @@ import { AUTHOR_EMAIL, LOGO, pageHead } from "@/data/site";
 
 export const Route = createFileRoute("/feedback")({
   head: () =>
-    pageHead("और सुनाओ? — rate Aam Zindagi! and send your reader thoughts straight to Adarsh Anand."),
+    pageHead(
+      "और सुनाओ? — rate Aam Zindagi! and send your reader thoughts straight to Adarsh Anand.",
+    ),
   component: Feedback,
 });
 
@@ -71,8 +73,8 @@ function Feedback() {
   }
 
   return (
-    <div className="relative pt-32 md:pt-36">
-      <section className="night-panel relative mx-auto max-w-4xl rounded-3xl px-6 py-12 md:px-12">
+    <div className="relative pt-28 md:pt-32">
+      <section className="night-panel feedback-panel enter relative mx-auto max-w-4xl rounded-3xl px-5 py-12 sm:px-8 md:px-12">
         <header className="relative text-center sm:pr-28">
           <h1 lang="hi" className="konkani text-5xl md:text-6xl">
             और सुनाओ?
@@ -80,11 +82,16 @@ function Feedback() {
           <p className="extrude-night mt-2 text-xl" lang="hi">
             अनुभव लिख भेजिए
           </p>
-          <p className="mt-2 font-body italic text-cream/85">The Post Office — a postcard to the author.</p>
+          <p className="mt-2 font-body italic text-cream/85">
+            The Post Office — a postcard to the author.
+          </p>
           <Art n={16} className="absolute -top-2 right-0 hidden w-20 rotate-[4deg] sm:block" />
         </header>
 
-        <form onSubmit={handleSubmit} className="postcard relative mx-auto mt-10 max-w-2xl p-6 md:p-10">
+        <form
+          onSubmit={handleSubmit}
+          className="postcard relative mx-auto mt-10 max-w-2xl p-6 md:p-10"
+        >
           {sent && (
             <div className="postmark" aria-hidden>
               <span lang="hi">शुक्रिया!</span>
@@ -97,13 +104,18 @@ function Feedback() {
             </label>
             <label className="field">
               <span className="hand">Email (optional)</span>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                maxLength={255}
+              />
             </label>
           </div>
 
           <fieldset className="mt-8">
             <legend className="hand text-lg">How was the chai? · कैसी लगी?</legend>
-            <div className="mt-2 flex items-center gap-2">
+            <div className="mt-2 flex flex-wrap items-center gap-x-1 gap-y-2 sm:gap-2">
               {[1, 2, 3, 4, 5].map((n) => (
                 <button
                   key={n}
@@ -116,7 +128,7 @@ function Feedback() {
                   <img src={LOGO} alt="" width={44} height={44} />
                 </button>
               ))}
-              <span lang="hi" className="hand ml-3 text-xl">
+              <span lang="hi" className="rate-label">
                 {LABELS[rating]}
               </span>
             </div>
@@ -124,25 +136,35 @@ function Feedback() {
 
           <label className="field mt-8 block">
             <span className="hand">Thoughts · मन की बात</span>
-            <textarea rows={6} className="lined" value={thoughts} onChange={(e) => setThoughts(e.target.value)} maxLength={4000} />
+            <textarea
+              rows={6}
+              className="lined"
+              value={thoughts}
+              onChange={(e) => setThoughts(e.target.value)}
+              maxLength={4000}
+            />
           </label>
 
-          {problem && <p className="hand mt-3 text-lg" lang="hi">{problem}</p>}
+          {problem && (
+            <p className="hand mt-3 text-lg" lang="hi">
+              {problem}
+            </p>
+          )}
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <button type="submit" disabled={sending} className="cut-btn">
               {sending ? "भेज रहे हैं…" : <span lang="hi">चिट्ठी भेजो</span>}
             </button>
-            {sent && <p className="tiro-thanks" lang="hi">शुक्रिया! आपकी चिट्ठी पहुँच गई।</p>}
+            {sent && (
+              <p className="tiro-thanks" lang="hi">
+                शुक्रिया! आपकी चिट्ठी पहुँच गई।
+              </p>
+            )}
           </div>
         </form>
 
         {sent && <Art n={44} className="dove-out absolute -bottom-2 right-10 w-16" />}
       </section>
-
-      <div className="relative mx-auto -mt-2 max-w-5xl px-6">
-        <Art n={29} className="mx-auto w-full max-w-3xl" />
-      </div>
     </div>
   );
 }

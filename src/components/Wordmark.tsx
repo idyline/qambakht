@@ -8,7 +8,11 @@ import { cn } from "@/lib/utils";
 export function Wordmark({ className, animate }: { className?: string; animate?: boolean }) {
   const letters = "Qambakht".split("");
   return (
-    <span className={cn("wordmark", animate && "wordmark-drop", className)} aria-label="Qambakht." role="img">
+    <span
+      className={cn("wordmark", animate && "wordmark-drop", className)}
+      aria-label="Qambakht."
+      role="img"
+    >
       {letters.map((ch, i) => (
         <span key={i} className="wm-l" style={{ animationDelay: `${i * 70}ms` }} aria-hidden>
           {ch}
@@ -19,7 +23,7 @@ export function Wordmark({ className, animate }: { className?: string; animate?:
   );
 }
 
-export function CupLogo({ className, size = 44 }: { className?: string; size?: number }) {
+export function CupLogo({ className, size = 32 }: { className?: string; size?: number }) {
   return (
     <img
       src={LOGO}
@@ -30,6 +34,15 @@ export function CupLogo({ className, size = 44 }: { className?: string; size?: n
       className={cn("cup-logo", className)}
       style={{ width: size, height: size }}
     />
+  );
+}
+
+/** The site logo at Instagram-avatar scale: the cup in a round cream badge with a gold ring. */
+export function LogoBadge({ className, size = 32 }: { className?: string; size?: number }) {
+  return (
+    <span className={cn("logo-badge", className)} style={{ width: size, height: size }} aria-hidden>
+      <img src={LOGO} alt="" width={size} height={size} />
+    </span>
   );
 }
 
@@ -48,11 +61,11 @@ export function Steam({ className }: { className?: string }) {
   );
 }
 
-export function Lockup({ className, size = 40 }: { className?: string; size?: number }) {
+export function Lockup({ className, size = 32 }: { className?: string; size?: number }) {
   return (
-    <span className={cn("inline-flex items-center gap-2", className)}>
-      <CupLogo size={size} />
-      <Wordmark />
+    <span className={cn("inline-flex items-center gap-2.5", className)}>
+      <LogoBadge size={size} />
+      <Wordmark className="wm-sm" />
     </span>
   );
 }

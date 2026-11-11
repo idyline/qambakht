@@ -1,11 +1,14 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { useRef } from "react";
 
-import { Art } from "@/components/Art";
+import { BookShowcase } from "@/components/BookShowcase";
 import { BookTile } from "@/components/BookTile";
+import { Reveal } from "@/components/Reveal";
 import { Tilt } from "@/components/Tilt";
+import { NavLink } from "@/components/Transition";
 import { Typewriter } from "@/components/Typewriter";
-import { Wordmark } from "@/components/Wordmark";
-import { HERO_LINE, covers, pageHead } from "@/data/site";
+import { LogoBadge } from "@/components/Wordmark";
+import { HERO_HEAD, HERO_TAIL, pageHead } from "@/data/site";
 
 export const Route = createFileRoute("/")({
   head: () =>
@@ -16,43 +19,58 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  return (
-    <div className="relative pt-32 md:pt-36">
-      {/* HERO — wordmark, the fixed Hindi line, a warm welcome, and the Hindi cover in its arch */}
-      <section className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 pb-16 md:grid-cols-[1.1fr_0.9fr]">
-        <div className="reveal relative">
-          <Wordmark className="text-6xl sm:text-7xl md:text-[7rem]" />
-          <p lang="hi" className="font-tiro mt-6 min-h-[4rem] text-xl leading-[1.8] sm:text-2xl">
-            <Typewriter phrases={[HERO_LINE]} typingMs={60} holdingMs={4200} />
-          </p>
-          <p className="mt-4 max-w-md text-lg leading-relaxed">
-            Welcome to Qambakht. — a quiet corner of the internet where ordinary life reads like
-            literature. Free, in English and Hindi, whenever the mood strikes.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Link to="/library" className="cut-btn" lang="hi">
-              पुस्तकालय चलें
-            </Link>
-            <Link to="/author" className="cut-btn cut-btn-alt" lang="hi">
-              मिलिए कम्बख़्त से
-            </Link>
-          </div>
-          <p lang="hi" className="margin-note mt-8 rotate-[-2deg]">
-            पढ़ते-पढ़ते चाय ठंडी न हो जाए
-          </p>
-        </div>
+  const hero = useRef<HTMLElement>(null);
+  const onMove = (e: React.PointerEvent) => {
+    const el = hero.current;
+    if (!el || e.pointerType === "touch") return;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty("--cx", `${e.clientX - r.left}px`);
+    el.style.setProperty("--cy", `${e.clientY - r.top}px`);
+  };
 
-        <div className="relative mx-auto w-full max-w-sm">
-          <Art n={24} className="w-full" priority />
-          <img
-            src={covers.hindi.url}
-            alt="Cover of आम ज़िंदगी! by Adarsh Anand"
-            width={600}
-            height={900}
-            fetchPriority="high"
-            className="cover-in-arch"
-          />
-          <Art n={8} className="absolute -right-5 top-4 z-[3] w-20 rotate-[12deg]" />
+  return (
+    <div className="relative pt-28 md:pt-32">
+      {/* HERO — the Hindi line, a warm welcome, and the two editions floating in 3D */}
+      <section ref={hero} onPointerMove={onMove} className="hero">
+        <div className="hero-spot" aria-hidden />
+        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 pb-16 md:grid-cols-[1.05fr_0.95fr] md:gap-8">
+          <div className="relative">
+            <p className="eyebrow enter" style={{ animationDelay: "60ms" }}>
+              <LogoBadge size={24} />
+              <span>Qambakht.</span>
+              <span className="eyebrow-dot" aria-hidden />
+              <span>A literary lounge</span>
+            </p>
+            <h1 lang="hi" className="hero-title enter" style={{ animationDelay: "160ms" }}>
+              {HERO_HEAD}
+              <span className="hero-tail">
+                <Typewriter phrases={[HERO_TAIL]} typingMs={70} holdingMs={4200} />
+              </span>
+            </h1>
+            <p className="hero-copy enter" style={{ animationDelay: "280ms" }}>
+              Welcome to Qambakht. — a quiet corner of the internet where ordinary life reads like
+              literature. Free, in English and Hindi, whenever the mood strikes.
+            </p>
+            <div className="enter mt-8 flex flex-wrap gap-3" style={{ animationDelay: "380ms" }}>
+              <NavLink to="/library" className="cut-btn glow-btn" lang="hi">
+                पुस्तकालय चलें
+              </NavLink>
+              <NavLink to="/author" className="cut-btn cut-btn-alt glow-btn" lang="hi">
+                मिलिए कम्बख़्त से
+              </NavLink>
+            </div>
+            <ul className="hero-chips enter" style={{ animationDelay: "480ms" }}>
+              <li>
+                English · <span lang="hi">हिन्दी</span>
+              </li>
+              <li>Free to read</li>
+              <li>PDF download</li>
+            </ul>
+          </div>
+
+          <div className="enter" style={{ animationDelay: "240ms" }}>
+            <BookShowcase />
+          </div>
         </div>
       </section>
 
@@ -63,47 +81,66 @@ function Home() {
         style={{ backgroundImage: "url(/assets/art/41-baraat-procession.jpg)" }}
       />
 
-      {/* CURATED READING — a calm bento: two books and the lane that watches back */}
+      {/* CURATED READING — a calm bento: two books, the lane, and a quick way in */}
       <section className="mx-auto max-w-6xl px-6 py-20">
-        <header className="mb-12 text-center">
-          <h2 className="title-en text-4xl md:text-5xl">Curated Reading</h2>
-          <p lang="hi" className="font-tiro mt-3 text-2xl text-ink/80">
-            दो किताबें, एक दिल।
-          </p>
-        </header>
-        <div className="grid gap-8 md:grid-cols-2">
-          <BookTile lang="english" mode="home" />
-          <BookTile lang="hindi" mode="home" />
-          <Tilt className="md:col-span-2">
-            <div className="paper-card relative grid items-center gap-6 p-6 sm:grid-cols-[120px_1fr] md:p-8">
-              <Art n={21} className="mx-auto w-24 md:w-28" />
-              <div>
-                <p lang="hi" className="title-hi text-2xl md:text-3xl">
-                  गली सुन रही है
-                </p>
-                <p className="mt-2 leading-relaxed">
-                  Every story here began as something overheard — a quarrel, a joke, a silence at a
-                  tea stall. Step in; the lane keeps its secrets and tells them beautifully.
-                </p>
-                <Link to="/author" className="cut-btn cut-btn-alt mt-4" lang="hi">
-                  मिलिए कम्बख़्त से
-                </Link>
-              </div>
-            </div>
-          </Tilt>
+        <Reveal>
+          <header className="mb-12 text-center">
+            <p className="kicker">Curated Reading</p>
+            <h2 lang="hi" className="section-title">
+              दो किताबें, एक दिल।
+            </h2>
+          </header>
+        </Reveal>
+        <div className="grid gap-6 md:grid-cols-6">
+          <Reveal className="md:col-span-3">
+            <BookTile lang="english" mode="home" />
+          </Reveal>
+          <Reveal className="md:col-span-3" delay={80}>
+            <BookTile lang="hindi" mode="home" />
+          </Reveal>
+          <Reveal className="md:col-span-4" delay={120}>
+            <Tilt className="paper-card bento-quote h-full">
+              <span className="quote-mark" aria-hidden>
+                “
+              </span>
+              <p lang="hi" className="title-hi text-2xl md:text-3xl">
+                गली सुन रही है
+              </p>
+              <p className="mt-3 max-w-xl leading-relaxed">
+                Every story here began as something overheard — a quarrel, a joke, a silence at a
+                tea stall. Step in; the lane keeps its secrets and tells them beautifully.
+              </p>
+              <NavLink to="/author" className="cut-btn cut-btn-alt glow-btn mt-6" lang="hi">
+                मिलिए कम्बख़्त से
+              </NavLink>
+            </Tilt>
+          </Reveal>
+          <Reveal className="md:col-span-2" delay={160}>
+            <Tilt className="paper-card bento-mini h-full">
+              <p className="kicker">Reading room</p>
+              <p className="mt-2 text-lg leading-relaxed">
+                Read in your browser or keep the PDF — both editions, free.
+              </p>
+              <NavLink to="/library" className="cut-btn glow-btn mt-6" lang="hi">
+                पढ़ें
+              </NavLink>
+            </Tilt>
+          </Reveal>
         </div>
       </section>
 
       {/* closing note */}
-      <section className="mx-auto max-w-4xl px-6 pb-10">
-        <div className="night-panel rounded-3xl px-8 py-12 text-center">
-          <p lang="hi" className="konkani text-3xl md:text-4xl">
-            कहानियाँ, जो ठहर जाएँ
-          </p>
-          <Link to="/library" className="cut-btn mt-6" lang="hi">
-            पुस्तकालय चलें
-          </Link>
-        </div>
+      <section className="mx-auto max-w-4xl px-6 pb-6">
+        <Reveal>
+          <div className="closing-panel">
+            <p lang="hi" className="konkani text-3xl md:text-4xl">
+              कहानियाँ, जो ठहर जाएँ
+            </p>
+            <NavLink to="/library" className="cut-btn glow-btn mt-6" lang="hi">
+              पुस्तकालय चलें
+            </NavLink>
+          </div>
+        </Reveal>
       </section>
     </div>
   );

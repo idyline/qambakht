@@ -1,4 +1,5 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { NavLink } from "@/components/Transition";
 import { ArrowLeft, Download } from "lucide-react";
 
 import { covers, pdfs } from "@/data/site";
@@ -18,9 +19,15 @@ export const Route = createFileRoute("/read/$lang")({
   head: () => ({
     meta: [
       { title: "Qambakht." },
-      { name: "description", content: "Read Aam Zindagi! free in the browser, in English or Hindi." },
+      {
+        name: "description",
+        content: "Read Aam Zindagi! free in the browser, in English or Hindi.",
+      },
       { property: "og:title", content: "Qambakht." },
-      { property: "og:description", content: "Read Aam Zindagi! free in the browser, in English or Hindi." },
+      {
+        property: "og:description",
+        content: "Read Aam Zindagi! free in the browser, in English or Hindi.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -39,10 +46,10 @@ function Reader() {
     <div className="relative z-[2] flex h-screen flex-col">
       <header className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border/60 px-4 sm:px-6">
         <div className="flex items-center gap-3">
-          <Link to="/library" className="btn-outline px-3 py-1.5 text-xs sm:text-sm">
+          <NavLink to="/library" className="btn-outline px-3 py-1.5 text-xs sm:text-sm">
             <ArrowLeft className="h-4 w-4" />
             <span className="hidden sm:inline">Library</span>
-          </Link>
+          </NavLink>
           <div className="leading-tight">
             <p className="font-display text-sm text-tan sm:text-base">{title}</p>
             <p className="text-[10px] uppercase tracking-[0.25em] text-gold-bright/90">
@@ -50,11 +57,7 @@ function Reader() {
             </p>
           </div>
         </div>
-        <a
-          href={url}
-          download
-          className="btn-gold px-4 py-2 text-xs sm:text-sm"
-        >
+        <a href={url} download className="btn-gold px-4 py-2 text-xs sm:text-sm">
           <Download className="h-4 w-4" />
           <span className="hidden sm:inline">Download</span>
         </a>

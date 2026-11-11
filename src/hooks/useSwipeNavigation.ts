@@ -16,10 +16,7 @@ export function swipeTarget(
 ): (typeof PAGE_ORDER)[number] | null {
   if (Math.abs(dx) < 64 || Math.abs(dx) <= Math.abs(dy) * 1.4) return null;
 
-  const base =
-    pathname === "/"
-      ? "/"
-      : PAGE_ORDER.find((p) => p !== "/" && pathname.startsWith(p));
+  const base = pathname === "/" ? "/" : PAGE_ORDER.find((p) => p !== "/" && pathname.startsWith(p));
   if (!base) return null; // e.g. the PDF reader page — no page swiping there
 
   const idx = PAGE_ORDER.indexOf(base);
@@ -33,7 +30,7 @@ export function swipeTarget(
  * pages (Home ↔ Library ↔ Author ↔ Feedback). Vertical scrolling and short
  * or ambiguous gestures are ignored, and the PDF reader is never swapped.
  */
-export function useSwipeNavigation() {
+export function useSwipeNavigation(go?: (to: (typeof PAGE_ORDER)[number]) => void) {
   const router = useRouter();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
@@ -55,7 +52,9 @@ export function useSwipeNavigation() {
       if (!t) return;
       if (Date.now() - t0 > 800) return;
       const target = swipeTarget(pathname, t.clientX - sx, t.clientY - sy);
-      if (target) void router.navigate({ to: target });
+      if (!target) return;
+      if (go) go(target);
+      else void router.navigate({ to: target });
     };
 
     window.addEventListener("touchstart", onStart, { passive: true });
@@ -64,5 +63,5 @@ export function useSwipeNavigation() {
       window.removeEventListener("touchstart", onStart);
       window.removeEventListener("touchend", onEnd);
     };
-  }, [pathname, router]);
+  }, [pathname, router, go]);
 }
