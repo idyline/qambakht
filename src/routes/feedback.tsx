@@ -4,10 +4,7 @@ import { useState } from "react";
 import { AUTHOR_EMAIL, LOGO, pageHead } from "@/data/site";
 
 export const Route = createFileRoute("/feedback")({
-  head: () =>
-    pageHead(
-      "और सुनाओ? — rate Aam Zindagi! and send your reader thoughts straight to Adarsh Anand.",
-    ),
+  head: () => pageHead("और सुनाओ? — आम ज़िंदगी पर अपनी राय आदर्श आनंद तक पहुँचाएँ।"),
   component: Feedback,
 });
 
@@ -26,17 +23,17 @@ function Feedback() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!thoughts.trim()) {
-      setProblem("दो शब्द तो लिखिए — just a line or two of thoughts, please.");
+      setProblem("कृपया अपनी बात ज़रूर लिखें।");
       return;
     }
     setProblem("");
-    const subject = `Qambakht. feedback from ${name || "a reader"}`;
+    const subject = `Qambakht. पर प्रतिक्रिया — ${name || "एक पाठक"}`;
     const body = [
-      `Name: ${name || "(not given)"}`,
-      email ? `Email: ${email}` : null,
-      `Rating: ${rating ? `${rating} / 5` : "(not given)"}`,
+      `नाम: ${name || "नहीं दिया गया"}`,
+      email ? `ईमेल: ${email}` : null,
+      `रेटिंग: ${rating ? `${rating} / 5` : "नहीं दी गई"}`,
       "",
-      "Reader thoughts:",
+      "पाठक की बात:",
       thoughts,
     ]
       .filter((line) => line !== null)
@@ -51,7 +48,7 @@ function Feedback() {
           body: JSON.stringify({
             access_key: WEB3FORMS_KEY,
             subject,
-            from_name: name || "A Qambakht. reader",
+            from_name: name || "Qambakht. के पाठक",
             replyto: email || undefined,
             message: body,
           }),
@@ -73,11 +70,14 @@ function Feedback() {
 
   return (
     <div className="relative pt-32 md:pt-36">
-      <section className="night-panel relative mx-auto max-w-4xl rounded-3xl px-6 py-12 md:px-12">
-        <header className="relative text-center sm:pr-28">
-          <h1 lang="hi" className="konkani text-5xl md:text-6xl">
-            और सुनाओ?
-          </h1>
+      <section
+        lang="hi"
+        className="feedback-panel relative mx-auto max-w-4xl rounded-3xl px-6 py-12 md:px-12"
+      >
+        <header className="relative text-center">
+          <p className="eyebrow">आम ज़िंदगी · पाठकों की बात</p>
+          <h1 className="feedback-title mt-3 text-5xl md:text-6xl">और सुनाओ?</h1>
+          <p className="feedback-intro mt-3">चाय पर, किताब पर — जो मन में हो, लिख भेजिए।</p>
         </header>
 
         <form
@@ -91,28 +91,36 @@ function Feedback() {
           )}
           <div className="grid gap-6 md:grid-cols-2">
             <label className="field">
-              <span className="hand">Name · नाम</span>
-              <input value={name} onChange={(e) => setName(e.target.value)} maxLength={100} />
+              <span className="feedback-label">आपका नाम</span>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                maxLength={100}
+                autoComplete="name"
+                placeholder="नाम लिखें"
+              />
             </label>
             <label className="field">
-              <span className="hand">Email (optional)</span>
+              <span className="feedback-label">ईमेल (वैकल्पिक)</span>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 maxLength={255}
+                autoComplete="email"
+                placeholder="ईमेल लिखें"
               />
             </label>
           </div>
 
           <fieldset className="mt-8">
-            <legend className="hand text-lg">How was the chai? · कैसी लगी?</legend>
+            <legend className="feedback-label text-lg">चाय कैसी लगी?</legend>
             <div className="mt-2 flex items-center gap-2">
               {[1, 2, 3, 4, 5].map((n) => (
                 <button
                   key={n}
                   type="button"
-                  aria-label={`${n} of 5`}
+                  aria-label={`पाँच में से ${n}`}
                   aria-pressed={rating === n}
                   onClick={() => setRating(n)}
                   className={`cup-rate ${n <= rating ? "on" : ""}`}
@@ -120,35 +128,36 @@ function Feedback() {
                   <img src={LOGO} alt="" width={44} height={44} />
                 </button>
               ))}
-              <span lang="hi" className="hand ml-3 text-xl">
+              <span lang="hi" className="feedback-rating-label ml-3 text-xl">
                 {LABELS[rating]}
               </span>
             </div>
           </fieldset>
 
           <label className="field mt-8 block">
-            <span className="hand">Thoughts · मन की बात</span>
+            <span className="feedback-label">मन की बात</span>
             <textarea
               rows={6}
               className="lined"
               value={thoughts}
               onChange={(e) => setThoughts(e.target.value)}
               maxLength={4000}
+              placeholder="अपनी राय यहाँ लिखें…"
             />
           </label>
 
           {problem && (
-            <p className="hand mt-3 text-lg" lang="hi">
+            <p className="feedback-message mt-3 text-lg" lang="hi" role="alert">
               {problem}
             </p>
           )}
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <button type="submit" disabled={sending} className="cut-btn">
-              {sending ? "भेज रहे हैं…" : <span lang="hi">चिट्ठी भेजो</span>}
+              {sending ? "भेज रहे हैं…" : <span>चिट्ठी भेजें</span>}
             </button>
             {sent && (
-              <p className="tiro-thanks" lang="hi">
+              <p className="tiro-thanks" lang="hi" role="status" aria-live="polite">
                 शुक्रिया! आपकी चिट्ठी पहुँच गई।
               </p>
             )}

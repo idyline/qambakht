@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import { Art } from "@/components/Art";
-import { covers, pageHead } from "@/data/site";
+import { HERO_BOOK_ARTWORK, pageHead } from "@/data/site";
 
 export const Route = createFileRoute("/")({
   head: () => pageHead("Aam Zindagi! — a novel by Adarsh Anand. Read in English or Hindi."),
@@ -30,18 +29,16 @@ function Home() {
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-[300px] md:max-w-[360px]">
-          <Art n={24} className="absolute inset-0 h-full w-full opacity-75" cover />
+        <figure className="home-art-frame mx-auto w-full max-w-[440px]">
           <img
-            src={covers.hindi.url}
-            alt="आम ज़िंदगी! book cover"
-            width={600}
-            height={900}
+            src={HERO_BOOK_ARTWORK}
+            alt="Aam Zindagi! in English and Hindi, shown as a pair of paperback covers."
+            width={512}
+            height={384}
             fetchPriority="high"
-            className="book-hero relative z-[1] mx-auto w-[72%] rotate-[-2deg]"
+            className="home-art"
           />
-          <Art n={8} className="absolute -right-10 top-4 z-[2] w-16 sm:w-20" />
-        </div>
+        </figure>
       </section>
 
       <section className="mx-auto max-w-5xl px-6 pb-16">

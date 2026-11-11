@@ -81,7 +81,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "application-name", content: SITE_NAME },
       { name: "apple-mobile-web-app-title", content: SITE_NAME },
-      { name: "theme-color", content: "#F8F6F1" },
+      { name: "theme-color", content: "#F6F2E9" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
