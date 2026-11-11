@@ -2,7 +2,7 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Art } from "@/components/Art";
-import { CupLogo, Lockup, Steam, Wordmark } from "@/components/Wordmark";
+import { CupLogo, Steam, Wordmark } from "@/components/Wordmark";
 import { ART, INTRO_LINE, NAV, type NavTo } from "@/data/site";
 
 const reduced = () =>
@@ -12,7 +12,7 @@ const reduced = () =>
 /* Header + आँगन menu overlay + page interstitial                      */
 /* ------------------------------------------------------------------ */
 
-export function SiteChrome({ onExit }: { onExit: () => void }) {
+export function SiteChrome() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
   const btnRef = useRef<HTMLButtonElement>(null);
@@ -25,16 +25,24 @@ export function SiteChrome({ onExit }: { onExit: () => void }) {
   const openMenu = () => {
     const r = btnRef.current?.getBoundingClientRect();
     if (r) setOrigin({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
-    setHover(Math.max(0, NAV.findIndex((n) => n.to === pathname)));
+    setHover(
+      Math.max(
+        0,
+        NAV.findIndex((n) => n.to === pathname),
+      ),
+    );
     setMenu("open");
   };
   const closeMenu = useCallback((after?: () => void) => {
     setMenu("closing");
-    window.setTimeout(() => {
-      setMenu("closed");
-      btnRef.current?.focus();
-      after?.();
-    }, reduced() ? 0 : 500);
+    window.setTimeout(
+      () => {
+        setMenu("closed");
+        btnRef.current?.focus();
+        after?.();
+      },
+      reduced() ? 0 : 500,
+    );
   }, []);
 
   const go = (idx: number, to: NavTo) => {
@@ -125,7 +133,12 @@ export function SiteChrome({ onExit }: { onExit: () => void }) {
           <Art n={26} className="angan-corner bottom-0 right-0 w-28 rotate-180 md:w-44" />
           <Art n={27} className="angan-corner bottom-0 left-0 hidden w-32 md:block" />
 
-          <button type="button" className="angan-close" aria-label="बंद करें" onClick={() => closeMenu()}>
+          <button
+            type="button"
+            className="angan-close"
+            aria-label="बंद करें"
+            onClick={() => closeMenu()}
+          >
             ✕
           </button>
 
@@ -136,7 +149,10 @@ export function SiteChrome({ onExit }: { onExit: () => void }) {
                   <li
                     key={n.to}
                     className="angan-item"
-                    style={{ animationDelay: `${180 + i * 80}ms`, ["--rot" as string]: `${i % 2 ? 1.5 : -1.5}deg` }}
+                    style={{
+                      animationDelay: `${180 + i * 80}ms`,
+                      ["--rot" as string]: `${i % 2 ? 1.5 : -1.5}deg`,
+                    }}
                   >
                     <a
                       href={n.to}
@@ -151,17 +167,13 @@ export function SiteChrome({ onExit }: { onExit: () => void }) {
                       aria-current={pathname === n.to ? "page" : undefined}
                     >
                       <Art n={n.art} className="tape w-12 shrink-0 md:hidden" />
-                      <span className={`angan-word ${pathname === n.to ? "is-current" : ""}`}>{n.label}</span>
+                      <span className={`angan-word ${pathname === n.to ? "is-current" : ""}`}>
+                        {n.label}
+                      </span>
                     </a>
                   </li>
                 ))}
               </ul>
-              <div className="mt-10 flex flex-wrap items-center gap-6">
-                <button type="button" className="hand text-xl text-cream underline decoration-wavy" lang="hi" onClick={() => closeMenu(onExit)}>
-                  फिर मिलते हैं!
-                </button>
-                <Lockup size={32} />
-              </div>
             </nav>
             <div className="relative hidden h-[60vh] md:block">
               <div key={hover} className="angan-preview">
@@ -263,14 +275,19 @@ export function useExitScreen() {
 
   const pushSentinel = useCallback(() => {
     const st = window.history.state ?? {};
-    window.history.pushState({ ...st, __TSR_index: (st.__TSR_index ?? 0) + 1, qSentinel: true }, "", window.location.href);
+    window.history.pushState(
+      { ...st, __TSR_index: (st.__TSR_index ?? 0) + 1, qSentinel: true },
+      "",
+      window.location.href,
+    );
     pushed.current = true;
   }, []);
 
   const dismiss = useCallback(() => {
     window.clearTimeout(timer.current);
     setExit(null);
-    if (!window.history.state?.qSentinel && (window.history.state?.__TSR_index ?? 0) === 0) pushSentinel();
+    if (!window.history.state?.qSentinel && (window.history.state?.__TSR_index ?? 0) === 0)
+      pushSentinel();
   }, [pushSentinel]);
 
   const show = useCallback(() => {
@@ -282,7 +299,8 @@ export function useExitScreen() {
   useEffect(() => {
     if (!pushed.current && (window.history.state?.__TSR_index ?? 0) === 0) pushSentinel();
     const onPop = () => {
-      if ((window.history.state?.__TSR_index ?? 0) === 0 && !window.history.state?.qSentinel) show();
+      if ((window.history.state?.__TSR_index ?? 0) === 0 && !window.history.state?.qSentinel)
+        show();
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
@@ -321,7 +339,11 @@ export function ExitScreen({
       onClick={() => (armed ? onTap() : onArm())}
     >
       <Art n={44} className="dove-out absolute left-[10%] top-[12%] w-28" />
-      <Art n={44} className="dove-out absolute right-[12%] top-[20%] w-20" style={{ animationDelay: "0.4s" }} />
+      <Art
+        n={44}
+        className="dove-out absolute right-[12%] top-[20%] w-20"
+        style={{ animationDelay: "0.4s" }}
+      />
       <div className="relative flex flex-col items-center text-center">
         <span className="relative">
           <Steam className="steam-fade absolute -top-12 left-1/2 w-12 -translate-x-1/2" />

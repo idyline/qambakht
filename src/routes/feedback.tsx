@@ -1,12 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
-import { Art } from "@/components/Art";
 import { AUTHOR_EMAIL, LOGO, pageHead } from "@/data/site";
 
 export const Route = createFileRoute("/feedback")({
   head: () =>
-    pageHead("और सुनाओ? — rate Aam Zindagi! and send your reader thoughts straight to Adarsh Anand."),
+    pageHead(
+      "और सुनाओ? — rate Aam Zindagi! and send your reader thoughts straight to Adarsh Anand.",
+    ),
   component: Feedback,
 });
 
@@ -77,14 +78,12 @@ function Feedback() {
           <h1 lang="hi" className="konkani text-5xl md:text-6xl">
             और सुनाओ?
           </h1>
-          <p className="extrude-night mt-2 text-xl" lang="hi">
-            अनुभव लिख भेजिए
-          </p>
-          <p className="mt-2 font-body italic text-cream/85">The Post Office — a postcard to the author.</p>
-          <Art n={16} className="absolute -top-2 right-0 hidden w-20 rotate-[4deg] sm:block" />
         </header>
 
-        <form onSubmit={handleSubmit} className="postcard relative mx-auto mt-10 max-w-2xl p-6 md:p-10">
+        <form
+          onSubmit={handleSubmit}
+          className="postcard relative mx-auto mt-10 max-w-2xl p-6 md:p-10"
+        >
           {sent && (
             <div className="postmark" aria-hidden>
               <span lang="hi">शुक्रिया!</span>
@@ -97,7 +96,12 @@ function Feedback() {
             </label>
             <label className="field">
               <span className="hand">Email (optional)</span>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                maxLength={255}
+              />
             </label>
           </div>
 
@@ -124,25 +128,33 @@ function Feedback() {
 
           <label className="field mt-8 block">
             <span className="hand">Thoughts · मन की बात</span>
-            <textarea rows={6} className="lined" value={thoughts} onChange={(e) => setThoughts(e.target.value)} maxLength={4000} />
+            <textarea
+              rows={6}
+              className="lined"
+              value={thoughts}
+              onChange={(e) => setThoughts(e.target.value)}
+              maxLength={4000}
+            />
           </label>
 
-          {problem && <p className="hand mt-3 text-lg" lang="hi">{problem}</p>}
+          {problem && (
+            <p className="hand mt-3 text-lg" lang="hi">
+              {problem}
+            </p>
+          )}
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <button type="submit" disabled={sending} className="cut-btn">
               {sending ? "भेज रहे हैं…" : <span lang="hi">चिट्ठी भेजो</span>}
             </button>
-            {sent && <p className="tiro-thanks" lang="hi">शुक्रिया! आपकी चिट्ठी पहुँच गई।</p>}
+            {sent && (
+              <p className="tiro-thanks" lang="hi">
+                शुक्रिया! आपकी चिट्ठी पहुँच गई।
+              </p>
+            )}
           </div>
         </form>
-
-        {sent && <Art n={44} className="dove-out absolute -bottom-2 right-10 w-16" />}
       </section>
-
-      <div className="relative mx-auto -mt-2 max-w-5xl px-6">
-        <Art n={29} className="mx-auto w-full max-w-3xl" />
-      </div>
     </div>
   );
 }
