@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, type CSSProperties, type FormEvent } from "react";
 
 import { AUTHOR_EMAIL, LOGO, pageHead } from "@/data/site";
 
@@ -8,8 +8,24 @@ export const Route = createFileRoute("/feedback")({
   component: Feedback,
 });
 
-const WEB3FORMS_KEY = import.meta.env["VITE_WEB3FORMS_ACCESS_KEY"] as string | undefined;
 const LABELS = ["", "Not for me", "Okay", "Good", "Great", "Loved it!"];
+const CONFETTI_PIECES = Array.from({ length: 42 }, (_, index) => index);
+
+function FeedbackConfetti() {
+  return (
+    <span className="feedback-confetti" aria-hidden="true">
+      {CONFETTI_PIECES.map((piece) => {
+        const style = {
+          left: `${(piece * 37) % 100}%`,
+          animationDelay: `${(piece % 9) * 35}ms`,
+          "--confetti-drift": `${((piece * 19) % 120) - 60}px`,
+        } as CSSProperties;
+
+        return <i key={piece} data-color={piece % 5} data-shape={piece % 3} style={style} />;
+      })}
+    </span>
+  );
+}
 
 function Feedback() {
   const [name, setName] = useState("");
@@ -19,52 +35,57 @@ function Feedback() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [problem, setProblem] = useState("");
+  const [fallbackHref, setFallbackHref] = useState("");
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!thoughts.trim()) {
       setProblem("Please share a few thoughts before sending.");
       return;
     }
+
     setProblem("");
-    const subject = `Feedback on Qambakht. — ${name || "A reader"}`;
-    const body = [
+    setFallbackHref("");
+    setSending(true);
+    const message = [
       `Name: ${name || "Not provided"}`,
-      email ? `Email: ${email}` : null,
+      `Email: ${email || "Not provided"}`,
       `Rating: ${rating ? `${rating} / 5` : "Not provided"}`,
       "",
-      "Message:",
-      thoughts,
-    ]
-      .filter((line) => line !== null)
-      .join("\n");
+      thoughts.trim(),
+    ].join("\n");
+    const mailto = `mailto:${AUTHOR_EMAIL}?${new URLSearchParams({
+      subject: `Feedback on Qambakht. — ${name || "A reader"}`,
+      body: message,
+    }).toString()}`;
 
-    if (WEB3FORMS_KEY) {
-      setSending(true);
-      try {
-        const res = await fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({
-            access_key: WEB3FORMS_KEY,
-            subject,
-            from_name: name || "Qambakht. reader",
-            replyto: email || undefined,
-            message: body,
-          }),
-        });
-        if (!res.ok) throw new Error(`Web3Forms responded ${res.status}`);
-        setSent(true);
-      } catch (err) {
-        console.error(err);
-        window.location.href = `mailto:${AUTHOR_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        setSent(true);
-      } finally {
-        setSending(false);
-      }
-    } else {
-      window.location.href = `mailto:${AUTHOR_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    try {
+      const formData = new FormData(e.currentTarget);
+      formData.set("_subject", `Feedback on Qambakht. — ${name || "A reader"}`);
+      formData.set("_template", "table");
+      formData.set("rating", rating ? `${rating} / 5` : "Not provided");
+      if (email) formData.set("_replyto", email);
+
+      const response = await fetch(`https://formsubmit.co/ajax/${AUTHOR_EMAIL}`, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: formData,
+      });
+      const result = (await response.json()) as {
+        ok?: boolean;
+        success?: boolean | string;
+        message?: string;
+      };
+      const delivered = result.ok === true || result.success === true || result.success === "true";
+      if (!response.ok || !delivered) throw new Error(result.message || "Feedback delivery failed");
       setSent(true);
+    } catch {
+      setFallbackHref(mailto);
+      setProblem(
+        "Automatic delivery is unavailable right now. You can still send your feedback by email.",
+      );
+    } finally {
+      setSending(false);
     }
   }
 
@@ -83,15 +104,19 @@ function Feedback() {
           onSubmit={handleSubmit}
           className="postcard relative mx-auto mt-10 max-w-2xl p-6 md:p-10"
         >
-          {sent && (
-            <div className="postmark" aria-hidden>
-              <span>Thank you!</span>
-            </div>
-          )}
+          <input
+            className="feedback-honeypot"
+            type="text"
+            name="_honey"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+          />
           <div className="grid gap-6 md:grid-cols-2">
             <label className="field">
               <span className="feedback-label">Name</span>
               <input
+                name="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 maxLength={100}
@@ -103,6 +128,7 @@ function Feedback() {
               <span className="feedback-label">Email (optional)</span>
               <input
                 type="email"
+                name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 maxLength={255}
@@ -135,6 +161,7 @@ function Feedback() {
             <span className="feedback-label">Your message</span>
             <textarea
               rows={6}
+              name="message"
               className="lined"
               value={thoughts}
               onChange={(e) => setThoughts(e.target.value)}
@@ -144,18 +171,24 @@ function Feedback() {
           </label>
 
           {problem && (
-            <p className="feedback-message mt-3 text-lg" role="alert">
-              {problem}
-            </p>
+            <div className="feedback-delivery-notice mt-4" role="alert">
+              <p className="feedback-message">{problem}</p>
+              {fallbackHref && (
+                <a href={fallbackHref} className="cut-btn cut-btn-alt mt-3 inline-flex">
+                  Open email draft
+                </a>
+              )}
+            </div>
           )}
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <button type="submit" disabled={sending} className="cut-btn">
-              {sending ? "Sending..." : "Send feedback"}
+            <button type="submit" disabled={sending || sent} className="cut-btn">
+              {sending ? "Sending..." : sent ? "Sent" : "Send feedback"}
             </button>
             {sent && (
               <p className="feedback-success" role="status" aria-live="polite">
                 Thanks for sharing your feedback.
+                <FeedbackConfetti />
               </p>
             )}
           </div>
