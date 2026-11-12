@@ -29,7 +29,7 @@ function Buy() {
           />
           <PurchaseCard
             title={covers.hindi.title}
-            language="हिन्दी"
+            language="Hindi"
             cover={covers.hindi.url}
             shops={[{ label: "Pothi", href: PURCHASE_LINKS.hindiPothi }]}
             hindi

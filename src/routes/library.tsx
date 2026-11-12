@@ -13,10 +13,8 @@ function Library() {
     <div className="relative min-h-[65vh] pt-32 md:pt-40">
       <section className="mx-auto max-w-5xl px-6 pb-24">
         <header className="mb-10 max-w-2xl">
-          <p className="eyebrow">The reading room</p>
-          <h1 lang="hi" className="title-hi mt-3 text-4xl sm:text-5xl">
-            पुस्तकालय
-          </h1>
+          <p className="eyebrow">Aam Zindagi!</p>
+          <h1 className="title-en mt-3 text-4xl sm:text-5xl">The reading room</h1>
           <p className="mt-3 text-ink/70">Choose a language, then settle in.</p>
         </header>
         <div className="grid gap-5 md:grid-cols-2">

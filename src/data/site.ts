@@ -1,3 +1,4 @@
+import authorProfile from "@/assets/adarsh-profile.png.asset.json";
 import pdfHindi from "@/assets/aam-zindagi-hindi.pdf.asset.json";
 
 /** Site name — always with its period. */
@@ -8,7 +9,7 @@ export const MANDALA = "/assets/mandala-peach.jpg";
 
 export const covers = {
   english: { url: "/assets/books/cover-english.png", title: "Aam Zindagi!", language: "English" },
-  hindi: { url: "/assets/books/cover-hindi.png", title: "आम ज़िंदगी!", language: "हिन्दी" },
+  hindi: { url: "/assets/books/cover-hindi.png", title: "आम ज़िंदगी!", language: "Hindi" },
 };
 
 export const pdfs = {
@@ -18,16 +19,10 @@ export const pdfs = {
     language: "English",
   },
   // The Hindi PDF is larger than the repo's 10 MB file limit, so it lives on the asset CDN.
-  hindi: { url: pdfHindi.url, title: "आम ज़िंदगी!", language: "हिन्दी" },
+  hindi: { url: pdfHindi.url, title: "आम ज़िंदगी!", language: "Hindi" },
 };
 
-export const HERO_BOOK_ARTWORK =
-  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-LsODxSlMMrwEN5HDkXw3Gza4y2UM0L.png";
-export const portraitUrl =
-  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202026-10-31%20114313-V6K7VZR4oYQP5dQ2U6RyNZD6xjPgwI.png";
-
-export const HERO_LINE = "चाय की भाप, गली की गूँज — और ज़िंदगी ख़ुद एक कहानी।";
-export const INTRO_LINE = "कहानियाँ, जो ठहर जाएँ";
+export const portraitUrl = authorProfile.url;
 
 export const AUTHOR_EMAIL = "anandadarsh942@gmail.com";
 export const CONTACT_EMAIL = "hello@qambakht.in";
@@ -36,7 +31,7 @@ export const BLURBS = {
   english:
     "An evening in English — the same small storms and quieter braveries, in words that feel like they were always yours. Pull up a chair.",
   hindi:
-    "आम ज़िंदगी as it was first breathed — unhurried, in Hindi, where every line settles like steam off a cup of chai.",
+    "The original Hindi edition — unhurried, with every line settling like steam from a cup of chai.",
 };
 
 /** Crop as fractions of the source image: top, right, bottom, left. Used to hide artist marks. */
@@ -124,11 +119,11 @@ export const ART = {
 export type ArtNo = keyof typeof ART;
 
 export const NAV = [
-  { label: "घर", to: "/" },
-  { label: "पुस्तकालय", to: "/library" },
-  { label: "कम्बख़्त", to: "/author" },
-  { label: "और सुनाओ?", to: "/feedback" },
-  { label: "किताब ले लो!", to: "/buy" },
+  { label: "घर", to: "/", english: "Home", interstitial: 24 as ArtNo },
+  { label: "पुस्तकालय", to: "/library", english: "Library", interstitial: 47 as ArtNo },
+  { label: "कम्बख़्त", to: "/author", english: "Author", interstitial: 12 as ArtNo },
+  { label: "और सुनाओ?", to: "/feedback", english: "Feedback", interstitial: 37 as ArtNo },
+  { label: "किताब ले लो!", to: "/buy", english: "Buy the book", interstitial: 48 as ArtNo },
 ] as const;
 
 /** Same title on every route, by request. */

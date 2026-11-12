@@ -4,12 +4,12 @@ import { useState } from "react";
 import { AUTHOR_EMAIL, LOGO, pageHead } from "@/data/site";
 
 export const Route = createFileRoute("/feedback")({
-  head: () => pageHead("और सुनाओ? — आम ज़िंदगी पर अपनी राय आदर्श आनंद तक पहुँचाएँ।"),
+  head: () => pageHead("Share feedback about Aam Zindagi! by Adarsh Anand."),
   component: Feedback,
 });
 
 const WEB3FORMS_KEY = import.meta.env["VITE_WEB3FORMS_ACCESS_KEY"] as string | undefined;
-const LABELS = ["", "थोड़ी फीकी", "ठीक-ठाक", "अच्छी लगी", "बहुत बढ़िया", "दिल छू गई!"];
+const LABELS = ["", "Not for me", "Okay", "Good", "Great", "Loved it!"];
 
 function Feedback() {
   const [name, setName] = useState("");
@@ -23,17 +23,17 @@ function Feedback() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!thoughts.trim()) {
-      setProblem("कृपया अपनी बात ज़रूर लिखें।");
+      setProblem("Please share a few thoughts before sending.");
       return;
     }
     setProblem("");
-    const subject = `Qambakht. पर प्रतिक्रिया — ${name || "एक पाठक"}`;
+    const subject = `Feedback on Qambakht. — ${name || "A reader"}`;
     const body = [
-      `नाम: ${name || "नहीं दिया गया"}`,
-      email ? `ईमेल: ${email}` : null,
-      `रेटिंग: ${rating ? `${rating} / 5` : "नहीं दी गई"}`,
+      `Name: ${name || "Not provided"}`,
+      email ? `Email: ${email}` : null,
+      `Rating: ${rating ? `${rating} / 5` : "Not provided"}`,
       "",
-      "पाठक की बात:",
+      "Message:",
       thoughts,
     ]
       .filter((line) => line !== null)
@@ -48,7 +48,7 @@ function Feedback() {
           body: JSON.stringify({
             access_key: WEB3FORMS_KEY,
             subject,
-            from_name: name || "Qambakht. के पाठक",
+            from_name: name || "Qambakht. reader",
             replyto: email || undefined,
             message: body,
           }),
@@ -70,14 +70,13 @@ function Feedback() {
 
   return (
     <div className="relative pt-32 md:pt-36">
-      <section
-        lang="hi"
-        className="feedback-panel relative mx-auto max-w-4xl rounded-3xl px-6 py-12 md:px-12"
-      >
+      <section className="feedback-panel relative mx-auto max-w-4xl rounded-3xl px-6 py-12 md:px-12">
         <header className="relative text-center">
-          <p className="eyebrow">आम ज़िंदगी · पाठकों की बात</p>
-          <h1 className="feedback-title mt-3 text-5xl md:text-6xl">और सुनाओ?</h1>
-          <p className="feedback-intro mt-3">चाय पर, किताब पर — जो मन में हो, लिख भेजिए।</p>
+          <p className="eyebrow">Aam Zindagi! · Reader feedback</p>
+          <h1 lang="hi" className="feedback-title mt-3 text-5xl md:text-6xl">
+            और सुनाओ?
+          </h1>
+          <p className="feedback-intro mt-3">Tell us what stayed with you.</p>
         </header>
 
         <form
@@ -86,41 +85,41 @@ function Feedback() {
         >
           {sent && (
             <div className="postmark" aria-hidden>
-              <span lang="hi">शुक्रिया!</span>
+              <span>Thank you!</span>
             </div>
           )}
           <div className="grid gap-6 md:grid-cols-2">
             <label className="field">
-              <span className="feedback-label">आपका नाम</span>
+              <span className="feedback-label">Name</span>
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 maxLength={100}
                 autoComplete="name"
-                placeholder="नाम लिखें"
+                placeholder="Your name"
               />
             </label>
             <label className="field">
-              <span className="feedback-label">ईमेल (वैकल्पिक)</span>
+              <span className="feedback-label">Email (optional)</span>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 maxLength={255}
                 autoComplete="email"
-                placeholder="ईमेल लिखें"
+                placeholder="you@example.com"
               />
             </label>
           </div>
 
           <fieldset className="mt-8">
-            <legend className="feedback-label text-lg">चाय कैसी लगी?</legend>
+            <legend className="feedback-label text-lg">How did the book feel?</legend>
             <div className="mt-2 flex items-center gap-2">
               {[1, 2, 3, 4, 5].map((n) => (
                 <button
                   key={n}
                   type="button"
-                  aria-label={`पाँच में से ${n}`}
+                  aria-label={`${n} out of 5`}
                   aria-pressed={rating === n}
                   onClick={() => setRating(n)}
                   className={`cup-rate ${n <= rating ? "on" : ""}`}
@@ -128,37 +127,35 @@ function Feedback() {
                   <img src={LOGO} alt="" width={44} height={44} />
                 </button>
               ))}
-              <span lang="hi" className="feedback-rating-label ml-3 text-xl">
-                {LABELS[rating]}
-              </span>
+              <span className="feedback-rating-label ml-3 text-xl">{LABELS[rating]}</span>
             </div>
           </fieldset>
 
           <label className="field mt-8 block">
-            <span className="feedback-label">मन की बात</span>
+            <span className="feedback-label">Your message</span>
             <textarea
               rows={6}
               className="lined"
               value={thoughts}
               onChange={(e) => setThoughts(e.target.value)}
               maxLength={4000}
-              placeholder="अपनी राय यहाँ लिखें…"
+              placeholder="Share what you liked, what you felt, or what you would change..."
             />
           </label>
 
           {problem && (
-            <p className="feedback-message mt-3 text-lg" lang="hi" role="alert">
+            <p className="feedback-message mt-3 text-lg" role="alert">
               {problem}
             </p>
           )}
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <button type="submit" disabled={sending} className="cut-btn">
-              {sending ? "भेज रहे हैं…" : <span>चिट्ठी भेजें</span>}
+              {sending ? "Sending..." : "Send feedback"}
             </button>
             {sent && (
-              <p className="tiro-thanks" lang="hi" role="status" aria-live="polite">
-                शुक्रिया! आपकी चिट्ठी पहुँच गई।
+              <p className="feedback-success" role="status" aria-live="polite">
+                Thanks for sharing your feedback.
               </p>
             )}
           </div>

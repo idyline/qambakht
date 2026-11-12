@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import { HERO_BOOK_ARTWORK, pageHead } from "@/data/site";
+import { covers, pageHead } from "@/data/site";
 
 export const Route = createFileRoute("/")({
   head: () => pageHead("Aam Zindagi! — a novel by Adarsh Anand. Read in English or Hindi."),
@@ -30,14 +30,29 @@ function Home() {
         </div>
 
         <figure className="home-art-frame mx-auto w-full max-w-[440px]">
-          <img
-            src={HERO_BOOK_ARTWORK}
-            alt="Aam Zindagi! in English and Hindi, shown as a pair of paperback covers."
-            width={512}
-            height={384}
-            fetchPriority="high"
-            className="home-art"
-          />
+          <div className="home-book-stack">
+            <img
+              src={covers.english.url}
+              alt="English cover of Aam Zindagi!"
+              width={600}
+              height={900}
+              fetchPriority="high"
+              decoding="async"
+              className="home-book home-book-english"
+            />
+            <img
+              src={covers.hindi.url}
+              alt="Hindi cover of Aam Zindagi!"
+              width={600}
+              height={900}
+              fetchPriority="high"
+              decoding="async"
+              className="home-book home-book-hindi"
+            />
+          </div>
+          <figcaption className="sr-only">
+            Aam Zindagi! is available in English and Hindi.
+          </figcaption>
         </figure>
       </section>
 
@@ -47,8 +62,8 @@ function Home() {
             <span>English</span>
             <span aria-hidden>↗</span>
           </Link>
-          <Link to="/read/$lang" params={{ lang: "hindi" }} className="reading-option" lang="hi">
-            <span>हिन्दी</span>
+          <Link to="/read/$lang" params={{ lang: "hindi" }} className="reading-option">
+            <span>Hindi</span>
             <span aria-hidden>↗</span>
           </Link>
         </div>

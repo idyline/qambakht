@@ -18,7 +18,7 @@ export function BookTile({ lang, mode }: { lang: "english" | "hindi"; mode: "hom
         className="book-card-cover"
       />
       <div className="book-card-info">
-        <p className="eyebrow">{hindi ? "हिन्दी" : "English"}</p>
+        <p className="eyebrow">{hindi ? "Hindi" : "English"}</p>
         <h3
           className={`title-${hindi ? "hi" : "en"} mt-2 text-2xl sm:text-3xl`}
           lang={hindi ? "hi" : "en"}
@@ -36,8 +36,13 @@ export function BookTile({ lang, mode }: { lang: "english" | "hindi"; mode: "hom
           </div>
         ) : (
           <div className="mt-5 flex flex-wrap items-center gap-4">
-            <Link to="/read/$lang" params={{ lang }} className="cut-btn" lang={hindi ? "hi" : "en"}>
-              {hindi ? "पढ़ें" : "Read"}
+            <Link
+              to="/read/$lang"
+              params={{ lang }}
+              className="cut-btn"
+              aria-label={`Read ${book.title} in ${hindi ? "Hindi" : "English"}`}
+            >
+              Read
             </Link>
             <a
               href={pdfs[lang].url}
