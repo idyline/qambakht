@@ -19,7 +19,13 @@ export const pdfs = {
     language: "English",
   },
   // The Hindi PDF is larger than the repo's 10 MB file limit, so it lives on the asset CDN.
-  hindi: { url: pdfHindi.url, title: "आम ज़िंदगी!", language: "Hindi" },
+  // Use the canonical Lovable host so the asset URL also resolves on Vercel, where the
+  // relative /__l5e path is not served by the app's static assets.
+  hindi: {
+    url: new URL(pdfHindi.url, "https://qambakht.lovable.app").toString(),
+    title: "आम ज़िंदगी!",
+    language: "Hindi",
+  },
 };
 
 export const portraitUrl = authorProfile.url;
