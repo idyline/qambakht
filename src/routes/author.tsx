@@ -14,9 +14,11 @@ function Author() {
         <figure className="author-artwork-frame mx-auto w-full">
           <img
             src={portraitUrl}
-            alt="A hand-painted folk mask on warm, textured paper."
-            width={455}
-            height={568}
+            alt="Illustrated portrait of Adarsh Anand with a warm golden halo."
+            width={632}
+            height={527}
+            fetchPriority="high"
+            decoding="async"
             className="author-artwork"
           />
         </figure>

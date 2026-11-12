@@ -9,12 +9,14 @@ import {
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, type CSSProperties, type ReactNode } from "react";
 
+import sitePaisleyBackground from "@/assets/site-paisley-background.jpg.asset.json";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { SiteChrome } from "@/components/SiteChrome";
 import { Footer } from "@/components/Footer";
+import { PageIntro } from "@/components/PageIntro";
+import { SiteChrome } from "@/components/SiteChrome";
 import { SITE_NAME } from "@/data/site";
 import { useSwipeNavigation } from "@/hooks/useSwipeNavigation";
 
@@ -22,12 +24,10 @@ function NotFoundComponent() {
   return (
     <div className="flex min-h-[70vh] items-center justify-center px-4 pt-24">
       <div className="paper-card max-w-md rotate-[-1deg] p-10 text-center">
-        <h1 className="h1-hindi text-6xl" lang="hi">
-          खो गए?
-        </h1>
-        <p className="mt-4">This page doesn't exist — the lane ends here.</p>
-        <Link to="/" className="cut-btn mt-6" lang="hi">
-          घर चलें
+        <h1 className="title-en text-5xl">Page not found</h1>
+        <p className="mt-4">This page does not exist. Let&apos;s head back home.</p>
+        <Link to="/" className="cut-btn mt-6">
+          Home
         </Link>
       </div>
     </div>
@@ -43,10 +43,8 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <div className="paper-card max-w-md p-10 text-center">
-        <h1 className="h1-hindi text-4xl" lang="hi">
-          अरे!
-        </h1>
-        <p className="mt-3">This page didn't load. Try again, or head back home.</p>
+        <h1 className="title-en text-4xl">Something went wrong</h1>
+        <p className="mt-3">This page could not load. Try again, or head back home.</p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <button
             onClick={() => {
@@ -113,9 +111,12 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
-/** A quiet paper-colored canvas keeps the book artwork in focus. */
 function SiteAtmosphere() {
-  return <div className="atmosphere" aria-hidden />;
+  const style = {
+    "--site-background-image": `url("${sitePaisleyBackground.url}")`,
+  } as CSSProperties;
+
+  return <div className="atmosphere" aria-hidden style={style} />;
 }
 
 function RootComponent() {
@@ -126,6 +127,7 @@ function RootComponent() {
     <>
       <SiteAtmosphere />
       {!isReader && <SiteChrome />}
+      <PageIntro />
       <div id="site-main" className="relative">
         <main className="relative z-[2]">
           <Outlet />
