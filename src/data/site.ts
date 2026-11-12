@@ -26,6 +26,10 @@ export const portraitUrl = authorProfile.url;
 
 export const AUTHOR_EMAIL = "anandadarsh942@gmail.com";
 export const CONTACT_EMAIL = "hello@qambakht.in";
+export const CONNECT_ILLUSTRATION =
+  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/download%20%2855%29-E0dyNTOXQyFoJREjBadqQxMHwHqxpR.jpg";
+export const INSTAGRAM_ICON = "https://thesvg.org/icons/instagram/default.svg";
+export const GMAIL_ICON = "https://thesvg.org/icons/gmail-2026/default.svg";
 
 export const BLURBS = {
   english:
@@ -122,7 +126,7 @@ export const NAV = [
   { label: "घर", to: "/", english: "Home", interstitial: 24 as ArtNo },
   { label: "पुस्तकालय", to: "/library", english: "Library", interstitial: 47 as ArtNo },
   { label: "कम्बख़्त", to: "/author", english: "Author", interstitial: 12 as ArtNo },
-  { label: "और सुनाओ?", to: "/feedback", english: "Feedback", interstitial: 37 as ArtNo },
+  { label: "और सुनाओ?", to: "/connect", english: "Connect", interstitial: 42 as ArtNo },
   { label: "किताब ले लो!", to: "/buy", english: "Buy the book", interstitial: 48 as ArtNo },
 ] as const;
 

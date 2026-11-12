@@ -12,7 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthorRouteImport } from './routes/author'
 import { Route as BuyRouteImport } from './routes/buy'
-import { Route as FeedbackRouteImport } from './routes/feedback'
+import { Route as ConnectRouteImport } from './routes/connect'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as MenuRouteImport } from './routes/menu'
 import { Route as ReadLangRouteImport } from './routes/read.$lang'
@@ -32,9 +32,9 @@ const BuyRoute = BuyRouteImport.update({
   path: '/buy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FeedbackRoute = FeedbackRouteImport.update({
-  id: '/feedback',
-  path: '/feedback',
+const ConnectRoute = ConnectRouteImport.update({
+  id: '/connect',
+  path: '/connect',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LibraryRoute = LibraryRouteImport.update({
@@ -57,7 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/author': typeof AuthorRoute
   '/buy': typeof BuyRoute
-  '/feedback': typeof FeedbackRoute
+  '/connect': typeof ConnectRoute
   '/library': typeof LibraryRoute
   '/menu': typeof MenuRoute
   '/read/$lang': typeof ReadLangRoute
@@ -66,7 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/author': typeof AuthorRoute
   '/buy': typeof BuyRoute
-  '/feedback': typeof FeedbackRoute
+  '/connect': typeof ConnectRoute
   '/library': typeof LibraryRoute
   '/menu': typeof MenuRoute
   '/read/$lang': typeof ReadLangRoute
@@ -76,7 +76,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/author': typeof AuthorRoute
   '/buy': typeof BuyRoute
-  '/feedback': typeof FeedbackRoute
+  '/connect': typeof ConnectRoute
   '/library': typeof LibraryRoute
   '/menu': typeof MenuRoute
   '/read/$lang': typeof ReadLangRoute
@@ -84,28 +84,16 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/author'
-    | '/buy'
-    | '/feedback'
-    | '/library'
-    | '/menu'
-    | '/read/$lang'
+    '/' | '/author' | '/buy' | '/connect' | '/library' | '/menu' | '/read/$lang'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/author'
-    | '/buy'
-    | '/feedback'
-    | '/library'
-    | '/menu'
-    | '/read/$lang'
+    '/' | '/author' | '/buy' | '/connect' | '/library' | '/menu' | '/read/$lang'
   id:
     | '__root__'
     | '/'
     | '/author'
     | '/buy'
-    | '/feedback'
+    | '/connect'
     | '/library'
     | '/menu'
     | '/read/$lang'
@@ -115,7 +103,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthorRoute: typeof AuthorRoute
   BuyRoute: typeof BuyRoute
-  FeedbackRoute: typeof FeedbackRoute
+  ConnectRoute: typeof ConnectRoute
   LibraryRoute: typeof LibraryRoute
   MenuRoute: typeof MenuRoute
   ReadLangRoute: typeof ReadLangRoute
@@ -144,11 +132,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BuyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/feedback': {
-      id: '/feedback'
-      path: '/feedback'
-      fullPath: '/feedback'
-      preLoaderRoute: typeof FeedbackRouteImport
+    '/connect': {
+      id: '/connect'
+      path: '/connect'
+      fullPath: '/connect'
+      preLoaderRoute: typeof ConnectRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/library': {
@@ -179,7 +167,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthorRoute: AuthorRoute,
   BuyRoute: BuyRoute,
-  FeedbackRoute: FeedbackRoute,
+  ConnectRoute: ConnectRoute,
   LibraryRoute: LibraryRoute,
   MenuRoute: MenuRoute,
   ReadLangRoute: ReadLangRoute,

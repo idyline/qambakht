@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRouter, useRouterState } from "@tanstack/react-router";
 
 /** The navbar page order used by swipe navigation. */
-export const PAGE_ORDER = ["/", "/library", "/author", "/feedback", "/buy"] as const;
+export const PAGE_ORDER = ["/", "/library", "/author", "/connect", "/buy"] as const;
 
 /**
  * Pure swipe decision: given the current pathname and the touch delta,
@@ -16,10 +16,7 @@ export function swipeTarget(
 ): (typeof PAGE_ORDER)[number] | null {
   if (Math.abs(dx) < 64 || Math.abs(dx) <= Math.abs(dy) * 1.4) return null;
 
-  const base =
-    pathname === "/"
-      ? "/"
-      : PAGE_ORDER.find((p) => p !== "/" && pathname.startsWith(p));
+  const base = pathname === "/" ? "/" : PAGE_ORDER.find((p) => p !== "/" && pathname.startsWith(p));
   if (!base) return null; // e.g. the PDF reader page — no page swiping there
 
   const idx = PAGE_ORDER.indexOf(base);
@@ -30,7 +27,7 @@ export function swipeTarget(
 
 /**
  * Global touch-gesture navigation: glide horizontally between the navbar
- * pages (Home ↔ Library ↔ Author ↔ Feedback). Vertical scrolling and short
+ * pages (Home ↔ Library ↔ Author ↔ Connect). Vertical scrolling and short
  * or ambiguous gestures are ignored, and the PDF reader is never swapped.
  */
 export function useSwipeNavigation() {
