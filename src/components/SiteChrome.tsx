@@ -26,7 +26,10 @@ export function SiteChrome() {
         data-menu-open={menuOpen ? "true" : undefined}
         title={menuOpen ? "Close navigation" : "Open navigation"}
       >
-        {menuOpen ? <CloseIcon aria-hidden="true" /> : <MenuIcon aria-hidden="true" />}
+        <span className="menu-btn-glyph" aria-hidden="true">
+          {menuOpen ? <CloseIcon /> : <MenuIcon />}
+        </span>
+        <span className="menu-btn-label">{menuOpen ? "Close" : "Menu"}</span>
       </Link>
     </header>
   );

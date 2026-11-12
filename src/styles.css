@@ -2512,6 +2512,26 @@ body {
   font-weight: 600;
 }
 
+.feedback-delivery-notice {
+  padding: 1rem 1.15rem;
+  border: 1px solid rgba(184, 92, 69, 0.28);
+  border-radius: 18px 18px 26px 18px;
+  background: rgba(248, 232, 211, 0.76);
+  color: var(--maroon);
+}
+
+.feedback-delivery-notice .feedback-message {
+  margin: 0;
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
+.feedback-delivery-notice .cut-btn-alt {
+  min-height: 40px;
+  align-items: center;
+  text-decoration: none;
+}
+
 .postcard {
   transform: none;
   background: rgba(255, 244, 226, 0.8);
@@ -2740,66 +2760,116 @@ html::-webkit-scrollbar-thumb {
 .page-intro {
   z-index: 1000;
   isolation: isolate;
-  background: var(--paper);
+  background: radial-gradient(ellipse at 50% 44%, rgba(255, 244, 226, 0.96), rgba(235, 226, 212, 0.97) 68%, rgba(246, 242, 233, 0.98));
   animation-duration: 1800ms;
 }
 
 .page-intro::before {
-  opacity: 0.08;
+  opacity: 0.1;
 }
 
 .page-intro-stage {
   width: min(100%, 430px);
+  gap: 0.25rem;
 }
 
 .page-intro-art-frame {
   width: clamp(184px, 30vw, 280px);
-  overflow: visible;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-.page-intro-art-frame[data-route="/"] {
-  aspect-ratio: 0.78;
-}
-
-.page-intro-art-frame[data-route="/feedback"] {
-  aspect-ratio: 2 / 3;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid rgba(79, 105, 88, 0.22);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 244, 226, 0.94), rgba(233, 223, 207, 0.68));
+  box-shadow:
+    0 26px 58px -38px rgba(41, 51, 46, 0.48),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42);
 }
 
 .page-intro-art {
-  width: 76%;
-  max-height: 82%;
-  filter: drop-shadow(0 22px 24px rgba(41, 51, 46, 0.24));
-}
-
-.page-intro-art-home,
-.page-intro-art-feedback {
-  width: 100%;
-  height: 100%;
-  max-height: none;
-  border-radius: 28px;
-  object-fit: cover;
-  object-position: center top;
-  filter: none;
-  transform: scale(1.08);
-}
-
-.page-intro-art-frame[data-route="/"],
-.page-intro-art-frame[data-route="/feedback"] {
-  overflow: hidden;
-  border-radius: 28px;
-  filter: drop-shadow(0 24px 28px rgba(41, 51, 46, 0.3));
+  width: 84%;
+  height: 84%;
+  filter: drop-shadow(0 16px 20px rgba(41, 51, 46, 0.2));
 }
 
 .page-intro-title {
   margin-top: 1.15rem;
 }
 
+.page-intro-home {
+  gap: 1.25rem;
+}
+
+.page-intro-brand-card {
+  display: flex;
+  width: min(100%, 390px);
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: clamp(1.6rem, 5vw, 2.5rem) clamp(2rem, 8vw, 3.5rem);
+  border: 1px solid rgba(79, 105, 88, 0.22);
+  border-radius: 36px 36px 72px 36px;
+  background: linear-gradient(145deg, rgba(255, 244, 226, 0.82), rgba(235, 226, 212, 0.56));
+  box-shadow:
+    0 28px 68px -42px rgba(41, 51, 46, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.46);
+  backdrop-filter: blur(14px) saturate(115%);
+}
+
+.page-intro-brand-mark {
+  position: relative;
+  display: grid;
+  width: 112px;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(79, 105, 88, 0.18);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 42%, rgba(255, 248, 233, 0.92), rgba(233, 223, 207, 0.62));
+  box-shadow: 0 14px 30px -22px rgba(41, 51, 46, 0.52);
+  animation: page-intro-mark-arrive 680ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.page-intro-brand-mark .cup-logo {
+  position: relative;
+  z-index: 1;
+}
+
+.page-intro-steam {
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  width: 38px;
+  transform: translateX(-50%);
+}
+
+.page-intro-brand-wordmark {
+  color: var(--ink);
+  font-size: clamp(2.25rem, 8vw, 3.5rem);
+  line-height: 1;
+}
+
+.page-intro-brand-caption {
+  color: var(--maroon);
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 .page-intro-progress {
   animation-duration: 1800ms;
+}
+
+@keyframes page-intro-mark-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @keyframes page-intro-dismiss {
@@ -2901,15 +2971,63 @@ html::-webkit-scrollbar-thumb {
   background: transparent;
 }
 
-.menu-btn,
-.menu-btn:hover,
-.menu-btn:focus-visible,
-.menu-btn:active {
+.menu-btn {
+  display: flex;
+  width: auto;
+  min-width: 98px;
+  height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0 15px 0 7px;
+  border: 1px solid rgba(79, 105, 88, 0.34);
+  border-radius: 999px;
+  background: var(--maroon);
+  color: var(--cream);
+  box-shadow: 0 10px 24px -16px rgba(41, 51, 46, 0.72);
   transform: none;
 }
 
-.menu-btn svg {
+.menu-btn-glyph {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--maroon);
+}
+
+.menu-btn-glyph svg {
+  width: 17px;
+  height: 17px;
+  stroke-width: 2;
   transform: none;
+}
+
+.menu-btn-label {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 650;
+  letter-spacing: 0.015em;
+}
+
+.menu-btn:hover,
+.menu-btn:focus-visible {
+  border-color: var(--maroon);
+  background: var(--ink);
+  box-shadow: 0 0 0 4px rgba(79, 105, 88, 0.14), 0 14px 26px -18px rgba(41, 51, 46, 0.72);
+  transform: translateY(-1px);
+}
+
+.menu-btn:focus-visible {
+  outline: 2px solid var(--ochre);
+  outline-offset: 3px;
+}
+
+.menu-btn:active {
+  transform: scale(0.97);
 }
 
 .feedback-honeypot {
@@ -2989,11 +3107,30 @@ html::-webkit-scrollbar-thumb {
     width: clamp(176px, 48vw, 230px);
   }
 
+  .page-intro-brand-card {
+    width: min(100%, 340px);
+  }
+
   .menu-page {
     padding: 92px 18px max(28px, env(safe-area-inset-bottom));
   }
 
   .menu-page-panel {
     padding: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-intro,
+  .page-intro-stage,
+  .page-intro-progress,
+  .page-intro-brand-mark,
+  .wordmark-drop .wm-l,
+  .wordmark-drop .wm-dot {
+    animation: none;
+  }
+
+  .page-intro-progress {
+    transform: scaleX(1);
   }
 }

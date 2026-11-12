@@ -35,6 +35,7 @@ function Feedback() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [problem, setProblem] = useState("");
+  const [fallbackHref, setFallbackHref] = useState("");
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -44,28 +45,45 @@ function Feedback() {
     }
 
     setProblem("");
+    setFallbackHref("");
     setSending(true);
+    const message = [
+      `Name: ${name || "Not provided"}`,
+      `Email: ${email || "Not provided"}`,
+      `Rating: ${rating ? `${rating} / 5` : "Not provided"}`,
+      "",
+      thoughts.trim(),
+    ].join("\n");
+    const mailto = `mailto:${AUTHOR_EMAIL}?${new URLSearchParams({
+      subject: `Feedback on Qambakht. — ${name || "A reader"}`,
+      body: message,
+    }).toString()}`;
+
     try {
+      const formData = new FormData(e.currentTarget);
+      formData.set("_subject", `Feedback on Qambakht. — ${name || "A reader"}`);
+      formData.set("_template", "table");
+      formData.set("rating", rating ? `${rating} / 5` : "Not provided");
+      if (email) formData.set("_replyto", email);
+
       const response = await fetch(`https://formsubmit.co/ajax/${AUTHOR_EMAIL}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          _subject: `Feedback on Qambakht. — ${name || "A reader"}`,
-          _template: "table",
-          _honey: "",
-          name: name || "Not provided",
-          email: email || "Not provided",
-          rating: rating ? `${rating} / 5` : "Not provided",
-          message: thoughts.trim(),
-        }),
+        headers: { Accept: "application/json" },
+        body: formData,
       });
-      const result = (await response.json()) as { success?: boolean | string };
-      if (!response.ok || (result.success !== true && result.success !== "true")) {
-        throw new Error("Feedback delivery failed");
-      }
+      const result = (await response.json()) as {
+        ok?: boolean;
+        success?: boolean | string;
+        message?: string;
+      };
+      const delivered = result.ok === true || result.success === true || result.success === "true";
+      if (!response.ok || !delivered) throw new Error(result.message || "Feedback delivery failed");
       setSent(true);
     } catch {
-      setProblem("We couldn't send that just now. Please try again in a moment.");
+      setFallbackHref(mailto);
+      setProblem(
+        "Automatic delivery is unavailable right now. You can still send your feedback by email.",
+      );
     } finally {
       setSending(false);
     }
@@ -98,6 +116,7 @@ function Feedback() {
             <label className="field">
               <span className="feedback-label">Name</span>
               <input
+                name="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 maxLength={100}
@@ -109,6 +128,7 @@ function Feedback() {
               <span className="feedback-label">Email (optional)</span>
               <input
                 type="email"
+                name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 maxLength={255}
@@ -141,6 +161,7 @@ function Feedback() {
             <span className="feedback-label">Your message</span>
             <textarea
               rows={6}
+              name="message"
               className="lined"
               value={thoughts}
               onChange={(e) => setThoughts(e.target.value)}
@@ -150,9 +171,14 @@ function Feedback() {
           </label>
 
           {problem && (
-            <p className="feedback-message mt-3 text-lg" role="alert">
-              {problem}
-            </p>
+            <div className="feedback-delivery-notice mt-4" role="alert">
+              <p className="feedback-message">{problem}</p>
+              {fallbackHref && (
+                <a href={fallbackHref} className="cut-btn cut-btn-alt mt-3 inline-flex">
+                  Open email draft
+                </a>
+              )}
+            </div>
           )}
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
