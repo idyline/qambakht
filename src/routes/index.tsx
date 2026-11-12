@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { covers, pageHead } from "@/data/site";
+import { HomeIntro } from "@/components/HomeIntro";
 
 export const Route = createFileRoute("/")({
   head: () => pageHead("Aam Zindagi! — a novel by Adarsh Anand. Read in English or Hindi."),
@@ -10,12 +11,16 @@ export const Route = createFileRoute("/")({
 function Home() {
   return (
     <div className="relative pt-24 md:pt-28">
-      <section className="mx-auto grid max-w-5xl items-center gap-8 px-6 pb-14 md:grid-cols-[1fr_0.7fr] md:gap-14 md:pb-16">
+      <HomeIntro />
+      <section
+        id="novel"
+        className="mx-auto grid max-w-5xl items-center gap-8 px-6 pb-14 md:grid-cols-[1fr_0.7fr] md:gap-14 md:pb-16"
+      >
         <div className="relative z-[2] max-w-lg">
           <p className="eyebrow">A novel by Adarsh Anand</p>
-          <h1 className="title-en mt-3 text-4xl leading-tight sm:text-5xl md:text-6xl">
+          <h2 className="title-en mt-3 text-4xl leading-tight sm:text-5xl md:text-6xl">
             Aam Zindagi!
-          </h1>
+          </h2>
           <p className="mt-3 max-w-sm text-base text-ink/70">
             Everyday life, in English and Hindi.
           </p>
